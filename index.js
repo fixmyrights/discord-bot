@@ -1,11 +1,9 @@
 const Discord = require("discord.js");
+const api = require("./api");
 const client = new Discord.Client();
 const database = require("./database");
-const axios = require("axios");
 const credentials = require("./credentials.json");
 const parser = require("./parser");
-
-const api = "https://api.legiscan.com";
 
 const query = `"right to repair" OR "right-to-repair" OR ((servicing OR repair) AND electronics) OR (fair AND electronic AND repair OR independent)`;
 
@@ -39,20 +37,12 @@ client.on('message', async message => {
 				} else {
 					channel.send(`Scanning for right-to-repair legislation in ${state}...`);
 
-					const result = await axios.get(api, {params: {
-						key: credentials.key || credentials.keys[state],
-						op: "search",
-						state,
-						query,
-						year: 1
-					}});
-
-					const response = result.data;
+					const response = await api.search(state, query);
 
 					// Debug
 					//console.log(response.searchresult);
 
-					if (response.status == "OK") {
+					if (response) {
 						let searchResult = "";
 						let bills = [];
 						for (let billIndex in response.searchresult) {
