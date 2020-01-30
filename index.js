@@ -1,7 +1,6 @@
-const fs = require("fs");
-const util = require("util");
 const Discord = require("discord.js");
 const client = new Discord.Client();
+const database = require("./database");
 const axios = require("axios");
 const credentials = require("./credentials.json");
 const parser = require("./parser");
@@ -9,9 +8,6 @@ const parser = require("./parser");
 const api = "https://api.legiscan.com";
 
 const query = `"right to repair" OR "right-to-repair" OR ((servicing OR repair) AND electronics) OR (fair AND electronic AND repair OR independent)`;
-
-const readFile = util.promisify(fs.readFile);
-const writeFile = util.promisify(fs.writeFile);
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
@@ -77,13 +73,7 @@ client.on('message', async message => {
 						sortBills(bills);
 
 						if (bills.length > 0) {
-							let watchlist = {};
-
-							try {
-								watchlist = JSON.parse(await readFile("watchlist.json"));
-							} catch (err) {
-								console.log("Could not find existing watchlist");
-							}
+							watchlist = await database.readWatchlist();
 
 							for (let bill of bills) {
 								if (bill.bill_id in watchlist) {
@@ -101,7 +91,7 @@ client.on('message', async message => {
 								searchResult += `**${bill.bill_number}**: *${bill.title}* ${bill.last_action.toUpperCase()} as of \`${bill.last_action_date}\` (<${bill.text_url}>)\n`;
 							}
 
-							await writeFile("watchlist.json", JSON.stringify(watchlist, null, "	"));
+							await database.updateWatchlist(watchlist);
 						} else {
 							searchResult += `No current legislation found.`;
 						}
