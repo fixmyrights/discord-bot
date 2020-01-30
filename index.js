@@ -3,8 +3,8 @@ const util = require("util");
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const axios = require("axios");
-const states = require("./states.json");
 const credentials = require("./credentials.json");
+const parser = require("./parser");
 
 const api = "https://api.legiscan.com";
 
@@ -33,17 +33,9 @@ client.on('message', async message => {
 			if (segments.length != 2) {
 				message.reply("Expected 1 argument, the two-letter state code.");
 			} else {
-				const stateInput = segments[1].toUpperCase();
+				const state = parser.state(segments.splice(1).join(" "));
 
-				let state = states.find(state => state.name == stateInput);
-
-				if (state) {
-					state = state.code;
-				} else {
-					state = stateInput;
-				}
-
-				if (state.length != 2 && state != "ALL") {
+				if (!state) {
 					message.reply("Could not find state.");
 				} else if (!credentials.key && !(state in credentials.keys)) {
 					message.reply(`No LegiScan API key for state code ${state}.`);
@@ -71,8 +63,8 @@ client.on('message', async message => {
 							if (!bill.text_url) {
 								continue;
 							}
-							const title = bill.title.toLowerCase().replace(/-/g, " ");
-							if (title.includes("right to repair") || (title.includes("fair") && (title.includes("digital") || title.includes("electronic")) && (title.includes("repair") || title.includes("serv")))) {
+							const title = parser.title(bill);
+							if (title.includes("right to repair") || ((title.includes("fair") || title.includes("right")) && (title.includes("digital") || title.includes("electronic")) && (title.includes("repair") || title.includes("serv")))) {
 								console.log(`Found bill "${title}"`);
 								bills.push(bill);
 							} else {
