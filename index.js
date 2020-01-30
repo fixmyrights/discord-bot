@@ -65,7 +65,7 @@ client.on('message', async message => {
 								continue;
 							}
 							const title = parser.title(bill);
-							if (title.includes("right to repair") || ((title.includes("fair") || title.includes("right")) && (title.includes("digital") || title.includes("electronic")) && (title.includes("repair") || title.includes("serv")))) {
+							if (parser.titleRelevance(title)) {
 								console.log(`Found bill "${title}"`);
 								bills.push(bill);
 							} else {
