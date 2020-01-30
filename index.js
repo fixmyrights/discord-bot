@@ -21,7 +21,8 @@ const sortBills = bills => bills.sort((a, b) => new Date(b.last_action_date) - n
 
 client.on('message', async message => {
 	const channel = message.channel;
-	if (channel.name.includes("legi") && message.cleanContent.startsWith("!")) {
+
+	if (channel.name && channel.name.includes("legi") && message.cleanContent.startsWith("!")) {
 		const command = message.cleanContent.substring(1);
 		const segments = command.split(" ");
 
