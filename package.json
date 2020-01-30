@@ -1,27 +1,27 @@
 {
-  "name": "discord-bot",
-  "version": "1.0.0",
-  "description": "LegiScan integration for Discord",
-  "main": "index.js",
-  "dependencies": {
-    "axios": "^0.19.2",
-    "discord.js": "^11.5.1",
-    "node-cron": "^2.0.3"
-  },
-  "devDependencies": {},
-  "scripts": {
-	"start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/fixmyrights/discord-bot.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "BSD-2",
-  "bugs": {
-    "url": "https://github.com/fixmyrights/discord-bot/issues"
-  },
-  "homepage": "https://github.com/fixmyrights/discord-bot#readme"
+	"name": "discord-bot",
+	"version": "1.0.0",
+	"description": "LegiScan integration for Discord",
+	"main": "index.js",
+	"dependencies": {
+		"axios": "^0.19.2",
+		"discord.js": "^11.5.1",
+		"node-cron": "^2.0.3"
+	},
+	"devDependencies": {},
+	"scripts": {
+		"start": "node index.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/fixmyrights/discord-bot.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "BSD-2-Clause",
+	"bugs": {
+		"url": "https://github.com/fixmyrights/discord-bot/issues"
+	},
+	"homepage": "https://github.com/fixmyrights/discord-bot#readme"
 }
