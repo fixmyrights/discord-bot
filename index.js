@@ -63,7 +63,7 @@ client.on('message', async message => {
 						sortBills(bills);
 
 						if (bills.length > 0) {
-							watchlist = await database.readWatchlist();
+							const watchlist = await database.readWatchlist();
 
 							for (let bill of bills) {
 								if (bill.bill_id in watchlist) {
