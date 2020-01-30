@@ -8,7 +8,7 @@ const credentials = require("./credentials.json");
 
 const api = "https://api.legiscan.com";
 
-const query = `"right to repair" OR ((servicing OR repair) AND electronics) OR (fair AND electronic AND repair OR independent)`;
+const query = `"right to repair" OR "right-to-repair" OR ((servicing OR repair) AND electronics) OR (fair AND electronic AND repair OR independent)`;
 
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
@@ -61,7 +61,7 @@ client.on('message', async message => {
 					const response = result.data;
 
 					// Debug
-					console.log(response.searchresult);
+					//console.log(response.searchresult);
 
 					if (response.status == "OK") {
 						let searchResult = "";
@@ -71,9 +71,12 @@ client.on('message', async message => {
 							if (!bill.text_url) {
 								continue;
 							}
-							const title = bill.title.toLowerCase();
+							const title = bill.title.toLowerCase().replace(/-/g, " ");
 							if (title.includes("right to repair") || (title.includes("fair") && (title.includes("digital") || title.includes("electronic")) && (title.includes("repair") || title.includes("serv")))) {
+								console.log(`Found bill "${title}"`);
 								bills.push(bill);
+							} else {
+								console.log(`Ignored bill "${title}"`);
 							}
 						}
 
