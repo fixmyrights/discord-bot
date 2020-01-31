@@ -72,7 +72,7 @@ client.on('message', async message => {
 			command.startsWith('query ') ||
 			command.startsWith('scan ')
 		) {
-			const state = await parser.state(segments.splice(1).join(' '));
+			const state = parser.state(segments.splice(1).join(' '));
 
 			if (!state) {
 				message.reply('Could not find state.');
