@@ -53,7 +53,7 @@ jobs:
 
 workflows:
   version: 2
-  rev:
+  discord_bot:
     jobs:
       - install
       - lint:
