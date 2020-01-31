@@ -4,6 +4,8 @@ defaults: &defaults
   working_directory: ~/discord-bot
   docker:
     - image: circleci/node:erbium
+      environment:
+        NODE_ENV: production
 
 install_defaults: &install_defaults
   <<: *defaults

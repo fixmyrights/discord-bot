@@ -1,3 +1,5 @@
+const isProduction = process.env.NODE_ENV === 'production';
+
 module.exports = {
   root: true,
   plugins: ['prettier'],
@@ -15,7 +17,8 @@ module.exports = {
     ecmaVersion: 2018
   },
   rules: {
+    semi: 'off',
     'no-extra-semi': 'off',
-    semi: 'off'
+    'no-debugger': isProduction ? 'error' : 'off'
   }
 };
