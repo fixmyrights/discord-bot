@@ -35,7 +35,7 @@ lint_defaults: &lint_defaults
     - run:
         name: Execute Linters and Scanners
         command: |
-          yarn audit-ci
+          npx audit-ci
           yarn fmt:check
           NODE_ENV=production yarn lint --format junit --output-file test-results/eslint/results.xml
     - store_test_results:
