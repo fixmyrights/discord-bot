@@ -29,7 +29,7 @@ exports.titleRelevance = async function(title) {
 	return relevant;
 };
 
-exports.title = async function(bill) {
+exports.title = function(bill) {
 	let title = bill.title.toLowerCase();
 	title = title.replace(/-/g, ' ');
 
