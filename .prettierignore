@@ -1,0 +1,6 @@
+.circleci
+.vscode
+.history
+.cache
+.temp
+package-lock.json
