@@ -20,8 +20,9 @@
 	"scripts": {
 		"start": "node src/index.js",
 		"lint": "eslint \"src/**/*.js\"",
-		"lint:fix": "eslint \"src/**/*.js\"",
-		"format": "prettier --write \"src/**/*.js\"",
+		"lint:fix": "npm run lint --fix",
+		"fmt": "prettier --write \"./**/*.{js,json,md}\"",
+		"fmt:check": "prettier --list-different \"./**/*.{js,json,md}\"",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {
