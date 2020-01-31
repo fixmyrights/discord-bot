@@ -12,10 +12,11 @@
 
 ## Available Commands
 
-| Command |                    Description                     |
-| ------- | :------------------------------------------------: |
-| !ping   |         Do you really need an explanation?         |
-| !help   | Provides a list of available commands to the user. |
+| Command                    |                    Description                     |
+| -------------------------- | :------------------------------------------------: |
+| !ping                      |         Do you really need an explanation?         |
+| !help                      | Provides a list of available commands to the user. |
+| !scan [state name or code] |   Queries the API for all bills from that state.   |
 
 ## Development
 
