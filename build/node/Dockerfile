@@ -14,7 +14,7 @@ WORKDIR /home/node/app
 # Set To non root user
 USER node
 
-RUN npm ci
+RUN npm install
 
 COPY --chown=node:node . /home/node/app
 

@@ -3,9 +3,7 @@ version: 2.1
 defaults: &defaults
   working_directory: ~/discord-bot
   docker:
-    - image: circleci/node:erbium
-      environment:
-        NODE_ENV: production
+    - image: circleci/node:latest
 
 install_defaults: &install_defaults
   <<: *defaults
@@ -17,7 +15,7 @@ install_defaults: &install_defaults
           - v1-discord-bot-{{ arch }}-{{ .Branch }}
     - run:
         name: Installing Dependencies
-        command: npm ci
+        command: npm install
     - save_cache:
         paths:
           - ./node_modules
@@ -37,9 +35,9 @@ lint_defaults: &lint_defaults
     - run:
         name: Execute Linters and Scanners
         command: |
-          npm run audit
-          npm run fmt:check
-          npm run lint --format junit --output-file test-results/eslint/results.xml
+          yarn audit-ci
+          yarn fmt:check
+          NODE_ENV=production yarn lint --format junit --output-file test-results/eslint/results.xml
     - store_test_results:
         path: test-results
     - store_artifacts:
