@@ -85,7 +85,7 @@ exports.save = async function (watchlist) {
 		await writeFile();
 	} catch (err) {
 		if (err.code === 'ENOENT') {
-			mkdirsAndWriteFile();
+			await mkdirsAndWriteFile();
 		} else {
 			console.warn(`database.js:save: unhandled error [4]\n${err}`); // big warn
 		}
