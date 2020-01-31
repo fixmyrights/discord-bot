@@ -13,7 +13,7 @@ exports.state = async function(input) {
 	return (stateByName || stateByCode || { code: null }).code;
 };
 
-exports.titleRelevance = async function(title) {
+exports.titleRelevance = function(title) {
 	let relevant = false;
 
 	if (title.includes('right to repair')) {
