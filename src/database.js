@@ -1,52 +1,46 @@
-const fs = require('fs').promises;
+const { promises: fs } = require('fs');
+
 const databaseDirectory = './database/';
 const databaseFile = 'database.json';
 let database = {};
-let dirty = false;
 
-exports.load = async function () {
-	try {
-		database = JSON.parse(
-			await fs.readFile(`${databaseDirectory}${databaseFile}`, 'utf8')
-		);
-		dirty = false;
-	} catch (err) {}
+exports.load = async function() {
+  try {
+    database = JSON.parse(await fs.readFile(`${databaseDirectory}${databaseFile}`, 'utf8'));
+    global.dirty = false;
+  } catch (err) {}
 };
 
-exports.update = function (bill) {
-	dirty = true;
+exports.update = function(bill) {
+  global.dirty = true;
 
-	if (!database.watchlist) {
-		database.watchlist = {};
-	}
+  if (!database.watchlist) {
+    database.watchlist = {};
+  }
 
-	if (bill.bill_id in database.watchlist) {
-		if (bill.last_action != database.watchlist[bill.bill_id].last_action) {
-			console.log('Bill changed!');
-		}
-		database.watchlist[bill.bill_id].last_action = bill.last_action;
-		database.watchlist[bill.bill_id].last_action_date =
-			bill.last_action_date;
-	} else {
-		database.watchlist[bill.bill_id] = {
-			title: bill.title,
-			state: bill.state,
-			status:
-				new Date(bill.last_action_date) > new Date(2019, 0, 1)
-					? 'new'
-					: 'expired',
-			bill_number: bill.bill_number,
-			last_action: bill.last_action,
-			last_action_date: bill.last_action_date
-		};
-	}
+  if (bill.bill_id in database.watchlist) {
+    if (bill.last_action !== database.watchlist[bill.bill_id].last_action) {
+      console.log('Bill changed!');
+    }
+    database.watchlist[bill.bill_id].last_action = bill.last_action;
+    database.watchlist[bill.bill_id].last_action_date = bill.last_action_date;
+  } else {
+    database.watchlist[bill.bill_id] = {
+      title: bill.title,
+      state: bill.state,
+      status: new Date(bill.last_action_date) > new Date(2019, 0, 1) ? 'new' : 'expired',
+      bill_number: bill.bill_number,
+      last_action: bill.last_action,
+      last_action_date: bill.last_action_date
+    };
+  }
 };
 
 exports.save = async function (watchlist) {
 	const writeFile = () => fs.writeFile(
 		`${databaseDirectory}${databaseFile}`,
 		JSON.stringify(database, null, '	')
-	).then(() => dirty = false);
+	).then(() => global.dirty = false);
 
 	const mkdirsAndWriteFile = async () => {
 		const dirParts = databaseDirectory.split('/').filter((d, j) => d.length > 0 || j === 0); // `j === 0` in case the start is at root

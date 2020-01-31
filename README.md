@@ -6,9 +6,14 @@
 
 # Discord Bot
 
+![GitHub top language](https://img.shields.io/github/languages/top/fixmyrights/discord-bot)
+![License](https://img.shields.io/github/license/fixmyrights/discord-bot)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/fixmyrights/discord-bot)
+![CircleCI](https://img.shields.io/circleci/build/github/fixmyrights/discord-bot)
+
 ## Features
 
--   Right to Repair bill tracking and notifications (via the Legiscan API).
+- Right to Repair bill tracking and notifications (via the Legiscan API).
 
 ## Preview
 
@@ -26,7 +31,7 @@
 
 ### Requirements
 
--   Node.js 'Erbium' (LTS)
+- Node.js 'Erbium' (LTS)
 
 ### Developing
 
@@ -38,7 +43,7 @@
 
 ## Acknowledgements
 
--   [@finnbear](https://www.gitlab.com/finnbear) as the initial founder of this project.
+- [@finnbear](https://www.gitlab.com/finnbear) as the initial founder of this project.
 
 ## License
 

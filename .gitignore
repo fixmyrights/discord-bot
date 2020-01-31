@@ -32,6 +32,9 @@ yarn.lock
 .cache
 .temp
 
+# Ignore Junit reporters results.
+junit.xml
+
 # Ignore some application files (such as credentials).
 credentials.json
 watchlist.json
