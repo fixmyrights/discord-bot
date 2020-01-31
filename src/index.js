@@ -98,7 +98,7 @@ client.on('message', async message => {
 
 client.login(credentials.client);
 
-cron.schedule('* * * * *', async () => {
+cron.schedule('*/10 * * * *', async () => {
 	const response = await api.search("WA", query);
 
 	if (response) {
