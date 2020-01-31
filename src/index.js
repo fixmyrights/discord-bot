@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const api = require("./api");
 const client = new Discord.Client();
 const database = require("./database");
-const credentials = require("./credentials.json");
+const credentials = require("../data/credentials.json");
 const parser = require("./parser");
 
 const debug = false;

@@ -2,7 +2,7 @@
 	"name": "discord-bot",
 	"version": "1.0.0",
 	"description": "LegiScan integration for Discord",
-	"main": "index.js",
+	"main": "src/index.js",
 	"dependencies": {
 		"axios": "^0.19.2",
 		"discord.js": "^11.5.1",
@@ -10,7 +10,7 @@
 	},
 	"devDependencies": {},
 	"scripts": {
-		"start": "node index.js",
+		"start": "node src/index.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {

@@ -1,5 +1,5 @@
 const axios = require("axios");
-const credentials = require("./credentials.json");
+const credentials = require("../data/credentials.json");
 
 const endpoint = "https://api.legiscan.com";
 

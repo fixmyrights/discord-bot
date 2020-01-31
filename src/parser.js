@@ -1,4 +1,4 @@
-const states = require("./states.json");
+const states = require("../data/states.json");
 
 exports.state = function(input) {
 	const uppercaseInput = input.toUpperCase();
