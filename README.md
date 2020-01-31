@@ -24,7 +24,7 @@
 
 ## Acknowledgements
 
--   [@finnbear](https://www.github.com/finnbear) as the initial founder of this project.
+-   [@finnbear](https://www.gitlab.com/finnbear) as the initial founder of this project.
 
 ## License
 
