@@ -13,6 +13,7 @@ const api = require('./api');
 const legiScanApiKey = process.env.LEGISCAN_API_KEY || credentials.key || null;
 
 // Utility
+const { logger } = require('./logger');
 const parser = require('./parser');
 const config = require('../data/config.json');
 const debug = false;
@@ -20,7 +21,7 @@ const debug = false;
 const query = '"right to repair" OR "right-to-repair" OR ((servicing OR repair) AND electronics) OR (fair AND electronic AND repair OR independent)';
 
 client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+  logger.success(`Logged in as ${client.user.tag}!`);
 });
 
 const getBills = response => {
@@ -32,10 +33,10 @@ const getBills = response => {
     }
     const title = parser.title(bill);
     if (parser.titleRelevance(title)) {
-      debug && console.log(`Found bill "${title}"`);
+      debug && logger.debug(`Found bill "${title}"`);
       bills.push(bill);
     } else {
-      debug && console.log(`Ignored bill "${title}"`);
+      debug && logger.debug(`Ignored bill "${title}"`);
     }
   }
 

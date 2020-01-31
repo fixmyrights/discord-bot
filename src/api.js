@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { logger } = require('./logger');
 const credentials = require('../data/credentials.json');
 
 const endpoint = 'https://api.legiscan.com';
@@ -20,7 +21,7 @@ exports.search = async function(state, query) {
     return response;
   }
 
-  console.log('API error:');
-  console.log(response);
+  logger.error('API error:');
+  logger.error(response);
   return null;
 };

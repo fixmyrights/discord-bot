@@ -19,6 +19,7 @@ module.exports = {
   rules: {
     semi: 'off',
     'no-extra-semi': 'off',
-    'no-debugger': isProduction ? 'error' : 'off'
+    'no-debugger': isProduction ? 'error' : 'off',
+    'no-console': isProduction ? 'error' : 'off'
   }
 };

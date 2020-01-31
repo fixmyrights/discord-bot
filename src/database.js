@@ -1,4 +1,5 @@
 const { promises: fs } = require('fs');
+const { logger } = require('./logger');
 
 const databaseDirectory = './database/';
 let database = {};
@@ -19,7 +20,7 @@ exports.update = function(bill) {
 
   if (bill.bill_id in database.watchlist) {
     if (bill.last_action !== database.watchlist[bill.bill_id].last_action) {
-      console.log('Bill changed!');
+      logger.info('Bill changed!');
     }
     database.watchlist[bill.bill_id].last_action = bill.last_action;
     database.watchlist[bill.bill_id].last_action_date = bill.last_action_date;
