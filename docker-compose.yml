@@ -1,0 +1,16 @@
+version: '3'
+services:
+    node:
+        container_name: discord-bot
+        build:
+            context: .
+            dockerfile: build/node/Dockerfile
+        volumes:
+            - ./:/home/node/app
+        environment:
+            DISCORD_CLIENT_KEY: ${DISCORD_CLIENT_KEY}
+            LEGISCAN_API_KEY: ${LEGISCAN_API_KEY}
+        ulimits:
+            nofile:
+                soft: 65535
+                hard: 100000

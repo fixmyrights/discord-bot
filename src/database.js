@@ -1,25 +1,24 @@
-const fs = require("fs");
-const util = require("util");
+const fs = require('fs').promises;
 
-const exists = util.promisify(fs.exists);
-const mkdir = util.promisify(fs.mkdir);
-const readFile = util.promisify(fs.readFile);
-const writeFile = util.promisify(fs.writeFile);
-
-const databaseDirectory = "./database/";
+const databaseDirectory = './database/';
 
 exports.readWatchlist = async function() {
 	try {
-		return JSON.parse(await readFile(`${databaseDirectory}watchlist.json`));
+		return JSON.parse(
+			await fs.readFile(`${databaseDirectory}watchlist.json`, 'utf8'),
+		);
 	} catch (err) {
 		return {};
 	}
-}
+};
 
 exports.updateWatchlist = async function(watchlist) {
-	if (!await exists(databaseDirectory)) {
-		await mkdir(databaseDirectory);
+	if (!(await fs.exists(databaseDirectory))) {
+		await fs.mkdir(databaseDirectory);
 	}
 
-	await writeFile(`${databaseDirectory}watchlist.json`, JSON.stringify(watchlist, null, "	"));
-}
+	await fs.writeFile(
+		`${databaseDirectory}watchlist.json`,
+		JSON.stringify(watchlist, null, '	'),
+	);
+};

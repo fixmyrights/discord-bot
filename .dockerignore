@@ -1,0 +1,15 @@
+.dockerignore
+.DS_Store
+.editorconfig
+.git*
+.venv*
+.vscode
+_/
+CHANGELOG.md
+CONTRIBUTING.md
+docker-compose.yml
+docs/
+INSTALL-*
+README.md
+requirements.txt
+test/

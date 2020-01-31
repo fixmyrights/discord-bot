@@ -8,9 +8,20 @@
 		"discord.js": "^11.5.1",
 		"node-cron": "^2.0.3"
 	},
-	"devDependencies": {},
+	"devDependencies": {
+		"eslint": "^6.8.0",
+		"eslint-config-standard": "^14.1.0",
+		"eslint-plugin-import": "^2.20.0",
+		"eslint-plugin-node": "^11.0.0",
+		"eslint-plugin-promise": "^4.2.1",
+		"eslint-plugin-standard": "^4.0.1",
+		"prettier": "^1.19.1"
+	},
 	"scripts": {
 		"start": "node src/index.js",
+		"lint": "eslint \"src/**/*.js\"",
+		"lint:fix": "eslint \"src/**/*.js\"",
+		"format": "prettier --write \"src/**/*.js\"",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {

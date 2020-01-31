@@ -1,34 +1,38 @@
-const states = require("../data/states.json");
+const states = require('../data/states.json');
 
-exports.state = function(input) {
+exports.state = async function(input) {
 	const uppercaseInput = input.toUpperCase();
 
-	if (uppercaseInput == "ALL") {
+	if (uppercaseInput === 'ALL') {
 		return uppercaseInput;
 	}
 
-	const stateByName = states.find(state => state.name == uppercaseInput);
-	const stateByCode = states.find(state => state.code == uppercaseInput);
+	const stateByName = states.find(state => state.name === uppercaseInput);
+	const stateByCode = states.find(state => state.code === uppercaseInput);
 
-	return (stateByName || stateByCode || {code: null}).code;
-}
+	return (stateByName || stateByCode || { code: null }).code;
+};
 
-exports.titleRelevance = function(title) {
+exports.titleRelevance = async function(title) {
 	let relevant = false;
 
-	if (title.includes("right to repair")) {
+	if (title.includes('right to repair')) {
 		relevant = true;
-	} else if ((title.includes("fair") || title.includes("right")) && (title.includes("digital") || title.includes("electronic")) && (title.includes("repair") || title.includes("serv"))) {
+	} else if (
+		(title.includes('fair') || title.includes('right')) &&
+		(title.includes('digital') || title.includes('electronic')) &&
+		(title.includes('repair') || title.includes('serv'))
+	) {
 		relevant = true;
 	}
 
 	return relevant;
-}
+};
 
-exports.title = function(bill) {
-	let title = bill.title.toLowerCase()
+exports.title = async function(bill) {
+	const title = bill.title.toLowerCase();
 
-	title.replace(/-/g, " ");
+	title.replace(/-/g, ' ');
 
 	return title.length > 497 ? `${title.substring(0, 497)}...` : title;
-}
+};
