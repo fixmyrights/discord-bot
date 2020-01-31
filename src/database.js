@@ -42,8 +42,12 @@ exports.update = function(bill) {
 };
 
 exports.save = async function(watchlist) {
-	if (!(await fs.exists(databaseDirectory))) {
-		await fs.mkdir(databaseDirectory);
+	try {
+		await fs.stat(databaseDirectory);
+	} catch (err) {
+		if (err.code === "ENOENT") {
+			await fs.mkdir(databaseDirectory);
+		}
 	}
 
 	await fs.writeFile(
