@@ -30,5 +30,5 @@ exports.title = function(bill) {
 
 	title.replace(/-/g, " ");
 
-	return title;
+	return title.length > 497 ? `${title.substring(0, 497)}...` : title;
 }

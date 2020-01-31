@@ -5,6 +5,8 @@ const database = require("./database");
 const credentials = require("./credentials.json");
 const parser = require("./parser");
 
+const debug = false;
+
 const query = `"right to repair" OR "right-to-repair" OR ((servicing OR repair) AND electronics) OR (fair AND electronic AND repair OR independent)`;
 
 client.on('ready', () => {
@@ -49,10 +51,10 @@ client.on('message', async message => {
 						}
 						const title = parser.title(bill);
 						if (parser.titleRelevance(title)) {
-							console.log(`Found bill "${title}"`);
+							debug && console.log(`Found bill "${title}"`);
 							bills.push(bill);
 						} else {
-							console.log(`Ignored bill "${title}"`);
+							debug && console.log(`Ignored bill "${title}"`);
 						}
 					}
 
@@ -65,6 +67,9 @@ client.on('message', async message => {
 						for (let bill of bills) {
 							if (bill.bill_id in watchlist) {
 								// TODO: Track changes
+								if (bill.last_action != watchlist[bill.bill_id].last_action) {
+									console.log("Bill changed!");
+								}
 								watchlist[bill.bill_id].last_action = bill.last_action;
 								watchlist[bill.bill_id].last_action_date = bill.last_action_date;
 							} else {
@@ -75,7 +80,7 @@ client.on('message', async message => {
 								await channel.send(searchResult);
 								searchResult = "";
 							}
-							searchResult += `**${bill.bill_number}**: *${bill.title}* ${bill.last_action.toUpperCase()} as of \`${bill.last_action_date}\` (<${bill.text_url}>)\n`;
+							searchResult += `**${bill.bill_number}**: *${parser.title(bill)}* ${bill.last_action.toUpperCase()} as of \`${bill.last_action_date}\` (<${bill.text_url}>)\n`;
 						}
 
 						await database.updateWatchlist(watchlist);
