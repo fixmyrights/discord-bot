@@ -10,11 +10,20 @@
 
 -   Right to Repair bill tracking and notifications (via the Legiscan API).
 
-## Requirements
+## Available Commands
+
+| Command |                    Description                     |
+| ------- | :------------------------------------------------: |
+| !ping   |         Do you really need an explanation?         |
+| !help   | Provides a list of available commands to the user. |
+
+## Development
+
+### Requirements
 
 -   Node.js 'Erbium' (LTS)
 
-## Developing
+### Developing
 
 1. `npm install` or `npm i`
 2. `cp credential.json.template credentials.json`
