@@ -1,0 +1,59 @@
+version: 2.1
+
+defaults: &defaults
+  working_directory: ~/discord-bot
+  docker:
+    - image: circleci/node:erbium
+
+install_defaults: &install_defaults
+  <<: *defaults
+  steps:
+    - checkout
+    - restore_cache:
+        keys:
+          - v1-discord-bot-{{ arch }}-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          - v1-discord-bot-{{ arch }}-{{ .Branch }}
+    - run:
+        name: Installing Dependencies
+        command: npm ci
+    - save_cache:
+        paths:
+          - ./node_modules
+          - ~/.cache
+        key: v1-discord-bot-{{ arch }}-{{ .Branch }}-{{ checksum "package-lock.json" }}
+    - persist_to_workspace:
+        root: ~/
+        paths:
+          - discord-bot
+          - .cache
+
+lint_defaults: &lint_defaults
+  <<: *defaults
+  steps:
+    - attach_workspace:
+        at: ~/
+    - run:
+        name: Execute Linters and Scanners
+        command: |
+          npm run audit
+          npm run fmt:check
+          npm run lint --format junit --output-file test-results/eslint/results.xml
+    - store_test_results:
+        path: test-results
+    - store_artifacts:
+        path: test-results
+
+jobs:
+  install:
+    <<: *install_defaults
+  lint:
+    <<: *lint_defaults
+
+workflows:
+  version: 2
+  rev:
+    jobs:
+      - install
+      - lint:
+          requires:
+            - install
