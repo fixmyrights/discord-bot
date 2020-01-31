@@ -1,15 +1,13 @@
 // Discord
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const credentials = require("../data/credentials.json");
+const credentials = require('../data/credentials.json');
 
 const discordClientKey =
 	process.env.DISCORD_CLIENT_KEY || credentials.client || null;
 const database = require('./database');
 
-
 const cron = require('node-cron');
-
 
 // Legiscan API
 const api = require('./api');
@@ -17,7 +15,7 @@ const legiScanApiKey = process.env.LEGISCAN_API_KEY || credentials.key || null;
 
 // Utility
 const parser = require('./parser');
-const config = require("../data/config.json");
+const config = require('../data/config.json');
 const cronPostChannel = process.env.CHANNEL || config.channel || null;
 const debug = false;
 
@@ -50,7 +48,10 @@ const getBills = response => {
 	return bills;
 };
 
-const sortBills = bills => bills.sort((a, b) => new Date(b.last_action_date) - new Date(a.last_action_date));
+const sortBills = bills =>
+	bills.sort(
+		(a, b) => new Date(b.last_action_date) - new Date(a.last_action_date),
+	);
 
 client.on('message', async message => {
 	const { channel } = message;
@@ -123,14 +124,13 @@ client.on('message', async message => {
 	}
 });
 
-
 client.login(discordClientKey);
 
 cron.schedule('*/10 * * * *', async () => {
-	const response = await api.search("WA", query);
+	const response = await api.search('WA', query);
 
 	if (response) {
-		let searchResult = "";
+		let searchResult = '';
 
 		const bills = getBills(response);
 
@@ -141,7 +141,7 @@ cron.schedule('*/10 * * * *', async () => {
 				database.update(bill);
 			}
 
-			const channel = client.channels.find('name', config.channel)
+			const channel = client.channels.find('name', config.channel);
 			await channel.send(`Updated ${bills.length} automatically.`);
 
 			await database.save();

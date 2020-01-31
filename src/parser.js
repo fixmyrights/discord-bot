@@ -31,7 +31,7 @@ exports.titleRelevance = async function(title) {
 
 exports.title = async function(bill) {
 	let title = bill.title.toLowerCase();
-	title = title.replace(/-/g, " ");
+	title = title.replace(/-/g, ' ');
 
 	return title.length > 497 ? `${title.substring(0, 497)}...` : title;
 };
