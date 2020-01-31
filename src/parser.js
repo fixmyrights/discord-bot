@@ -18,11 +18,7 @@ exports.titleRelevance = function(title) {
 
   if (title.includes('right to repair')) {
     relevant = true;
-  } else if (
-    (title.includes('fair') || title.includes('right')) &&
-    (title.includes('digital') || title.includes('electronic')) &&
-    (title.includes('repair') || title.includes('serv'))
-  ) {
+  } else if ((title.includes('fair') || title.includes('right')) && (title.includes('digital') || title.includes('electronic')) && (title.includes('repair') || title.includes('serv'))) {
     relevant = true;
   }
 

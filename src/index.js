@@ -17,8 +17,7 @@ const parser = require('./parser');
 const config = require('../data/config.json');
 const debug = false;
 
-const query =
-  '"right to repair" OR "right-to-repair" OR ((servicing OR repair) AND electronics) OR (fair AND electronic AND repair OR independent)';
+const query = '"right to repair" OR "right-to-repair" OR ((servicing OR repair) AND electronics) OR (fair AND electronic AND repair OR independent)';
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -88,9 +87,7 @@ client.on('message', async message => {
                 await channel.send(searchResult);
                 searchResult = '';
               }
-              searchResult += `**${bill.bill_number}**: *${parser.title(
-                bill
-              )}* ${bill.last_action.toUpperCase()} as of \`${bill.last_action_date}\` (<${bill.text_url}>)\n`;
+              searchResult += `**${bill.bill_number}**: *${parser.title(bill)}* ${bill.last_action.toUpperCase()} as of \`${bill.last_action_date}\` (<${bill.text_url}>)\n`;
             }
 
             await database.save();
