@@ -28,7 +28,7 @@ client.on('ready', () => {
 
 const getBills = response => {
 	const bills = [];
-	for (let billIndex in response.searchresult) {
+	for (const billIndex in response.searchresult) {
 		const bill = response.searchresult[billIndex];
 		if (!bill.text_url) {
 			continue;
@@ -50,7 +50,7 @@ const getBills = response => {
 
 const sortBills = bills =>
 	bills.sort(
-		(a, b) => new Date(b.last_action_date) - new Date(a.last_action_date),
+		(a, b) => new Date(b.last_action_date) - new Date(a.last_action_date)
 	);
 
 client.on('message', async message => {
@@ -80,7 +80,7 @@ client.on('message', async message => {
 				message.reply(`No LegiScan API key for state code ${state}.`);
 			} else {
 				channel.send(
-					`Scanning for right-to-repair legislation in ${state}...`,
+					`Scanning for right-to-repair legislation in ${state}...`
 				);
 
 				const response = await api.search(state, query);
@@ -95,7 +95,7 @@ client.on('message', async message => {
 
 					if (bills.length > 0) {
 						await database.load();
-						for (let bill of bills) {
+						for (const bill of bills) {
 							database.update(bill);
 							if (searchResult.length > 500) {
 								// Discord only supports 2000 max, so split into multiple messages
@@ -105,7 +105,7 @@ client.on('message', async message => {
 							searchResult += `**${
 								bill.bill_number
 							}**: *${parser.title(
-								bill,
+								bill
 							)}* ${bill.last_action.toUpperCase()} as of \`${
 								bill.last_action_date
 							}\` (<${bill.text_url}>)\n`;
@@ -130,14 +130,12 @@ cron.schedule('*/10 * * * *', async () => {
 	const response = await api.search('WA', query);
 
 	if (response) {
-		let searchResult = '';
-
 		const bills = getBills(response);
 
 		if (bills.length > 0) {
 			await database.load();
 
-			for (let bill of bills) {
+			for (const bill of bills) {
 				database.update(bill);
 			}
 

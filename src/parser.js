@@ -1,6 +1,6 @@
 const states = require('../data/states.json');
 
-exports.state = function(input) {
+exports.state = function (input) {
 	const uppercaseInput = input.toUpperCase();
 
 	if (uppercaseInput === 'ALL') {
@@ -13,7 +13,7 @@ exports.state = function(input) {
 	return (stateByName || stateByCode || { code: null }).code;
 };
 
-exports.titleRelevance = function(title) {
+exports.titleRelevance = function (title) {
 	let relevant = false;
 
 	if (title.includes('right to repair')) {
@@ -29,7 +29,7 @@ exports.titleRelevance = function(title) {
 	return relevant;
 };
 
-exports.title = function(bill) {
+exports.title = function (bill) {
 	let title = bill.title.toLowerCase();
 	title = title.replace(/-/g, ' ');
 

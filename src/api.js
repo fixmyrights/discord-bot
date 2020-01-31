@@ -3,15 +3,15 @@ const credentials = require('../data/credentials.json');
 
 const endpoint = 'https://api.legiscan.com';
 
-exports.search = async function(state, query) {
+exports.search = async function (state, query) {
 	const result = await axios.get(endpoint, {
 		params: {
 			key: credentials.key || credentials.keys[state],
 			op: 'search',
 			state,
 			query,
-			year: 1,
-		},
+			year: 1
+		}
 	});
 
 	const response = result.data;

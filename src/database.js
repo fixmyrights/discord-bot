@@ -3,16 +3,16 @@ const databaseDirectory = './database/';
 let database = {};
 let dirty = false;
 
-exports.load = async function() {
+exports.load = async function () {
 	try {
 		database = JSON.parse(
-			await fs.readFile(`${databaseDirectory}database.json`, 'utf8'),
+			await fs.readFile(`${databaseDirectory}database.json`, 'utf8')
 		);
 		dirty = false;
 	} catch (err) {}
 };
 
-exports.update = function(bill) {
+exports.update = function (bill) {
 	dirty = true;
 
 	if (!database.watchlist) {
@@ -36,23 +36,23 @@ exports.update = function(bill) {
 					: 'expired',
 			bill_number: bill.bill_number,
 			last_action: bill.last_action,
-			last_action_date: bill.last_action_date,
+			last_action_date: bill.last_action_date
 		};
 	}
 };
 
-exports.save = async function(watchlist) {
+exports.save = async function (watchlist) {
 	try {
 		await fs.stat(databaseDirectory);
 	} catch (err) {
-		if (err.code === "ENOENT") {
+		if (err.code === 'ENOENT') {
 			await fs.mkdir(databaseDirectory);
 		}
 	}
 
 	await fs.writeFile(
 		`${databaseDirectory}database.json`,
-		JSON.stringify(database, null, '	'),
+		JSON.stringify(database, null, '	')
 	);
 	dirty = false;
 };
