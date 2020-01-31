@@ -10,6 +10,10 @@
 
 -   Right to Repair bill tracking and notifications (via the Legiscan API).
 
+## Preview
+
+![Preview](.github/preview.png)
+
 ## Available Commands
 
 | Command                    |                    Description                     |
