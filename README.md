@@ -8,7 +8,7 @@
 
 ## Features
 
--   Right to Repair bill tracking and notifications (via the Legiscan API).
+- Right to Repair bill tracking and notifications (via the Legiscan API).
 
 ## Preview
 
@@ -26,7 +26,7 @@
 
 ### Requirements
 
--   Node.js 'Erbium' (LTS)
+- Node.js 'Erbium' (LTS)
 
 ### Developing
 
@@ -38,7 +38,7 @@
 
 ## Acknowledgements
 
--   [@finnbear](https://www.gitlab.com/finnbear) as the initial founder of this project.
+- [@finnbear](https://www.gitlab.com/finnbear) as the initial founder of this project.
 
 ## License
 

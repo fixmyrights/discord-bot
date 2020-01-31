@@ -1,39 +1,46 @@
 {
-	"name": "discord-bot",
-	"version": "1.0.0",
-	"description": "LegiScan integration for Discord",
-	"main": "src/index.js",
-	"dependencies": {
-		"axios": "^0.19.2",
-		"discord.js": "^11.5.1",
-		"node-cron": "^2.0.3"
-	},
-	"devDependencies": {
-		"eslint": "^6.8.0",
-		"eslint-config-standard": "^14.1.0",
-		"eslint-plugin-import": "^2.20.0",
-		"eslint-plugin-node": "^11.0.0",
-		"eslint-plugin-promise": "^4.2.1",
-		"eslint-plugin-standard": "^4.0.1",
-		"prettier": "^1.19.1"
-	},
-	"scripts": {
-		"start": "node src/index.js",
-		"lint": "eslint \"src/**/*.js\"",
-		"lint:fix": "eslint \"src/**/*.js\" --fix",
-		"fmt": "prettier --write \"./**/*.{js,json,md}\"",
-		"fmt:check": "prettier --list-different \"./**/*.{js,json,md}\"",
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/fixmyrights/discord-bot.git"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "BSD-2-Clause",
-	"bugs": {
-		"url": "https://github.com/fixmyrights/discord-bot/issues"
-	},
-	"homepage": "https://github.com/fixmyrights/discord-bot#readme"
+  "name": "discord-bot",
+  "version": "1.0.0",
+  "description": "LegiScan integration for Discord",
+  "main": "src/index.js",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "discord.js": "^11.5.1",
+    "husky": "^4.2.1",
+    "node-cron": "^2.0.3"
+  },
+  "devDependencies": {
+    "audit-ci": "^2.4.2",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "prettier": "^1.19.1"
+  },
+  "scripts": {
+    "debug": "npx ndb .",
+    "start": "node src/index.js",
+    "lint": "eslint \"src/**/*.js\"",
+    "lint:fix": "npm run lint --fix",
+    "lint:conflicts": "eslint --print-config ./eslintrc.js | eslint-config-prettier-check",
+    "fmt": "prettier --write \"./**/*.{js,json,md}\"",
+    "fmt:check": "prettier --list-different \"./**/*.{js,json,md}\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "audit": "npm audit && audit-ci"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fixmyrights/discord-bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/fixmyrights/discord-bot/issues"
+  },
+  "homepage": "https://github.com/fixmyrights/discord-bot#readme"
 }
