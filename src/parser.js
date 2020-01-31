@@ -30,9 +30,8 @@ exports.titleRelevance = async function(title) {
 };
 
 exports.title = async function(bill) {
-	const title = bill.title.toLowerCase();
-
-	title.replace(/-/g, ' ');
+	let title = bill.title.toLowerCase();
+	title = title.replace(/-/g, " ");
 
 	return title.length > 497 ? `${title.substring(0, 497)}...` : title;
 };

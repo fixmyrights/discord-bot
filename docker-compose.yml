@@ -10,6 +10,7 @@ services:
         environment:
             DISCORD_CLIENT_KEY: ${DISCORD_CLIENT_KEY}
             LEGISCAN_API_KEY: ${LEGISCAN_API_KEY}
+            CHANNEL: ${CHANNEL}
         ulimits:
             nofile:
                 soft: 65535

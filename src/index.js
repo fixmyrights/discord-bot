@@ -1,17 +1,24 @@
 // Discord
 const Discord = require('discord.js');
 const client = new Discord.Client();
+const credentials = require("../data/credentials.json");
+
 const discordClientKey =
 	process.env.DISCORD_CLIENT_KEY || credentials.client || null;
 const database = require('./database');
 
+
+const cron = require('node-cron');
+
+
 // Legiscan API
 const api = require('./api');
-const credentials = require('../data/credentials.json');
 const legiScanApiKey = process.env.LEGISCAN_API_KEY || credentials.key || null;
 
 // Utility
 const parser = require('./parser');
+const config = require("../data/config.json");
+const cronPostChannel = process.env.CHANNEL || config.channel || null;
 const debug = false;
 
 const query =
@@ -21,10 +28,29 @@ client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 });
 
-const sortBills = bills =>
-	bills.sort(
-		(a, b) => new Date(b.last_action_date) - new Date(a.last_action_date),
-	);
+const getBills = response => {
+	const bills = [];
+	for (let billIndex in response.searchresult) {
+		const bill = response.searchresult[billIndex];
+		if (!bill.text_url) {
+			continue;
+		}
+		const title = parser.title(bill);
+		if (parser.titleRelevance(title)) {
+			debug && console.log(`Found bill "${title}"`);
+			bills.push(bill);
+		} else {
+			debug && console.log(`Ignored bill "${title}"`);
+		}
+	}
+
+	// Most recently updated at the top
+	sortBills(bills);
+
+	return bills;
+};
+
+const sortBills = bills => bills.sort((a, b) => new Date(b.last_action_date) - new Date(a.last_action_date));
 
 client.on('message', async message => {
 	const { channel } = message;
@@ -58,64 +84,18 @@ client.on('message', async message => {
 
 				const response = await api.search(state, query);
 				let searchResult = '';
-				const bills = [];
+				let bills = [];
 
 				// Debug
 				// console.log(response.searchresult);
 
 				if (response) {
-					if (response.searchresult) {
-						for (const billIndex in response.searchresult) {
-							const bill = response.searchresult[billIndex];
-							if (!bill.text_url) {
-								continue;
-							}
-							const title = await parser.title(bill);
-							const relevance = await parser.titleRelevance(
-								title,
-							);
-							if (relevance) {
-								debug && console.log(`Found bill "${title}"`);
-								bills.push(bill);
-							} else {
-								debug && console.log(`Ignored bill "${title}"`);
-							}
-						}
-					}
-
-					// Most recently updated at the top
-					sortBills(bills);
+					bills = getBills(response);
 
 					if (bills.length > 0) {
-						const watchlist = await database.readWatchlist();
-
-						for (const bill of bills) {
-							if (bill.bill_id in watchlist) {
-								// TODO: Track changes
-								if (
-									bill.last_action !==
-									watchlist[bill.bill_id].last_action
-								) {
-									console.log('Bill changed!');
-								}
-								watchlist[bill.bill_id].last_action =
-									bill.last_action;
-								watchlist[bill.bill_id].last_action_date =
-									bill.last_action_date;
-							} else {
-								watchlist[bill.bill_id] = {
-									title: bill.title,
-									state: bill.state,
-									status:
-										new Date(bill.last_action_date) >
-										new Date(2019, 0, 1)
-											? 'new'
-											: 'expired',
-									bill_number: bill.bill_number,
-									last_action: bill.last_action,
-									last_action_date: bill.last_action_date,
-								};
-							}
+						await database.load();
+						for (let bill of bills) {
+							database.update(bill);
 							if (searchResult.length > 500) {
 								// Discord only supports 2000 max, so split into multiple messages
 								await channel.send(searchResult);
@@ -130,7 +110,7 @@ client.on('message', async message => {
 							}\` (<${bill.text_url}>)\n`;
 						}
 
-						await database.updateWatchlist(watchlist);
+						await database.save();
 					} else {
 						searchResult += 'No current legislation found.';
 					}
@@ -143,4 +123,28 @@ client.on('message', async message => {
 	}
 });
 
+
 client.login(discordClientKey);
+
+cron.schedule('*/10 * * * *', async () => {
+	const response = await api.search("WA", query);
+
+	if (response) {
+		let searchResult = "";
+
+		const bills = getBills(response);
+
+		if (bills.length > 0) {
+			await database.load();
+
+			for (let bill of bills) {
+				database.update(bill);
+			}
+
+			const channel = client.channels.find('name', config.channel)
+			await channel.send(`Updated ${bills.length} automatically.`);
+
+			await database.save();
+		}
+	}
+});
