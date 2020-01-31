@@ -12,7 +12,7 @@ exports.load = async function() {
 	} catch (err) {}
 };
 
-exports.update = async function(bill) {
+exports.update = function(bill) {
 	dirty = true;
 
 	if (!database.watchlist) {

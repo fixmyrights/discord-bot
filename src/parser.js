@@ -1,6 +1,6 @@
 const states = require('../data/states.json');
 
-exports.state = async function(input) {
+exports.state = function(input) {
 	const uppercaseInput = input.toUpperCase();
 
 	if (uppercaseInput === 'ALL') {
