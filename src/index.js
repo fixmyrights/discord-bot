@@ -15,6 +15,28 @@ client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 });
 
+const getBills = response => {
+	const bills = [];
+	for (let billIndex in response.searchresult) {
+		const bill = response.searchresult[billIndex];
+		if (!bill.text_url) {
+			continue;
+		}
+		const title = parser.title(bill);
+		if (parser.titleRelevance(title)) {
+			debug && console.log(`Found bill "${title}"`);
+			bills.push(bill);
+		} else {
+			debug && console.log(`Ignored bill "${title}"`);
+		}
+	}
+
+	// Most recently updated at the top
+	sortBills(bills);
+
+	return bills;
+};
+
 const sortBills = bills => bills.sort((a, b) => new Date(b.last_action_date) - new Date(a.last_action_date));
 
 client.on('message', async message => {
@@ -45,23 +67,8 @@ client.on('message', async message => {
 
 				if (response) {
 					let searchResult = "";
-					let bills = [];
-					for (let billIndex in response.searchresult) {
-						const bill = response.searchresult[billIndex];
-						if (!bill.text_url) {
-							continue;
-						}
-						const title = parser.title(bill);
-						if (parser.titleRelevance(title)) {
-							debug && console.log(`Found bill "${title}"`);
-							bills.push(bill);
-						} else {
-							debug && console.log(`Ignored bill "${title}"`);
-						}
-					}
 
-					// Most recently updated at the top
-					sortBills(bills);
+					const bills = getBills(response);
 
 					if (bills.length > 0) {
 						await database.load();
@@ -91,7 +98,25 @@ client.on('message', async message => {
 
 client.login(credentials.client);
 
-cron.schedule('*/5 * * * *', () => {
-	const channel = client.channels.find('name', config.channel)
-	channel.send("cron")
+cron.schedule('* * * * *', async () => {
+	const response = await api.search("WA", query);
+
+	if (response) {
+		let searchResult = "";
+
+		const bills = getBills(response);
+
+		if (bills.length > 0) {
+			await database.load();
+
+			for (let bill of bills) {
+				database.update(bill);
+			}
+
+			const channel = client.channels.find('name', config.channel)
+			await channel.send(`Updated ${bills.length} automatically.`);
+
+			await database.save();
+		}
+	}
 });
