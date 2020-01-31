@@ -35,3 +35,4 @@ yarn.lock
 # Ignore some application files (such as credentials).
 credentials.json
 watchlist.json
+database.json

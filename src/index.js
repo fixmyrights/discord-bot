@@ -1,6 +1,8 @@
 const Discord = require("discord.js");
 const api = require("./api");
 const client = new Discord.Client();
+const config = require("../data/config.json");
+const cron = require('node-cron');
 const database = require("./database");
 const credentials = require("../data/credentials.json");
 const parser = require("./parser");
@@ -62,19 +64,10 @@ client.on('message', async message => {
 					sortBills(bills);
 
 					if (bills.length > 0) {
-						const watchlist = await database.readWatchlist();
+						await database.load();
 
 						for (let bill of bills) {
-							if (bill.bill_id in watchlist) {
-								// TODO: Track changes
-								if (bill.last_action != watchlist[bill.bill_id].last_action) {
-									console.log("Bill changed!");
-								}
-								watchlist[bill.bill_id].last_action = bill.last_action;
-								watchlist[bill.bill_id].last_action_date = bill.last_action_date;
-							} else {
-								watchlist[bill.bill_id] = {title: bill.title, state: bill.state, status: new Date(bill.last_action_date) > new Date(2019, 0, 1) ? "new" : "expired", bill_number: bill.bill_number, last_action: bill.last_action, last_action_date: bill.last_action_date};
-							}
+							database.update(bill);
 							if (searchResult.length > 500) {
 								// Discord only supports 2000 max, so split into multiple messages
 								await channel.send(searchResult);
@@ -83,7 +76,7 @@ client.on('message', async message => {
 							searchResult += `**${bill.bill_number}**: *${parser.title(bill)}* ${bill.last_action.toUpperCase()} as of \`${bill.last_action_date}\` (<${bill.text_url}>)\n`;
 						}
 
-						await database.updateWatchlist(watchlist);
+						await database.save();
 					} else {
 						searchResult += `No current legislation found.`;
 					}
@@ -97,3 +90,8 @@ client.on('message', async message => {
 });
 
 client.login(credentials.client);
+
+cron.schedule('*/5 * * * *', () => {
+	const channel = client.channels.find('name', config.channel)
+	channel.send("cron")
+});
