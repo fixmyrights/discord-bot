@@ -61,25 +61,33 @@ exports.setWatchlistBill = function(bill) {
 exports.updateWatchlist = function(bill) {
   global.dirty = true;
 
+  const updateReport = {};
+
   if (!database.watchlist) {
     database.watchlist = {};
   }
 
   if (bill.id in database.watchlist) {
+    updateReport.new = false;
     const existingBill = database.watchlist[bill.id];
     bill.watching = existingBill.watching;
+
     if (existingBill.progress) {
       for (const existingProgressItem of existingBill.progress) {
         if (!bill.progress.find(progressItem => progressItem.stage === existingProgressItem.stage)) {
+          updateReport.progress = bill.progress[0];
           bill.progress.push(existingProgressItem);
         }
       }
     }
   } else {
+    updateReport.new = true;
     bill.watching = true;
   }
 
   database.watchlist[bill.id] = { ...bill, id: undefined };
+
+  return updateReport;
 };
 
 const undirty = function() {

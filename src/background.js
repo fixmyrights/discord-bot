@@ -1,5 +1,7 @@
 const database = require('./database');
 const cron = require('node-cron');
+const formatter = require('./formatter');
+const parser = require('./parser');
 const legiscan = require('./services/legiscan');
 const { logger } = require('./logger');
 
@@ -20,11 +22,18 @@ exports.schedule = function(client) {
       if (bills.length > 0) {
         await database.load();
 
+        const channel = client.channels.find(channel => channel.name === database.getConfig('channel'));
+
         for (const bill of bills) {
-          database.updateWatchlist(bill);
+          const updateReport = database.updateWatchlist(bill);
+
+          if (updateReport.new) {
+            await channel.send(`Found new bill ${formatter.bill(bill)}`);
+          } else if (updateReport.progress) {
+            await channel.send(`Bill **${parser.state(bill.state)} ${bill.number}** changed to ${updateReport.progress.stage} as of \`${formatter.date(updateReport.progress.timestamp)}\``);
+          }
         }
 
-        const channel = client.channels.find(channel => channel.name === database.getConfig('channel'));
         await channel.send(`Updated ${bills.length} automatically.`);
 
         await database.save();
