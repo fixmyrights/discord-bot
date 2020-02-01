@@ -17,6 +17,26 @@ exports.getConfig = function(key) {
   return database.config && database.config[key] ? database.config[key] : config[key];
 };
 
+exports.getWatchlist = function() {
+  return database.watchlist || {};
+};
+
+exports.getWatchlistBill = function(state, billNumber) {
+  for (let billId in database.watchlist || {}) {
+    const bill = database.watchlist[billId];
+
+    console.log(bill);
+    console.log(state + ', ' + billNumber);
+
+    if (bill.state === state && bill.bill_number === billNumber) {
+      console.log('%%%%');
+      return bill;
+    }
+  }
+
+  return null;
+};
+
 exports.setConfig = function(key, value) {
   global.dirty = true;
 
@@ -25,6 +45,16 @@ exports.setConfig = function(key, value) {
   }
 
   database.config[key] = value;
+};
+
+exports.setWatchlistBill = function(bill) {
+  global.dirty = true;
+
+  if (!database.watchlist) {
+    database.watchlist = {};
+  }
+
+  database.watchlist[bill.bill_id] = bill;
 };
 
 exports.updateWatchlist = function(bill) {
