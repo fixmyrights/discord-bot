@@ -16,12 +16,8 @@ exports.handle = function(args, message, client) {
       cron.handle(args, message, client);
       break;
 
-    case 'limit':
-      message.reply('not implemented');
-      break;
-
     default:
-      logger.debug(message);
+      message.reply('Setting not found.');
       break;
   }
 };
