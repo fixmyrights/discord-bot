@@ -26,7 +26,7 @@ exports.getWatchlistBill = function(state, billNumber) {
     const bill = database.watchlist[billId];
 
     if (bill.state === state && bill.bill_number === billNumber) {
-      return {bill_id: billId, ...bill};
+      return { bill_id: billId, ...bill };
     }
   }
 
@@ -51,7 +51,7 @@ exports.setWatchlistBill = function(bill) {
   }
 
   // Don't store id inside bill as it is the key
-  database.watchlist[bill.bill_id] = {...bill, bill_id: undefined};
+  database.watchlist[bill.bill_id] = { ...bill, bill_id: undefined };
 };
 
 exports.updateWatchlist = function(bill) {
