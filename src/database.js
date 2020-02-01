@@ -67,13 +67,16 @@ exports.updateWatchlist = function(bill) {
 
   if (bill.id in database.watchlist) {
     const existingBill = database.watchlist[bill.id];
+    bill.watching = existingBill.watching;
     if (existingBill.progress) {
-      for (const existingStatusItem in existingBill.progress) {
-        if (!bill.progress.find(statusItem => statusItem.status === existingStatusItem.status)) {
-          bill.progress.push(existingStatusItem);
+      for (const existingProgressItem of existingBill.progress) {
+        if (!bill.progress.find(progressItem => progressItem.stage === existingProgressItem.stage)) {
+          bill.progress.push(existingProgressItem);
         }
       }
     }
+  } else {
+    bill.watching = true;
   }
 
   database.watchlist[bill.id] = { ...bill, id: undefined };
