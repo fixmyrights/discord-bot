@@ -15,7 +15,7 @@ exports.schedule = function(client) {
   const cronExpression = database.getConfig('cron');
 
   task = cron.schedule(cronExpression, async () => {
-    const bills = await legiscan.search('WA', database.getConfig('query'));
+    const bills = await legiscan.search(database.getConfig('state'), database.getConfig('query'));
 
     if (bills) {
       logger.debug(`Found ${bills.length} bills in background.`);

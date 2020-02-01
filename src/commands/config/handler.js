@@ -1,5 +1,6 @@
 const channel = require('./channel');
 const cron = require('./cron');
+const state = require('./state');
 
 exports.handle = function(args, message, client) {
   const handler = args[0];
@@ -12,6 +13,10 @@ exports.handle = function(args, message, client) {
 
     case 'cron':
       cron.handle(args, message, client);
+      break;
+
+    case 'state':
+      state.handle(args, message, client);
       break;
 
     default:
