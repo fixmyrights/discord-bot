@@ -36,14 +36,13 @@ exports.update = function(bill) {
   }
 };
 
-const undirty = function () { global.dirty = false; };
-const writeFile = function () {
-  return fs.writeFile(
-    `${databaseDirectory}${databaseFile}`,
-    JSON.stringify(database, null, '	')
-  ).then(undirty);
+const undirty = function() {
+  global.dirty = false;
 };
-exports.save = async function (watchlist) {
+const writeFile = function() {
+  return fs.writeFile(`${databaseDirectory}${databaseFile}`, JSON.stringify(database, null, '	')).then(undirty);
+};
+exports.save = async function(watchlist) {
   try {
     await writeFile();
   } catch (err) {
