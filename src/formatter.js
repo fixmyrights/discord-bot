@@ -1,5 +1,6 @@
 const parser = require('./parser.js');
 
 exports.bill = function(bill) {
-  return `**${parser.state(bill.state)} ${bill.bill_number}**: *${parser.title(bill)}* ${bill.last_action.toUpperCase()} as of \`${bill.last_action_date}\` (<${bill.url}>)\n`;
+  const recentStatusItem = parser.recentProgress(bill);
+  return `**${parser.state(bill.state)} ${bill.number}**: *${parser.title(bill)}* ${recentStatusItem.stage} as of \`${new Date(recentStatusItem.timestamp).toLocaleDateString('en-US')}\` (<${bill.url}>)\n`;
 };

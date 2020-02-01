@@ -25,8 +25,8 @@ exports.getWatchlistBill = function(state, billNumber) {
   for (const billId in database.watchlist || {}) {
     const bill = database.watchlist[billId];
 
-    if (bill.state === state && bill.bill_number === billNumber) {
-      return { bill_id: billId, ...bill };
+    if (bill.state === state && bill.number === billNumber) {
+      return { id: billId, ...bill };
     }
   }
 
@@ -51,7 +51,7 @@ exports.setWatchlistBill = function(bill) {
   }
 
   // Don't store id inside bill as it is the key
-  database.watchlist[bill.bill_id] = { ...bill, bill_id: undefined };
+  database.watchlist[bill.id] = { ...bill, id: undefined };
 };
 
 exports.updateWatchlist = function(bill) {
@@ -61,23 +61,18 @@ exports.updateWatchlist = function(bill) {
     database.watchlist = {};
   }
 
-  if (bill.bill_id in database.watchlist) {
-    if (bill.last_action !== database.watchlist[bill.bill_id].last_action) {
-      logger.info('Bill changed!');
+  if (bill.id in database.watchlist) {
+    const existingBill = database.watchlist[bill.id];
+    if (existingBill.progress) {
+      for (const existingStatusItem in existingBill.progress) {
+        if (!bill.progress.find(statusItem => statusItem.status == existingStatusItem.status)) {
+          bill.progress.push(existingStatusItem);
+        }
+      }
     }
-    database.watchlist[bill.bill_id].last_action = bill.last_action;
-    database.watchlist[bill.bill_id].last_action_date = bill.last_action_date;
-  } else {
-    database.watchlist[bill.bill_id] = {
-      title: bill.title,
-      state: bill.state,
-      status: new Date(bill.last_action_date) > new Date(2019, 0, 1) ? 'new' : 'expired',
-      bill_number: bill.bill_number,
-      last_action: bill.last_action,
-      last_action_date: bill.last_action_date,
-      url: bill.url
-    };
   }
+
+  database.watchlist[bill.id] = { ...bill, id: undefined };
 };
 
 const undirty = function() {

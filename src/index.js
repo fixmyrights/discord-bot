@@ -31,11 +31,9 @@ client.on('message', async message => {
 client.login(discordClientKey);
 
 cron.schedule(database.getConfig('cron'), async () => {
-  const response = await legiscan.search('WA', database.getConfig('query'));
+  const bills = await legiscan.search('WA', database.getConfig('query'));
 
-  if (response) {
-    const bills = legiscan.getBills(response);
-
+  if (bills) {
     if (bills.length > 0) {
       await database.load();
 

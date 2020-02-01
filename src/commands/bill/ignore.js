@@ -10,7 +10,7 @@ exports.handle = async function(args, message, client) {
       const bill = database.getWatchlistBill(state, billNumber.toUpperCase());
 
       if (bill) {
-        bill.status = 'ignored';
+        bill.watching = false;
         database.setWatchlistBill(bill);
         await database.save();
         message.reply('Set bill to ignored.');

@@ -19,16 +19,10 @@ exports.handle = async function(args, message, client) {
   } else {
     channel.send(`Scanning for right-to-repair legislation in ${state}...`);
 
-    const response = await legiscan.search(state, database.getConfig('query'));
+    const bills = await legiscan.search(state, database.getConfig('query'));
     let searchResult = '';
-    let bills = [];
 
-    // Debug
-    // console.log(response.searchresult);
-
-    if (response) {
-      bills = legiscan.getBills(response);
-
+    if (bills) {
       if (bills.length > 0) {
         await database.load();
         for (const bill of bills) {

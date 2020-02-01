@@ -5,7 +5,7 @@ const parser = require('./../parser');
 
 const endpoint = 'https://api.legiscan.com';
 
-const sortBills = bills => bills.sort((a, b) => new Date(b.last_action_date) - new Date(a.last_action_date));
+const sortBills = bills => bills.sort((a, b) => b.progress[0].timestamp - a.progress[0].timestamp);
 
 exports.search = async function(state, query) {
   const result = await axios.get(endpoint, {
@@ -21,32 +21,18 @@ exports.search = async function(state, query) {
   const response = result.data;
 
   if (response.status === 'OK') {
-    return response;
+    const bills = [];
+    for (const billIndex in response.searchresult) {
+      const bill = response.searchresult[billIndex];
+      if (!bill.text_url || !parser.titleRelevance(parser.title(bill))) {
+        continue;
+      }
+      bills.push({ id: bill.bill_id, state: bill.state, number: bill.bill_number, title: bill.title, url: bill.url, progress: [{ stage: bill.last_action, timestamp: new Date(bill.last_action_date).valueOf() }], watching: true });
+    }
+    return sortBills(bills);
   }
 
   logger.error('API error:');
   logger.error(response);
   return null;
-};
-
-exports.getBills = response => {
-  const bills = [];
-  for (const billIndex in response.searchresult) {
-    const bill = response.searchresult[billIndex];
-    if (!bill.text_url) {
-      continue;
-    }
-    const title = parser.title(bill);
-    if (parser.titleRelevance(title)) {
-      logger.debug(`Found bill "${title}"`);
-      bills.push(bill);
-    } else {
-      logger.debug(`Ignored bill "${title}"`);
-    }
-  }
-
-  // Most recently updated at the top
-  sortBills(bills);
-
-  return bills;
 };
