@@ -1,5 +1,3 @@
-const { logger } = require('./../../logger');
-
 const channel = require('./channel');
 const cron = require('./cron');
 
