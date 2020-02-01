@@ -1,6 +1,8 @@
 const ping = require('./ping');
 const help = require('./help');
 const scan = require('./scan');
+const bill = require(('./bill/handler'));
+const config = require(('./config/handler'));
 
 const { logger } = require('./../logger');
 
@@ -24,6 +26,14 @@ exports.handle = function(message, client) {
     case 'scan':
     case 'query':
       scan.handle(args, message, client);
+      break;
+
+    case 'bill':
+      bill.handle(args, message, client);
+      break;
+
+    case 'config':
+      config.handle(args, message, client);
       break;
 
     default:
