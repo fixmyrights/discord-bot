@@ -28,7 +28,7 @@
 | !scan [state]                 |   Queries the API for all bills from that state.   |
 | !watchlist                    |        Show bills being watched for updates        |
 | !bill ignore [state] [bill #] |             Remove bill from watchlist             |
-| !config [key][value]          |                  Change settings                   |
+| !config [key] [value]         |                  Change settings                   |
 
 ## Development
 
