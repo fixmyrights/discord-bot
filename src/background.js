@@ -30,7 +30,7 @@ exports.schedule = function(client) {
           if (updateReport.new) {
             await channel.send(`Found new bill ${formatter.bill(bill)}`);
           } else if (updateReport.progress) {
-            await channel.send(`Bill **${parser.state(bill.state)} ${bill.number}** changed to ${updateReport.progress.stage} as of \`${formatter.date(updateReport.progress.timestamp)}\``);
+            await channel.send(`Bill **${parser.state(bill.state)} ${bill.number}** changed to ${updateReport.progress.action} as of \`${formatter.date(updateReport.progress.timestamp)}\``);
           }
         }
 

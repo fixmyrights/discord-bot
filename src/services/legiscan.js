@@ -5,7 +5,7 @@ const parser = require('./../parser');
 
 const endpoint = 'https://api.legiscan.com';
 
-const sortBills = bills => bills.sort((a, b) => b.progress[0].timestamp - a.progress[0].timestamp);
+const sortBills = bills => bills.sort((a, b) => b.history[0].timestamp - a.history[0].timestamp);
 
 exports.search = async function(state, query) {
   const result = await axios.get(endpoint, {
@@ -27,7 +27,7 @@ exports.search = async function(state, query) {
       if (!bill.text_url || !parser.titleRelevance(parser.title(bill))) {
         continue;
       }
-      bills.push({ id: bill.bill_id, state: bill.state, number: bill.bill_number, title: bill.title, url: bill.url, progress: [{ stage: bill.last_action, timestamp: new Date(bill.last_action_date).valueOf() }] });
+      bills.push({ id: bill.bill_id, state: bill.state, number: bill.bill_number, title: bill.title, url: bill.url, history: [{ action: bill.last_action, timestamp: new Date(bill.last_action_date).valueOf() }] });
     }
     return sortBills(bills);
   }

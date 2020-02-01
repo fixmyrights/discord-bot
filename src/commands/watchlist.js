@@ -9,15 +9,17 @@ exports.handle = async function(args, message, client) {
   let result = '';
 
   for (const billId in watchlist) {
-    count += 1;
+      const bill = watchlist[billId];
 
-    const bill = watchlist[billId];
-    if (result.length > 500) {
-      // Discord only supports 2000 max, so split into multiple messages
-      await channel.send(result);
-      result = '';
-    }
-    result += formatter.bill(bill);
+      if (bill.watching) {
+        count += 1;
+        if (result.length > 500) {
+          // Discord only supports 2000 max, so split into multiple messages
+          await channel.send(result);
+          result = '';
+        }
+        result += formatter.bill(bill);
+      }
   }
 
   result += `${count} bills in watchlist.`;

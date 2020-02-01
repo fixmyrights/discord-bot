@@ -26,7 +26,7 @@ exports.getWatchlistBill = function(state, billNumber) {
     const bill = database.watchlist[billId];
 
     if (bill.state === state && bill.number === billNumber) {
-      return { id: billId, ...bill };
+      return { ...bill, id: billId };
     }
   }
 
@@ -45,6 +45,7 @@ exports.setConfig = function(key, value) {
 
 exports.setWatchlistBill = function(bill) {
   if (!bill.id) {
+    logger.debug("Cannot set watchlist bill without id.");
     return;
   }
 
@@ -72,13 +73,13 @@ exports.updateWatchlist = function(bill) {
     const existingBill = database.watchlist[bill.id];
     bill.watching = existingBill.watching;
 
-    if (existingBill.progress) {
-      if (!existingBill.progress.find(progressItem => progressItem.stage === bill.progress[0].stage)) {
-        updateReport.progress = bill.progress[0];
+    if (existingBill.history) {
+      if (!existingBill.history.find(progressItem => progressItem.action === bill.history[0].action)) {
+        updateReport.progress = bill.history[0];
       }
-      for (const existingProgressItem of existingBill.progress) {
-        if (!bill.progress.find(progressItem => progressItem.stage === existingProgressItem.stage)) {
-          bill.progress.push(existingProgressItem);
+      for (const existingHistoryItem of existingBill.history) {
+        if (!bill.history.find(historyItem => historyItem.action === existingHistoryItem.action)) {
+          bill.history.push(existingHistoryItem);
         }
       }
     }

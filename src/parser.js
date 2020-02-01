@@ -1,9 +1,9 @@
 const states = require('../data/states.json');
 
-exports.recentProgress = function(bill) {
-  const progress = bill.progress.concat();
-  progress.sort((a, b) => b.timestamp - a.timestamp);
-  return progress[0] || {};
+exports.recentHistory = function(bill) {
+  const history = bill.history.concat();
+  history.sort((a, b) => b.timestamp - a.timestamp);
+  return history[0] || {};
 };
 
 exports.state = function(input) {
