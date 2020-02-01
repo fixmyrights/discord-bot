@@ -13,7 +13,7 @@ exports.state = function(input) {
 
   const state = states.find(state => [state.name, state.code].includes(uppercaseInput));
 
-  return (state || { code: null }).code;
+  return state ? state.code : null;
 };
 
 exports.titleRelevance = function(title) {
