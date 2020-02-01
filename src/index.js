@@ -25,7 +25,6 @@ client.on('message', async message => {
 
   if (channel.name && channel.name.includes('legi') && message.cleanContent.startsWith(config.commandPrefix)) {
     const command = message.cleanContent.substring(1);
-
     commandHandler.handle(command, message, client);
   }
 });
