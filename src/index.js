@@ -7,7 +7,7 @@ const database = require('./database');
 const discordClientKey = process.env.DISCORD_CLIENT_KEY || credentials.client || null;
 
 const cron = require('node-cron');
-const commandHandler = require('./command_handlers/command_handler');
+const commandHandler = require('./commands/handler');
 
 // Legiscan API
 const legiscan = require('./services/legiscan');
