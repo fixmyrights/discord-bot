@@ -36,58 +36,26 @@ exports.update = function(bill) {
   }
 };
 
+const undirty = function () { global.dirty = false; };
+const writeFile = function () {
+  return fs.writeFile(
+    `${databaseDirectory}${databaseFile}`,
+    JSON.stringify(database, null, '	')
+  ).then(undirty);
+};
 exports.save = async function (watchlist) {
-	const writeFile = () => fs.writeFile(
-		`${databaseDirectory}${databaseFile}`,
-		JSON.stringify(database, null, '	')
-	).then(() => global.dirty = false);
-
-	const mkdirsAndWriteFile = async () => {
-		const dirParts = databaseDirectory.split('/').filter((d, j) => d.length > 0 || j === 0); // `j === 0` in case the start is at root
-		const joinDirParts = (i) => dirParts.filter((p, j) => j < i).join('/');
-		const mkdir = (i) => fs.mkdir(joinDirParts(i));
-		var i = dirParts.length;
-		var lastError;
-
-		for ( ; i > 0; i--) {
-			try {
-				await mkdir(i);
-				break;
-			} catch (err) {
-				lastError = err;
-				if (err.code === 'ENOENT') {
-					continue; // verbose for verbosity's sake
-				} else if (err.code === 'EEXIST') {
-					console.warn(`database.js:save: the directory ${joinDirParts(i)} already exists, retrying the next directories down in the tree (unexpected)`); // big warn
-					break;
-				} else {
-					console.warn(`database.js:save: unhandled error [1]\n${err}`); // big warn, but continue
-				}
-			}
-		}
-
-		if (i > 0) {
-			for (i++; i < dirParts.length + 1; i++) {
-				try {
-					await mkdir(i);
-				} catch (err) {
-					console.warn(`database.js:save: unhandled error [2]\n${err}`); // big warn, but continue
-				}
-			}
-			return writeFile();
-		} else {
-			console.warn(`database.js:save: could not make any of the directories in the tree ${databaseDirectory}`); // big warn
-			return Promise.reject(lastError); // for sanity
-		}
-	};
-
-	try {
-		await writeFile();
-	} catch (err) {
-		if (err.code === 'ENOENT') {
-			await mkdirsAndWriteFile();
-		} else {
-			console.warn(`database.js:save: unhandled error [4]\n${err}`); // big warn
-		}
-	}
+  try {
+    await writeFile();
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      try {
+        await fs.mkdir(databaseDirectory, { recursive: true });
+        await writeFile();
+      } catch (err) {
+        console.warn(`database:js:save: unhandled error [1]\n ${err}`);
+      }
+    } else {
+      console.warn(`database.js:save: unhandled error [2]\n${err}`);
+    }
+  }
 };
