@@ -65,7 +65,7 @@
 
 ### Frequently Asked Questions
 
-#### Why ECMAScript and not <my-favorite-language>?
+#### Why ECMAScript and not [my-favorite-language]?
 
 That's a good question! Initially, the proof of concept was written in [Rust](https://www.rust-lang.org/) by [Yugo](https://github.com/x47188) & [joaodforce](https://github.com/joaodforce), while Rust is an incredible c-speed and memory-safe language it was not a highly accessible language. To maximize the chance of getting contributions from the community: ECMAScript was chosen.
 
