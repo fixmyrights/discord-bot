@@ -1,8 +1,8 @@
 const ping = require('./ping');
 const help = require('./help');
 const scan = require('./scan');
-const bill = require(('./bill/handler'));
-const config = require(('./config/handler'));
+const bill = require('./bill/handler');
+const config = require('./config/handler');
 
 const { logger } = require('./../logger');
 

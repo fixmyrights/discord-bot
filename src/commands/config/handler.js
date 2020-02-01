@@ -8,7 +8,7 @@ exports.handle = function(args, message, client) {
     case 'cron':
     case 'limit':
     case 'channel':
-      message.reply("not implemented");
+      message.reply('not implemented');
       break;
 
     default:

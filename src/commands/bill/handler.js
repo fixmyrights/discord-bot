@@ -8,7 +8,7 @@ exports.handle = function(args, message, client) {
     case 'expire':
     case 'ignore':
     case 'watch':
-      message.reply("not implemented");
+      message.reply('not implemented');
       break;
 
     default:
