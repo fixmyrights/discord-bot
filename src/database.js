@@ -2,11 +2,12 @@ const { promises: fs } = require('fs');
 const { logger } = require('./logger');
 
 const databaseDirectory = './database/';
+const databaseFile = 'database.json';
 let database = {};
 
 exports.load = async function() {
   try {
-    database = JSON.parse(await fs.readFile(`${databaseDirectory}database.json`, 'utf8'));
+    database = JSON.parse(await fs.readFile(`${databaseDirectory}${databaseFile}`, 'utf8'));
     global.dirty = false;
   } catch (err) {}
 };
@@ -36,11 +37,25 @@ exports.update = function(bill) {
   }
 };
 
-exports.save = async function(watchlist) {
-  if (!(await fs.exists(databaseDirectory))) {
-    await fs.mkdir(databaseDirectory);
-  }
-
-  await fs.writeFile(`${databaseDirectory}database.json`, JSON.stringify(database, null, '	'));
+const undirty = function() {
   global.dirty = false;
+};
+const writeFile = function() {
+  return fs.writeFile(`${databaseDirectory}${databaseFile}`, JSON.stringify(database, null, '	')).then(undirty);
+};
+exports.save = async function(watchlist) {
+  try {
+    await writeFile();
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      try {
+        await fs.mkdir(databaseDirectory, { recursive: true });
+        await writeFile();
+      } catch (err) {
+        console.warn(`database:js:save: unhandled error [1]\n ${err}`);
+      }
+    } else {
+      console.warn(`database.js:save: unhandled error [2]\n${err}`);
+    }
+  }
 };
