@@ -5,9 +5,6 @@ const parser = require('./../parser');
 
 const endpoint = 'https://api.legiscan.com';
 
-const config = require('./../../data/config.json');
-const debug = config.debug;
-
 const sortBills = bills => bills.sort((a, b) => new Date(b.last_action_date) - new Date(a.last_action_date));
 
 exports.search = async function(state, query) {
@@ -41,10 +38,10 @@ exports.getBills = response => {
     }
     const title = parser.title(bill);
     if (parser.titleRelevance(title)) {
-      debug && logger.debug(`Found bill "${title}"`);
+      logger.debug(`Found bill "${title}"`);
       bills.push(bill);
     } else {
-      debug && logger.debug(`Ignored bill "${title}"`);
+      logger.debug(`Ignored bill "${title}"`);
     }
   }
 

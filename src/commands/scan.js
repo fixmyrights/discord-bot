@@ -1,5 +1,4 @@
 const database = require('./../database');
-const config = require('./../../data/config.json');
 
 const parser = require('./../parser');
 const credentials = require('./../../data/credentials.json');
@@ -20,7 +19,7 @@ exports.handle = async function(args, message, client) {
   } else {
     channel.send(`Scanning for right-to-repair legislation in ${state}...`);
 
-    const response = await legiscan.search(state, config.query);
+    const response = await legiscan.search(state, database.getConfig('query'));
     let searchResult = '';
     let bills = [];
 
@@ -33,7 +32,7 @@ exports.handle = async function(args, message, client) {
       if (bills.length > 0) {
         await database.load();
         for (const bill of bills) {
-          database.update(bill);
+          database.updateWatchlist(bill);
           if (searchResult.length > 500) {
             // Discord only supports 2000 max, so split into multiple messages
             await channel.send(searchResult);
