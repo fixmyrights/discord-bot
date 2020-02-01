@@ -55,7 +55,7 @@
 | `npm run lint:conflicts` |                               Checks for Prettier/ESLint conflicts.                                |
 | `npm run fmt`            |                  Re-formats the code-base using [Prettier](https://prettier.io/).                  |
 | `npm run fmt:check`      |                        (CI) Checks if some source files need reformatting.                         |
-| `npm run fix`            |   I don't want to figure out if my errors are from the linter or the formatter, please run both.   |
+| `npm run fix`            |                            Runs both formatter and linters. Kowabunga!                             |
 
 ### Conventions
 
