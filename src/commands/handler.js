@@ -4,25 +4,31 @@ const scan = require('./scan');
 
 const { logger } = require('./../logger');
 
-exports.handle = function(command, message, client) {
-  const cmd = command.toLowerCase().split(' ')[0];
-  switch (cmd) {
+exports.handle = function(message, client) {
+  const command = message.cleanContent
+    .substring(1)
+    .toLowerCase()
+    .split(' ');
+  const handler = command[0];
+  const args = command.splice(1);
+
+  switch (handler) {
     case 'ping':
-      ping.handle(message, client);
+      ping.handle(args, message, client);
       break;
 
     case 'help':
-      help.handle(message, client);
+      help.handle(args, message, client);
       break;
 
     case 'scan':
     case 'query':
-      scan.handle(message, client);
+      scan.handle(args, message, client);
       break;
 
     default:
       logger.debug(message);
-      logger.debug(cmd);
+      logger.debug(command);
       break;
   }
 };

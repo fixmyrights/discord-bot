@@ -8,13 +8,10 @@ const legiScanApiKey = process.env.LEGISCAN_API_KEY || credentials.key || null;
 // Legiscan API
 const legiscan = require('./../services/legiscan');
 
-exports.handle = async function(message, client) {
+exports.handle = async function(args, message, client) {
   const { channel } = message;
 
-  const command = message.cleanContent.substring(1);
-  const segments = command.split(' ');
-
-  const state = await parser.state(segments.splice(1).join(' '));
+  const state = await parser.state(args.join(' '));
 
   if (!state) {
     message.reply('Could not find state.');
