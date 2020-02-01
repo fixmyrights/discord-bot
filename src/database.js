@@ -45,7 +45,6 @@ exports.setConfig = function(key, value) {
 
 exports.setWatchlistBill = function(bill) {
   if (!bill.id) {
-    console.log('missing id');
     return;
   }
 
