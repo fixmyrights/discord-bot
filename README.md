@@ -41,6 +41,11 @@
 4. `npm start`
 5. Happy coding 🎉🙌
 
+### Skipping the annoying hook
+
+We use [Husky](https://github.com/typicode/husky) to run hook at commit.
+If you want to skip it add a `--no-verify` to your `git commit`.
+
 ## Acknowledgements
 
 - [@finnbear](https://www.gitlab.com/finnbear) as the initial founder of this project.
