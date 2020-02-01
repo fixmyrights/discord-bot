@@ -16,13 +16,14 @@ const legiscan = require('./services/legiscan');
 const { logger } = require('./logger');
 
 client.on('ready', () => {
+  database.load();
   logger.success(`Logged in as ${client.user.tag}!`);
 });
 
 client.on('message', async message => {
   const { channel } = message;
 
-  if (channel.name && channel.name.includes('legi') && message.cleanContent.startsWith(database.getConfig('commandPrefix'))) {
+  if (channel.name && channel.name === database.getConfig('channel') && message.cleanContent.startsWith(database.getConfig('prefix'))) {
     commandHandler.handle(message, client);
   }
 });
