@@ -45,7 +45,7 @@ exports.setConfig = function(key, value) {
 
 exports.setWatchlistBill = function(bill) {
   if (!bill.id) {
-    logger.debug("Cannot set watchlist bill without id.");
+    logger.debug('Cannot set watchlist bill without id.');
     return;
   }
 
