@@ -26,7 +26,7 @@ exports.getWatchlistBill = function(state, billNumber) {
     const bill = database.watchlist[billId];
 
     if (bill.state === state && bill.bill_number === billNumber) {
-      return bill;
+      return {bill_id: billId, ...bill};
     }
   }
 
@@ -50,7 +50,8 @@ exports.setWatchlistBill = function(bill) {
     database.watchlist = {};
   }
 
-  database.watchlist[bill.bill_id] = bill;
+  // Don't store id inside bill as it is the key
+  database.watchlist[bill.bill_id] = {...bill, bill_id: undefined};
 };
 
 exports.updateWatchlist = function(bill) {
@@ -73,7 +74,8 @@ exports.updateWatchlist = function(bill) {
       status: new Date(bill.last_action_date) > new Date(2019, 0, 1) ? 'new' : 'expired',
       bill_number: bill.bill_number,
       last_action: bill.last_action,
-      last_action_date: bill.last_action_date
+      last_action_date: bill.last_action_date,
+      url: bill.url
     };
   }
 };

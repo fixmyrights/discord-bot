@@ -1,6 +1,7 @@
 const ping = require('./ping');
 const help = require('./help');
 const scan = require('./scan');
+const watchlist = require('./watchlist');
 const bill = require('./bill/handler');
 const config = require('./config/handler');
 
@@ -26,6 +27,10 @@ exports.handle = function(message, client) {
     case 'scan':
     case 'query':
       scan.handle(args, message, client);
+      break;
+
+    case 'watchlist':
+      watchlist.handle(args, message, client);
       break;
 
     case 'bill':

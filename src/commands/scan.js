@@ -1,5 +1,5 @@
 const database = require('./../database');
-
+const formatter = require('./../formatter');
 const parser = require('./../parser');
 const credentials = require('./../../data/credentials.json');
 const legiScanApiKey = process.env.LEGISCAN_API_KEY || credentials.key || null;
@@ -38,7 +38,7 @@ exports.handle = async function(args, message, client) {
             await channel.send(searchResult);
             searchResult = '';
           }
-          searchResult += `**${bill.bill_number}**: *${parser.title(bill)}* ${bill.last_action.toUpperCase()} as of \`${bill.last_action_date}\` (<${bill.text_url}>)\n`;
+          searchResult += formatter.bill(bill);
         }
 
         await database.save();
