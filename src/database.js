@@ -65,7 +65,7 @@ exports.updateWatchlist = function(bill) {
   if (!database.watchlist) {
     database.watchlist = {};
   }
-  console.log(bill);
+
   if (bill.id in database.watchlist) {
     const existingBill = database.watchlist[bill.id];
     bill.watching = existingBill.watching;
@@ -79,7 +79,7 @@ exports.updateWatchlist = function(bill) {
   } else {
     bill.watching = true;
   }
-  console.log(bill);
+
   database.watchlist[bill.id] = { ...bill, id: undefined };
 };
 
