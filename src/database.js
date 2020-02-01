@@ -22,14 +22,10 @@ exports.getWatchlist = function() {
 };
 
 exports.getWatchlistBill = function(state, billNumber) {
-  for (let billId in database.watchlist || {}) {
+  for (const billId in database.watchlist || {}) {
     const bill = database.watchlist[billId];
 
-    console.log(bill);
-    console.log(state + ', ' + billNumber);
-
     if (bill.state === state && bill.bill_number === billNumber) {
-      console.log('%%%%');
       return bill;
     }
   }
