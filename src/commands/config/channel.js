@@ -6,9 +6,15 @@ exports.handle = async function(args, message, client) {
   if (args.length === 0) {
     message.reply(`Current channel name is #${database.getConfig('channel')}`);
   } else if (args.length === 1) {
-    database.setConfig('channel', value.startsWith('#') ? value.substring(1) : value);
-    await database.save();
-    message.reply('Updated channel name');
+    const name = value.startsWith('#') ? value.substring(1) : value;
+    const channel = client.channels.find('name', name);
+    if (channel) {
+      database.setConfig('channel', name);
+      await database.save();
+      message.reply('Updated channel name');
+    } else {
+      message.reply('Channel does not exist.');
+    }
   } else {
     message.reply('Invalid channel name.');
   }
