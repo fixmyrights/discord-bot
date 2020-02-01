@@ -24,7 +24,7 @@ exports.schedule = function(client) {
           database.updateWatchlist(bill);
         }
 
-        const channel = client.channels.find('name', database.getConfig('channel'));
+        const channel = client.channels.find(channel => channel.name === database.getConfig('channel'));
         await channel.send(`Updated ${bills.length} automatically.`);
 
         await database.save();
