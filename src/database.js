@@ -73,9 +73,11 @@ exports.updateWatchlist = function(bill) {
     bill.watching = existingBill.watching;
 
     if (existingBill.progress) {
+      if (!existingBill.progress.find(progressItem => progressItem.stage === bill.progress[0].stage)) {
+        updateReport.progress = bill.progress[0];
+      }
       for (const existingProgressItem of existingBill.progress) {
         if (!bill.progress.find(progressItem => progressItem.stage === existingProgressItem.stage)) {
-          updateReport.progress = bill.progress[0];
           bill.progress.push(existingProgressItem);
         }
       }
