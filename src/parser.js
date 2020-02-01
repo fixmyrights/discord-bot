@@ -1,16 +1,19 @@
 const states = require('../data/states.json');
 
 exports.state = function(input) {
+  if (!input) {
+    return null;
+  }
+
   const uppercaseInput = input.toUpperCase();
 
   if (uppercaseInput === 'ALL') {
     return uppercaseInput;
   }
 
-  const stateByName = states.find(state => state.name === uppercaseInput);
-  const stateByCode = states.find(state => state.code === uppercaseInput);
+  const state = states.find(state => [state.name, state.code].includes(uppercaseInput));
 
-  return (stateByName || stateByCode || { code: null }).code;
+  return (state || { code: null }).code;
 };
 
 exports.titleRelevance = function(title) {
