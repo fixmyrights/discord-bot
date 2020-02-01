@@ -16,10 +16,13 @@
     "eslint-config-prettier": "^6.10.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-jest": "^23.6.0",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "jest": "^25.1.0",
+    "jest-junit": "^10.0.0",
     "prettier": "^1.19.1"
   },
   "scripts": {
@@ -31,7 +34,10 @@
     "fmt": "prettier --write \"./**/*.{js,json}\"",
     "fmt:check": "prettier --list-different \"./**/*.{js,json}\"",
     "fix": "npm run fmt && npm run lint:fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:clear": "jest --clearCache",
+    "test:watch": "jest --watch",
+    "test:e2e": "jest --runInBand --config ./tests/jest.config.js"
   },
   "repository": {
     "type": "git",

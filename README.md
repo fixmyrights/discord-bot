@@ -9,7 +9,8 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/fixmyrights/discord-bot)
 ![License](https://img.shields.io/github/license/fixmyrights/discord-bot)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/fixmyrights/discord-bot)
-![CircleCI](https://img.shields.io/circleci/build/github/fixmyrights/discord-bot)
+[![CircleCI](https://img.shields.io/circleci/build/github/fixmyrights/discord-bot)](https://circleci.com/gh/fixmyrights/discord-bot)
+[![Coverage Status](https://coveralls.io/repos/github/fixmyrights/discord-bot/badge.svg?branch=master)](https://coveralls.io/github/fixmyrights/discord-bot?branch=master)
 
 ## Features
 
@@ -56,6 +57,10 @@
 | `npm run fmt`            |                  Re-formats the code-base using [Prettier](https://prettier.io/).                  |
 | `npm run fmt:check`      |                        (CI) Checks if some source files need reformatting.                         |
 | `npm run fix`            |                            Runs both formatter and linters. Kowabunga!                             |
+| `npm run test`           |                        Runs the [Jest](https://jestjs.io/) unit test suite.                        |
+| `npm run test:clear`     |                              Clears [Jest](https://jestjs.io/) cache.                              |
+| `npm run test:watch`     |                       Same as `npm run test` but with the `--watch-` option.                       |
+| `npm run test:e2e`       |                     Runs the [Jest](https://jestjs.io/) end-to-end test suite.                     |
 
 ### Conventions
 

@@ -3,4 +3,5 @@
 .history
 .cache
 .temp
+coverage
 package-lock.json

@@ -21,5 +21,18 @@ module.exports = {
     'no-extra-semi': 'off',
     'no-debugger': isProduction ? 'error' : 'off',
     'no-console': isProduction ? 'error' : 'off'
-  }
+  },
+  overrides: [
+    {
+      files: ['**/*.spec.js', '**/*.feature.js'],
+      env: {
+        jest: true
+      },
+      plugins: ['jest'],
+      rules: {
+        'dot-notation': 'off',
+        'no-restricted-globals': ['error', 'fdescribe', 'ddescribe', 'fit', 'iit']
+      }
+    }
+  ]
 };

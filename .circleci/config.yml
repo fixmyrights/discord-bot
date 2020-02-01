@@ -37,7 +37,41 @@ lint_defaults: &lint_defaults
         command: |
           npx audit-ci
           yarn fmt:check
-          NODE_ENV=production yarn lint --format junit --output-file test-results/eslint/results.xml
+          yarn lint --format junit --output-file test-results/eslint/results.xml
+        environment:
+          NODE_ENV: production
+    - store_test_results:
+        path: test-results
+    - store_artifacts:
+        path: test-results
+
+unit_defaults: &unit_defaults
+  <<: *defaults
+  steps:
+    - attach_workspace:
+        at: ~/
+    - run:
+        name: Running Unit Tests
+        command: |
+          yarn jest --ci --maxWorkers=2
+        environment:
+          JEST_JUNIT_OUTPUT: test-results/jest/results.xml
+    - store_test_results:
+        path: test-results
+    - store_artifacts:
+        path: test-results
+
+e2e_defaults: &e2e_defaults
+  <<: *defaults
+  steps:
+    - attach_workspace:
+        at: ~/
+    - run:
+        name: Running End-to-End Tests
+        command: |
+          yarn test:e2e --ci
+        environment:
+          JEST_JUNIT_OUTPUT: test-results/jest-e2e/results.xml
     - store_test_results:
         path: test-results
     - store_artifacts:
@@ -48,6 +82,10 @@ jobs:
     <<: *install_defaults
   lint:
     <<: *lint_defaults
+  unit:
+    <<: *unit_defaults
+  e2e:
+    <<: *e2e_defaults
 
 workflows:
   version: 2
@@ -55,5 +93,11 @@ workflows:
     jobs:
       - install
       - lint:
+          requires:
+            - install
+      - unit:
+          requires:
+            - install
+      - e2e:
           requires:
             - install
