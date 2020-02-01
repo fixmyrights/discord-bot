@@ -27,7 +27,7 @@ exports.search = async function(state, query) {
       if (!bill.text_url || !parser.titleRelevance(parser.title(bill))) {
         continue;
       }
-      bills.push({ id: bill.bill_id, state: bill.state, number: bill.bill_number, title: bill.title, url: bill.url, progress: [{ stage: bill.last_action, timestamp: new Date(bill.last_action_date).valueOf() }], watching: true });
+      bills.push({ id: bill.bill_id, state: bill.state, number: bill.bill_number, title: bill.title, url: bill.url, progress: [{ stage: bill.last_action, timestamp: new Date(bill.last_action_date).valueOf() }] });
     }
     return sortBills(bills);
   }
