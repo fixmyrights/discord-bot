@@ -44,6 +44,10 @@ exports.setConfig = function(key, value) {
 };
 
 exports.setWatchlistBill = function(bill) {
+  if (!bill.id) {
+    return;
+  }
+
   global.dirty = true;
 
   if (!database.watchlist) {
@@ -65,7 +69,7 @@ exports.updateWatchlist = function(bill) {
     const existingBill = database.watchlist[bill.id];
     if (existingBill.progress) {
       for (const existingStatusItem in existingBill.progress) {
-        if (!bill.progress.find(statusItem => statusItem.status == existingStatusItem.status)) {
+        if (!bill.progress.find(statusItem => statusItem.status === existingStatusItem.status)) {
           bill.progress.push(existingStatusItem);
         }
       }
