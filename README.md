@@ -21,11 +21,14 @@
 
 ## Available Commands
 
-| Command                    |                    Description                     |
-| -------------------------- | :------------------------------------------------: |
-| !ping                      |         Do you really need an explanation?         |
-| !help                      | Provides a list of available commands to the user. |
-| !scan [state name or code] |   Queries the API for all bills from that state.   |
+| Command                       |                    Description                     |
+| ----------------------------- | :------------------------------------------------: |
+| !ping                         |         Do you really need an explanation?         |
+| !help                         | Provides a list of available commands to the user. |
+| !scan [state]                 |   Queries the API for all bills from that state.   |
+| !watchlist                    |        Show bills being watched for updates        |
+| !bill ignore [state] [bill #] |             Remove bill from watchlist             |
+| !config [key][value]          |                  Change settings                   |
 
 ## Development
 
