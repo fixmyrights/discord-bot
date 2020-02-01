@@ -1,5 +1,5 @@
-const database = require('../../database.js');
-const parser = require('../../parser.js');
+const database = require('../../database');
+const parser = require('../../parser');
 
 exports.handle = async function(args, message, client) {
   if (args.length === 0) {

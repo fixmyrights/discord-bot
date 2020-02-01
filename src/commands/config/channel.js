@@ -1,4 +1,4 @@
-const database = require('../../database.js');
+const database = require('../../database');
 
 exports.handle = async function(args, message, client) {
   const value = args[0];

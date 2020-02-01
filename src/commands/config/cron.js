@@ -1,6 +1,6 @@
-const background = require('../../background.js');
+const background = require('../../background');
 const cron = require('node-cron');
-const database = require('../../database.js');
+const database = require('../../database');
 
 exports.handle = async function(args, message, client) {
   const value = args.join(' ');

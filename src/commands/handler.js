@@ -1,3 +1,4 @@
+const add = require('./add');
 const ping = require('./ping');
 const help = require('./help');
 const scan = require('./scan');
@@ -16,6 +17,10 @@ exports.handle = function(message, client) {
   const args = command.splice(1);
 
   switch (handler) {
+    case 'add':
+      add.handle(args, message, client);
+      break;
+
     case 'ping':
       ping.handle(args, message, client);
       break;

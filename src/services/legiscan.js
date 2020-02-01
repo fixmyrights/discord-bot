@@ -7,6 +7,37 @@ const endpoint = 'https://api.legiscan.com';
 
 const sortBills = bills => bills.sort((a, b) => b.history[0].timestamp - a.history[0].timestamp);
 
+exports.getBill = async function(id) {
+  const result = await axios.get(endpoint, {
+    params: {
+      key: credentials.key,
+      op: 'getBill',
+      id
+    }
+  });
+
+  const response = result.data;
+
+  if (response.status === 'OK') {
+    const bill = response.bill;
+    const returnBill = {
+      id: bill.bill_id,
+      state: bill.state,
+      number: bill.bill_number,
+      title: bill.title,
+      url: bill.url,
+      history: bill.history.map(historyItem => {
+        return { action: historyItem.action, timestamp: new Date(historyItem.date).valueOf() };
+      })
+    };
+    return returnBill;
+  }
+
+  logger.error('API error:');
+  logger.error(response);
+  return null;
+};
+
 exports.search = async function(state, query) {
   const result = await axios.get(endpoint, {
     params: {
