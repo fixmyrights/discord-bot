@@ -21,14 +21,14 @@
 
 ## Available Commands
 
-| Command                       |                    Description                     |
-| ----------------------------- | :------------------------------------------------: |
-| !ping                         |         Do you really need an explanation?         |
-| !help                         | Provides a list of available commands to the user. |
-| !scan [state]                 |   Queries the API for all bills from that state.   |
-| !watchlist                    |        Show bills being watched for updates        |
-| !bill ignore [state] [bill #] |             Remove bill from watchlist             |
-| !config [key] [value]         |                  Change settings                   |
+| Command                      |                    Description                     |
+| ---------------------------- | :------------------------------------------------: |
+| !ping                        |         Do you really need an explanation?         |
+| !help                        | Provides a list of available commands to the user. |
+| !scan [state]                |   Queries the API for all bills from that state.   |
+| !watchlist                   |        Show bills being watched for updates        |
+| !bill ignore [state][bill #] |             Remove bill from watchlist             |
+| !config [key][value]         |                  Change settings                   |
 
 ## Development
 
@@ -44,7 +44,32 @@
 4. `npm start`
 5. Happy coding 🎉🙌
 
-### Skipping the annoying hook
+### Available Tasks
+
+| Task                     |                                            Description                                             |
+| ------------------------ | :------------------------------------------------------------------------------------------------: |
+| `npm run debug`          |                  Launches [ndb](https://github.com/GoogleChromeLabs/ndb) for you.                  |
+| `npm run start`          |                                          Starts the bot.                                           |
+| `npm run lint`           | Lints the code-base with [ESLint](https://eslint.org/) (but doesn't fix linter complaints for you) |
+| `npm run lint:fix`       |                             Lints and tries to fix complaints for you.                             |
+| `npm run lint:conflicts` |                               Checks for Prettier/ESLint conflicts.                                |
+| `npm run fmt`            |                  Re-formats the code-base using [Prettier](https://prettier.io/).                  |
+| `npm run fmt:check`      |                        (CI) Checks if some source files need reformatting.                         |
+| `npm run fix`            |   I don't want to figure out if my errors are from the linter or the formatter, please run both.   |
+
+### Conventions
+
+| Convention                                      | Scope      |
+| ----------------------------------------------- | ---------- |
+| [StandardJS](https://standardjs.com/rules.html) | ECMAScript |
+
+### Frequently Asked Questions
+
+#### Why ECMAScript and not <my-favorite-language>?
+
+That's a good question! Initially, the proof of concept was written in [Rust](https://www.rust-lang.org/) by [Yugo](https://github.com/x47188) & [joaodforce](https://github.com/joaodforce), while Rust is an incredible c-speed and memory-safe language it was not a highly accessible language. To maximize the chance of getting contributions from the community: ECMAScript was chosen.
+
+#### Can I skip the annoying pre-commit hook?
 
 We use [Husky](https://github.com/typicode/husky) to run hook at commit.
 If you want to skip it add a `--no-verify` to your `git commit`.
