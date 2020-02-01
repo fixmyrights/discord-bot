@@ -52,10 +52,10 @@ exports.save = async function(watchlist) {
         await fs.mkdir(databaseDirectory, { recursive: true });
         await writeFile();
       } catch (err) {
-        console.warn(`database:js:save: unhandled error [1]\n ${err}`);
+        logger.error(err);
       }
     } else {
-      console.warn(`database.js:save: unhandled error [2]\n${err}`);
+      logger.error(err);
     }
   }
 };
