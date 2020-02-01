@@ -1,5 +1,6 @@
 const { promises: fs } = require('fs');
 const { logger } = require('./logger');
+const config = require('../data/default-config.json');
 
 const databaseDirectory = './database/';
 const databaseFile = 'database.json';
@@ -12,7 +13,21 @@ exports.load = async function() {
   } catch (err) {}
 };
 
-exports.update = function(bill) {
+exports.getConfig = function(key) {
+  return database.config && database.config[key] ? database.config[key] : config[key];
+};
+
+exports.setConfig = function(key, value) {
+  global.dirty = true;
+
+  if (!database.config) {
+    database.config = {};
+  }
+
+  database.config[key] = value;
+};
+
+exports.updateWatchlist = function(bill) {
   global.dirty = true;
 
   if (!database.watchlist) {
