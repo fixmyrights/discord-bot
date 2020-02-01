@@ -23,7 +23,7 @@ client.on('ready', () => {
 client.on('message', async message => {
   const { channel } = message;
 
-  if (channel.name && channel.name == database.getConfig('channel') && message.cleanContent.startsWith(database.getConfig('prefix'))) {
+  if (channel.name && channel.name === database.getConfig('channel') && message.cleanContent.startsWith(database.getConfig('prefix'))) {
     commandHandler.handle(message, client);
   }
 });
