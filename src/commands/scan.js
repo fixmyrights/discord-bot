@@ -11,7 +11,7 @@ const legiscan = require('./../services/legiscan');
 exports.handle = async function(args, message, client) {
   const { channel } = message;
 
-  const state = await parser.state(args.join(" "));
+  const state = await parser.state(args.join(' '));
 
   if (!state) {
     message.reply('Could not find state.');

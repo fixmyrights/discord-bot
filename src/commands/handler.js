@@ -5,7 +5,10 @@ const scan = require('./scan');
 const { logger } = require('./../logger');
 
 exports.handle = function(message, client) {
-  const command = message.cleanContent.substring(1).toLowerCase().split(' ');
+  const command = message.cleanContent
+    .substring(1)
+    .toLowerCase()
+    .split(' ');
   const handler = command[0];
   const args = command.splice(1);
 
