@@ -4,10 +4,9 @@ const scan = require('./scan');
 
 const { logger } = require('./../logger');
 
-exports.handle = function (command, message, client) {
-
+exports.handle = function(command, message, client) {
   const cmd = command.toLowerCase().split(' ')[0];
-  switch(cmd) {
+  switch (cmd) {
     case 'ping':
       ping.handle(message, client);
       break;
@@ -26,5 +25,4 @@ exports.handle = function (command, message, client) {
       logger.debug(cmd);
       break;
   }
-
 };

@@ -4,6 +4,7 @@
   "description": "LegiScan integration for Discord",
   "main": "src/index.js",
   "dependencies": {
+    "@discordjs/uws": "^10.149.0",
     "axios": "^0.19.2",
     "discord.js": "^11.5.1",
     "husky": "^4.2.1",

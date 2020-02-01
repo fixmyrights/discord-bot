@@ -1,4 +1,3 @@
-
 const axios = require('axios');
 const { logger } = require('./../logger');
 const credentials = require('./../../data/credentials.json');
@@ -32,7 +31,6 @@ exports.search = async function(state, query) {
   logger.error(response);
   return null;
 };
-
 
 exports.getBills = response => {
   const bills = [];

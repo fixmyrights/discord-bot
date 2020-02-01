@@ -1,6 +1,5 @@
 const database = require('./../database');
 const config = require('./../../data/config.json');
-const debug = config.debug;
 
 const parser = require('./../parser');
 const credentials = require('./../../data/credentials.json');
@@ -9,9 +8,7 @@ const legiScanApiKey = process.env.LEGISCAN_API_KEY || credentials.key || null;
 // Legiscan API
 const legiscan = require('./../services/legiscan');
 
-const query = '"right to repair" OR "right-to-repair" OR ((servicing OR repair) AND electronics) OR (fair AND electronic AND repair OR independent)';
-
-exports.handle = async function (message, client) {
+exports.handle = async function(message, client) {
   const { channel } = message;
 
   const command = message.cleanContent.substring(1);
@@ -26,7 +23,7 @@ exports.handle = async function (message, client) {
   } else {
     channel.send(`Scanning for right-to-repair legislation in ${state}...`);
 
-    const response = await legiscan.search(state, query);
+    const response = await legiscan.search(state, config.query);
     let searchResult = '';
     let bills = [];
 
@@ -57,4 +54,4 @@ exports.handle = async function (message, client) {
       message.reply('LegiScan API error.');
     }
   }
-}
+};
