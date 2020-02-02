@@ -11,7 +11,7 @@ exports.date = function(timestamp) {
 
 exports.duration = function(timestamp) {
   const totalMillis = timestamp - Date.now();
-  const totalSeconds = totalMillis / 1000;
+  const totalSeconds = Math.abs(totalMillis / 1000);
   const totalMinutes = totalSeconds / 60;
   const totalHours = totalMinutes / 60;
   const totalDays = totalHours / 60;
@@ -23,33 +23,37 @@ exports.duration = function(timestamp) {
   const days = Math.round(totalDays);
   const years = Math.round(totalYears);
 
+  let durationValue;
+
   if (years === 0) {
     if (days === 0) {
       if (hours === 0) {
         if (minutes === 0) {
           if (seconds === 1) {
-            return '1 second';
+            durationValue = '1 second';
           } else {
-            return `${seconds} seconds`;
+            durationValue = `${seconds} seconds`;
           }
         } else if (minutes === 1) {
-          return '1 minute';
+          durationValue = '1 minute';
         } else {
-          return `${minutes} minutes`;
+          durationValue = `${minutes} minutes`;
         }
       } else if (hours === 1) {
-        return '1 hour';
+        durationValue = '1 hour';
       } else {
-        return `${hours} hours`;
+        durationValue = `${hours} hours`;
       }
     } else if (days === 1) {
-      return '1 day';
+      durationValue = '1 day';
     } else {
-      return `${days} days`;
+      durationValue = `${days} days`;
     }
   } else if (years === 1) {
-    return '1 year';
+    durationValue = '1 year';
   } else {
-    return `${years} years`;
+    durationValue = `${years} years`;
   }
+
+  return `${durationValue} ${totalMillis < 0 ? 'ago' : 'from now'}`;
 };

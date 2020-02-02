@@ -54,8 +54,18 @@ exports.schedule = function(client) {
 
             if (updateReport.new) {
               await channel.send(`Found new bill ${formatter.bill(bill)}`);
-            } else if (updateReport.progress) {
-              await channel.send(`Bill **${parser.state(bill.state)} ${bill.number}** changed to ${updateReport.progress.action} as of \`${formatter.date(updateReport.progress.timestamp)}\``);
+            } else {
+              if (updateReport.progress) {
+                await channel.send(`Bill **${parser.state(bill.state)} ${bill.number}** changed to ${updateReport.progress.action} as of \`${formatter.date(updateReport.progress.timestamp)}\``);
+              }
+
+              if (updateReport.hearing) {
+                await channel.send(
+                  `${updateReport.hearing.type || 'Hearing'} for bill **${parser.state(bill.state)} ${bill.number}** scheduled for ${updateReport.hearing.localDate} at ${updateReport.hearing.localTime}, which is ${formatter.duration(updateReport.hearing.timestamp)}. The hearing is described as ${
+                    updateReport.hearing.description
+                  }. For more information, visit <${bill.url}>`
+                );
+              }
             }
           } else {
             logger.debug(`Will ignore bill ${billSummary.id}.`);
