@@ -53,7 +53,7 @@ unit_defaults: &unit_defaults
     - run:
         name: Running Unit Tests
         command: |
-          yarn jest --ci --maxWorkers=2
+          yarn jest --ci --maxWorkers=2 --coverage --coverageReporters=text-lcov | npx coveralls
         environment:
           JEST_JUNIT_OUTPUT: test-results/jest/results.xml
     - store_test_results:
