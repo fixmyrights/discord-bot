@@ -46,7 +46,7 @@ exports.schedule = function(client) {
           }
         }
 
-        await channel.send(`Updated ${bills.length} automatically.`);
+        await channel.send(`Updated ${bills.length} bills automatically.`);
 
         await database.save();
       }
@@ -55,5 +55,5 @@ exports.schedule = function(client) {
     }
   });
 
-  logger.success(`Background tasked scheduled with ${cronExpression}`);
+  logger.success(`Background tasked scheduled with ${cronExpression}.`);
 };

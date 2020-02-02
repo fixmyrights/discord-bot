@@ -9,7 +9,7 @@ exports.handle = async function(args, message, client) {
     if (state) {
       database.setConfig('state', state);
       await database.save();
-      message.reply('Updated state');
+      message.reply(`Updated state to ${state}.`);
     } else {
       message.reply('Could not find state.');
     }

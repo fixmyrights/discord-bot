@@ -10,11 +10,11 @@ exports.handle = async function(args, message, client) {
       database.setConfig('cron', value);
       await database.save();
       background.schedule(client);
-      message.reply('Updated cron expression.');
+      message.reply(`Updated cron expression to ${value}.`);
     } else {
       message.reply('Invalid cron expression.');
     }
   } else {
-    message.reply(`Current cron expression is ${database.getConfig('cron')}`);
+    message.reply(`Current cron expression is ${database.getConfig('cron')}.`);
   }
 };
