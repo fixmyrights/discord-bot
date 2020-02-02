@@ -17,13 +17,13 @@ exports.getConfig = function(key) {
   return database.config && database.config[key] ? database.config[key] : config[key];
 };
 
-exports.getWatchlist = function() {
-  return database.watchlist || {};
+exports.getBills = function() {
+  return database.bill || {};
 };
 
-exports.getWatchlistBill = function(state, billNumber) {
-  for (const billId in database.watchlist || {}) {
-    const bill = database.watchlist[billId];
+exports.getBill = function(state, billNumber) {
+  for (const billId in database.bill || {}) {
+    const bill = database.bill[billId];
 
     if (bill.state === state && bill.number === billNumber) {
       return { ...bill, id: billId };
@@ -43,34 +43,34 @@ exports.setConfig = function(key, value) {
   database.config[key] = value;
 };
 
-exports.setWatchlistBill = function(bill) {
+exports.setBill = function(bill) {
   if (!bill.id) {
-    logger.debug('Cannot set watchlist bill without id.');
+    logger.debug('Cannot set bill without id.');
     return;
   }
 
   global.dirty = true;
 
-  if (!database.watchlist) {
-    database.watchlist = {};
+  if (!database.bill) {
+    database.bill = {};
   }
 
   // Don't store id inside bill as it is the key
-  database.watchlist[bill.id] = { ...bill, id: undefined };
+  database.bill[bill.id] = { ...bill, id: undefined };
 };
 
-exports.updateWatchlist = function(bill) {
+exports.updateBill = function(bill) {
   global.dirty = true;
 
   const updateReport = {};
 
-  if (!database.watchlist) {
-    database.watchlist = {};
+  if (!database.bill) {
+    database.bill = {};
   }
 
-  if (bill.id in database.watchlist) {
+  if (bill.id in database.bill) {
     updateReport.new = false;
-    const existingBill = database.watchlist[bill.id];
+    const existingBill = database.bill[bill.id];
     bill.watching = existingBill.watching;
 
     if (existingBill.history) {
@@ -88,7 +88,7 @@ exports.updateWatchlist = function(bill) {
     bill.watching = true;
   }
 
-  database.watchlist[bill.id] = { ...bill, id: undefined };
+  database.bill[bill.id] = { ...bill, id: undefined };
 
   return updateReport;
 };
@@ -99,7 +99,7 @@ const undirty = function() {
 const writeFile = function() {
   return fs.writeFile(`${databaseDirectory}${databaseFile}`, JSON.stringify(database, null, '	')).then(undirty);
 };
-exports.save = async function(watchlist) {
+exports.save = async function() {
   try {
     await writeFile();
   } catch (err) {

@@ -7,14 +7,14 @@ exports.handle = async function(args, message, client) {
 
   if (state) {
     if (billNumber) {
-      const bill = database.getWatchlistBill(state, billNumber.toUpperCase());
+      const bill = database.getBill(state, billNumber.toUpperCase());
 
       if (bill) {
         if (bill.watching) {
           message.reply('Bill was already being watched.');
         } else {
           bill.watching = true;
-          database.setWatchlistBill(bill);
+          database.setBill(bill);
           await database.save();
           message.reply('Set bill to being watched.');
         }

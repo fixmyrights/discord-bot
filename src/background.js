@@ -25,7 +25,7 @@ exports.schedule = function(client) {
         const channel = client.channels.find(channel => channel.name === database.getConfig('channel'));
 
         for (const bill of bills) {
-          const updateReport = database.updateWatchlist(bill);
+          const updateReport = database.updateBill(bill);
 
           if (updateReport.new) {
             await channel.send(`Found new bill ${formatter.bill(bill)}`);

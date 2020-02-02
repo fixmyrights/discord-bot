@@ -8,7 +8,7 @@ exports.handle = async function(args, message, client) {
     const bill = await legiscan.getBill(billId);
 
     if (bill) {
-      database.updateWatchlist(bill);
+      database.updateBill(bill);
       await database.save();
       message.reply('Added bill.');
     } else {

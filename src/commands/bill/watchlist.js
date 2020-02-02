@@ -3,7 +3,7 @@ const formatter = require('../../formatter.js');
 
 exports.handle = async function(args, message, client) {
   const { channel } = message;
-  const watchlist = database.getWatchlist();
+  const watchlist = database.getBills();
 
   let count = 0;
   let result = '';
