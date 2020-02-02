@@ -11,7 +11,7 @@ exports.handle = async function(args, message, client) {
     if (channel) {
       database.setConfig('channel', name);
       await database.save();
-      message.reply(`Updated channel name to #${name}.`);
+      message.reply(`Updated channel name to ${channel.toString()}.`);
     } else {
       message.reply('Channel does not exist.');
     }
