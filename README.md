@@ -82,6 +82,7 @@ If you want to skip it add a `--no-verify` to your `git commit`.
 ## Acknowledgements
 
 - [@finnbear](https://www.gitlab.com/finnbear) as the initial founder of this project.
+- Sean Bolt from [LegiScan, LLC](https://legiscan.com/) for his precious help.
 
 ## License
 
