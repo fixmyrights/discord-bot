@@ -26,10 +26,10 @@ exports.getBill = async function(id) {
       number: bill.bill_number,
       title: bill.title,
       url: bill.url,
-      history: bill.history.map(historyItem => {
+      history: (bill.history || []).map(historyItem => {
         return { action: historyItem.action, timestamp: new Date(historyItem.date).valueOf() };
       }),
-      calendar: bill.calendar.map(calendarItem => {
+      calendar: (bill.calendar || []).map(calendarItem => {
         return { type: calendarItem.type, description: calendarItem.description, location: calendarItem.location, timestamp: parser.timestamp(calendarItem.date, calendarItem.time, bill.state) };
       })
     };

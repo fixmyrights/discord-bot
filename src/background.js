@@ -7,6 +7,9 @@ const { logger } = require('./logger');
 
 let task = null;
 
+// Can't query with detail too often
+let detailTimestamp = 0;
+
 exports.schedule = function(client) {
   if (task) {
     task.stop();
@@ -24,7 +27,16 @@ exports.schedule = function(client) {
 
         const channel = client.channels.find(channel => channel.name === database.getConfig('channel'));
 
-        for (const bill of bills) {
+        let detail = false;
+        if (Date.now() > detailTimestamp + database.getConfig('interval')) {
+          detail = true;
+          detailTimestamp = Date.now();
+          logger.debug('Will get bill details this time.');
+        }
+
+        for (const billSummary of bills) {
+          const bill = detail ? await legiscan.getBill(billSummary.id) : billSummary;
+
           const updateReport = database.updateBill(bill);
 
           if (updateReport.new) {
