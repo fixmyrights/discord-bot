@@ -28,8 +28,7 @@
   },
   "scripts": {
     "debug": "npx ndb .",
-    "start": "node src/index.js",
-    "start:watch": "nodemon",
+    "start": "nodemon",
     "lint": "eslint \"src/**/*.js\"",
     "lint:fix": "npm run lint --fix",
     "lint:conflicts": "eslint --print-config ./eslintrc.js | eslint-config-prettier-check",
