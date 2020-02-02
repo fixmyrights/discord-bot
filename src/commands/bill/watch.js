@@ -11,12 +11,12 @@ exports.handle = async function(args, message, client) {
 
       if (bill) {
         if (bill.watching) {
-          bill.watching = false;
+          message.reply('Bill was already being watched.');
+        } else {
+          bill.watching = true;
           database.setWatchlistBill(bill);
           await database.save();
-          message.reply('Set bill to ignored.');
-        } else {
-          message.reply('Bill was already ignored.');
+          message.reply('Set bill to being watched.');
         }
       } else {
         message.reply('Unknown bill.');

@@ -2,6 +2,7 @@ const { logger } = require('./../../logger');
 const add = require('./add');
 const ignore = require('./ignore');
 const scan = require('./scan');
+const watch = require('./watch');
 const watchlist = require('./watchlist');
 
 exports.handle = function(args, message, client) {
@@ -28,7 +29,7 @@ exports.handle = function(args, message, client) {
       break;
 
     case 'watch':
-      message.reply('not implemented');
+      watch.handle(args, message, client);
       break;
 
     default:
