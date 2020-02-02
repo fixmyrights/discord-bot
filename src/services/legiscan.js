@@ -21,7 +21,7 @@ exports.getBill = async function(id) {
   if (response.status === 'OK') {
     const bill = response.bill;
     const returnBill = {
-      id: bill.bill_id,
+      id: `${bill.bill_id}`,
       state: bill.state,
       number: bill.bill_number,
       title: bill.title,
@@ -61,7 +61,7 @@ exports.search = async function(state, query) {
       if (!bill.text_url || !parser.titleRelevance(parser.title(bill))) {
         continue;
       }
-      bills.push({ id: bill.bill_id, state: bill.state, number: bill.bill_number, title: bill.title, url: bill.url, history: [{ action: bill.last_action, timestamp: new Date(bill.last_action_date).valueOf() }] });
+      bills.push({ id: `${bill.bill_id}`, state: bill.state, number: bill.bill_number, title: bill.title, url: bill.url, history: [{ action: bill.last_action, timestamp: new Date(bill.last_action_date).valueOf() }] });
     }
     return sortBills(bills);
   }

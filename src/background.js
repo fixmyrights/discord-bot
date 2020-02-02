@@ -27,22 +27,38 @@ exports.schedule = function(client) {
 
         const channel = client.channels.find(channel => channel.name === database.getConfig('channel'));
 
+        const savedBills = database.getBills();
+
         let detail = false;
         if (Date.now() > detailTimestamp + database.getConfig('interval')) {
           detail = true;
+          // Make sure any watched bills that don't show up in the search results are scanned
+          for (const savedBillId in savedBills) {
+            const savedBill = { ...savedBills[savedBillId], id: savedBillId };
+            if (savedBill.watching && !bills.find(bill => bill.id === savedBill.id)) {
+              logger.debug(`Will update manually added bill ${savedBill.id}.`);
+              bills.push(savedBill);
+            }
+          }
           detailTimestamp = Date.now();
           logger.debug('Will get bill details this time.');
         }
 
         for (const billSummary of bills) {
-          const bill = detail ? await legiscan.getBill(billSummary.id) : billSummary;
+          const savedBill = savedBills[billSummary.id];
 
-          const updateReport = database.updateBill(bill);
+          if (!savedBill || savedBill.watching) {
+            const bill = detail ? await legiscan.getBill(billSummary.id) : billSummary;
 
-          if (updateReport.new) {
-            await channel.send(`Found new bill ${formatter.bill(bill)}`);
-          } else if (updateReport.progress) {
-            await channel.send(`Bill **${parser.state(bill.state)} ${bill.number}** changed to ${updateReport.progress.action} as of \`${formatter.date(updateReport.progress.timestamp)}\``);
+            const updateReport = database.updateBill(bill);
+
+            if (updateReport.new) {
+              await channel.send(`Found new bill ${formatter.bill(bill)}`);
+            } else if (updateReport.progress) {
+              await channel.send(`Bill **${parser.state(bill.state)} ${bill.number}** changed to ${updateReport.progress.action} as of \`${formatter.date(updateReport.progress.timestamp)}\``);
+            }
+          } else {
+            logger.debug(`Will ignore bill ${billSummary.id}.`);
           }
         }
 
