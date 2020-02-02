@@ -1,5 +1,6 @@
 const { logger } = require('./../../logger');
 const add = require('./add');
+const help = require('./help');
 const ignore = require('./ignore');
 const scan = require('./scan');
 const watch = require('./watch');
@@ -12,6 +13,10 @@ exports.handle = function(args, message, client) {
   switch (handler) {
     case 'add':
       add.handle(args, message, client);
+      break;
+
+    case 'help':
+      help.handle(args, message, client);
       break;
 
     case 'ignore':
