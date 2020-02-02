@@ -74,11 +74,12 @@ exports.updateBill = function(bill) {
     bill.watching = existingBill.watching;
 
     if (existingBill.history) {
-      if (!existingBill.history.find(progressItem => progressItem.action === bill.history[bill.history.length - 1].action)) {
-        updateReport.progress = bill.history[bill.history.length - 1];
+      const lastestHistoryItem = bill.history[bill.history.length - 1];
+      if (!existingBill.history.find(progressItem => progressItem.action === lastestHistoryItem.action)) {
+        updateReport.progress = lastestHistoryItem;
       }
       for (const existingHistoryItem of existingBill.history) {
-        if (!bill.history.find(historyItem => historyItem.action === existingHistoryItem.action)) {
+        if (!bill.history.find(historyItem => historyItem.action === existingHistoryItem.action && historyItem.timestamp === existingHistoryItem.timestamp)) {
           bill.history.push(existingHistoryItem);
         }
       }
@@ -86,8 +87,9 @@ exports.updateBill = function(bill) {
 
     if (existingBill.calendar) {
       if (bill.calendar && bill.calendar.length > 0) {
-        if (!existingBill.calendar.find(calendarItem => calendarItem.description === bill.calendar[bill.calendar.length - 1].description)) {
-          updateReport.hearing = bill.calendar[bill.calendar.length - 1];
+        const latestCalendarItem = bill.calendar[bill.calendar.length - 1];
+        if (!existingBill.calendar.find(calendarItem => calendarItem.description === latestCalendarItem.description && calendarItem.timestamp === latestCalendarItem.timestamp)) {
+          updateReport.hearing = latestCalendarItem;
         }
       } else {
         bill.calendar = [];
