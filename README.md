@@ -50,14 +50,14 @@
 | Task                     |                                            Description                                             |
 | ------------------------ | :------------------------------------------------------------------------------------------------: |
 | `npm run debug`          |                  Launches [ndb](https://github.com/GoogleChromeLabs/ndb) for you.                  |
-| `npm run start`          |                                          Starts the bot.                                           |
+| `npm start`              |                                          Starts the bot.                                           |
 | `npm run lint`           | Lints the code-base with [ESLint](https://eslint.org/) (but doesn't fix linter complaints for you) |
 | `npm run lint:fix`       |                             Lints and tries to fix complaints for you.                             |
 | `npm run lint:conflicts` |                               Checks for Prettier/ESLint conflicts.                                |
 | `npm run fmt`            |                  Re-formats the code-base using [Prettier](https://prettier.io/).                  |
 | `npm run fmt:check`      |                        (CI) Checks if some source files need reformatting.                         |
 | `npm run fix`            |                            Runs both formatter and linters. Kowabunga!                             |
-| `npm run test`           |                        Runs the [Jest](https://jestjs.io/) unit test suite.                        |
+| `npm test`               |                        Runs the [Jest](https://jestjs.io/) unit test suite.                        |
 | `npm run test:clear`     |                              Clears [Jest](https://jestjs.io/) cache.                              |
 | `npm run test:watch`     |                       Same as `npm run test` but with the `--watch-` option.                       |
 | `npm run test:e2e`       |                     Runs the [Jest](https://jestjs.io/) end-to-end test suite.                     |
