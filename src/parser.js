@@ -22,6 +22,11 @@ exports.state = function(input) {
   return state ? state.code : null;
 };
 
+exports.timestamp = function(date, time, stateInput) {
+  const state = states.find(state => [state.name, state.code].includes(stateInput.toUpperCase())) || {};
+  return Date.parse(`${date}T${time || '12:00'}:00.000${state.timezone || '+00:00'}`);
+};
+
 exports.titleRelevance = function(title) {
   let relevant = false;
 
