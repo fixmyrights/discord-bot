@@ -11,7 +11,7 @@ exports.handle = async function(args, message, client) {
       await database.save();
       message.reply(`Updated state to ${state}.`);
     } else {
-      message.reply('Could not find state.');
+      message.reply('Please enter a state by its name or two-letter code.');
     }
   }
 };

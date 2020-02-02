@@ -13,7 +13,7 @@ exports.handle = async function(args, message, client) {
   const state = await parser.state(args.join(' '));
 
   if (!state) {
-    message.reply('Could not find state.');
+    message.reply('Please enter a state by its name or two-letter code.');
   } else if (!legiScanApiKey && !(state in credentials.keys)) {
     message.reply(`No LegiScan API key for state code ${state}.`);
   } else {

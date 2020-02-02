@@ -30,7 +30,7 @@ exports.schedule = function(client) {
         const savedBills = database.getBills();
 
         let detail = false;
-        if (Date.now() > detailTimestamp + database.getConfig('interval')) {
+        if (Date.now() > detailTimestamp + database.getConfig('interval') * 60000) {
           detail = true;
           // Make sure any watched bills that don't show up in the search results are scanned
           for (const savedBillId in savedBills) {

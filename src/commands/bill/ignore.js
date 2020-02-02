@@ -22,9 +22,9 @@ exports.handle = async function(args, message, client) {
         message.reply('Unknown bill.');
       }
     } else {
-      message.reply('Please enter bill number.');
+      message.reply('Please enter bill number for that state.');
     }
   } else {
-    message.reply('Could not find state.');
+    message.reply('Please start by entering a state by its name or two-letter code.');
   }
 };

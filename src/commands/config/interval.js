@@ -1,0 +1,16 @@
+const database = require('../../database');
+
+exports.handle = async function(args, message, client) {
+  if (args.length === 0) {
+    message.reply(`Current interval is ${database.getConfig('interval')}`);
+  } else {
+    const interval = parseInt(args[0]);
+    if (interval) {
+      database.setConfig('interval', interval);
+      await database.save();
+      message.reply(`Updated interval to ${interval}.`);
+    } else {
+      message.reply('Please enter interval as a number of minutes before querying bills in detail.');
+    }
+  }
+};

@@ -12,7 +12,7 @@ exports.handle = async function(args, message, client) {
       background.schedule(client);
       message.reply(`Updated cron expression to ${value}.`);
     } else {
-      message.reply('Invalid cron expression.');
+      message.reply('Please enter a cron expression with 5 valid segments.');
     }
   } else {
     message.reply(`Current cron expression is ${database.getConfig('cron')}.`);

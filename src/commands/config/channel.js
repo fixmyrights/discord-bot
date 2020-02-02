@@ -13,7 +13,7 @@ exports.handle = async function(args, message, client) {
       await database.save();
       message.reply(`Updated channel name to ${channel.toString()}.`);
     } else {
-      message.reply('Channel does not exist.');
+      message.reply('Please enter a channel name that already exists.');
     }
   } else {
     message.reply('Invalid channel name.');

@@ -15,6 +15,6 @@ exports.handle = async function(args, message, client) {
       message.reply('Bill does not exist.');
     }
   } else {
-    message.reply('Please enter bill id.');
+    message.reply('Please enter a LegiScan bill id.');
   }
 };
