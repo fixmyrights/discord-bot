@@ -1,3 +1,5 @@
+const { logger } = require('../logger');
+
 const ping = require('./ping');
 const help = require('./help');
 const bill = require('./bill/handler');
@@ -24,8 +26,12 @@ exports.handle = function(message, client) {
       config.handle(args, message, client);
       break;
 
-    default:
+    case 'help':
       help.handle(args, message, client);
+      break;
+
+    default:
+      logger.debug(`Unrecognized command ${handler}.`);
       break;
   }
 };

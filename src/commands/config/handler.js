@@ -30,7 +30,7 @@ exports.handle = function(args, message, client) {
       break;
 
     default:
-      message.reply('Setting not found.');
+      help.handle(args, message, client);
       break;
   }
 };
