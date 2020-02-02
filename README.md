@@ -51,6 +51,7 @@
 | ------------------------ | :------------------------------------------------------------------------------------------------: |
 | `npm run debug`          |                  Launches [ndb](https://github.com/GoogleChromeLabs/ndb) for you.                  |
 | `npm start`              |                                          Starts the bot.                                           |
+| `npm run start:watch`    |                               Starts [nodemon](https://nodemon.io/).                               |
 | `npm run lint`           | Lints the code-base with [ESLint](https://eslint.org/) (but doesn't fix linter complaints for you) |
 | `npm run lint:fix`       |                             Lints and tries to fix complaints for you.                             |
 | `npm run lint:conflicts` |                               Checks for Prettier/ESLint conflicts.                                |
