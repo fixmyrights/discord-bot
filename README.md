@@ -79,6 +79,12 @@ That's a good question! Initially, the proof of concept was written in [Rust](ht
 We use [Husky](https://github.com/typicode/husky) to run a hook at commit.
 If you want to skip it add a `--no-verify` to your `git commit`.
 
+## Contribution
+
+Please make sure to read the [Contributing Guide](https://github.com/fixmyrights/discord-bot/blob/master/.github/CONTRIBUTING.md) before making a pull request.
+
+Thank you to [all the people](https://github.com/fixmyrights/discord-bot/graphs/contributors) who already contributed to this project!
+
 ## Acknowledgements
 
 - [@finnbear](https://www.gitlab.com/finnbear) as the initial founder of this project.
