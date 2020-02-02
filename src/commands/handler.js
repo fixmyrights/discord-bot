@@ -3,8 +3,6 @@ const help = require('./help');
 const bill = require('./bill/handler');
 const config = require('./config/handler');
 
-const { logger } = require('./../logger');
-
 exports.handle = function(message, client) {
   const command = message.cleanContent
     .substring(1)
@@ -18,10 +16,6 @@ exports.handle = function(message, client) {
       ping.handle(args, message, client);
       break;
 
-    case 'help':
-      help.handle(args, message, client);
-      break;
-
     case 'bill':
       bill.handle(args, message, client);
       break;
@@ -31,8 +25,7 @@ exports.handle = function(message, client) {
       break;
 
     default:
-      logger.debug(message);
-      logger.debug(command);
+      help.handle(args, message, client);
       break;
   }
 };

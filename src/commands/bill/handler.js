@@ -1,4 +1,3 @@
-const { logger } = require('./../../logger');
 const add = require('./add');
 const help = require('./help');
 const ignore = require('./ignore');
@@ -38,7 +37,7 @@ exports.handle = function(args, message, client) {
       break;
 
     default:
-      logger.debug(message);
+      help.handle(args, message, client);
       break;
   }
 };
