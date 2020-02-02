@@ -76,7 +76,7 @@ That's a good question! Initially, the proof of concept was written in [Rust](ht
 
 #### Can I skip the annoying pre-commit hook?
 
-We use [Husky](https://github.com/typicode/husky) to run hook at commit.
+We use [Husky](https://github.com/typicode/husky) to run a hook at commit.
 If you want to skip it add a `--no-verify` to your `git commit`.
 
 ## Acknowledgements
