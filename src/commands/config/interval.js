@@ -8,7 +8,7 @@ exports.handle = async function(args, message, client) {
     if (interval && interval > 0) {
       database.setConfig('interval', interval);
       await database.save();
-      message.reply(`Updated interval to ${interval}.`);
+      message.reply(`Updated interval to ${interval} minutes.`);
     } else {
       message.reply('Please enter interval as a number of minutes before querying bills in detail.');
     }
