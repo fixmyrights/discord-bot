@@ -74,12 +74,27 @@ exports.updateBill = function(bill) {
     bill.watching = existingBill.watching;
 
     if (existingBill.history) {
-      if (!existingBill.history.find(progressItem => progressItem.action === bill.history[0].action)) {
-        updateReport.progress = bill.history[0];
+      if (!existingBill.history.find(progressItem => progressItem.action === bill.history[bill.history.length - 1].action)) {
+        updateReport.progress = bill.history[bill.history.length - 1];
       }
       for (const existingHistoryItem of existingBill.history) {
         if (!bill.history.find(historyItem => historyItem.action === existingHistoryItem.action)) {
           bill.history.push(existingHistoryItem);
+        }
+      }
+    }
+
+    if (existingBill.calendar) {
+      if (bill.calendar && bill.calendar.length > 0) {
+        if (!existingBill.calendar.find(calendarItem => calendarItem.description === bill.calendar[bill.calendar.length - 1].description)) {
+          updateReport.hearing = bill.calendar[bill.calendar.length - 1];
+        }
+      } else {
+        bill.calendar = [];
+      }
+      for (const existingCalenderItem of existingBill.calendar) {
+        if (!bill.calendar.find(historyItem => historyItem.description === existingCalenderItem.description)) {
+          bill.calendar.push(existingCalenderItem);
         }
       }
     }
