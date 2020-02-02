@@ -1,3 +1,4 @@
+const help = require('./help');
 const channel = require('./channel');
 const cron = require('./cron');
 const state = require('./state');
@@ -7,6 +8,10 @@ exports.handle = function(args, message, client) {
   args = args.splice(1);
 
   switch (handler) {
+    case 'help':
+      help.handle(args, message, client);
+      break;
+
     case 'channel':
       channel.handle(args, message, client);
       break;
