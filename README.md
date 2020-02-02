@@ -85,6 +85,8 @@ Please make sure to read the [Contributing Guide](https://github.com/fixmyrights
 
 Thank you to [all the people](https://github.com/fixmyrights/discord-bot/graphs/contributors) who already contributed to this project!
 
+<a href="https://github.com/fixmyrights/discord-bot/graphs/contributors"><img src=".github/contributors.png" width="181px" alt=""/></a>
+
 ## Acknowledgements
 
 - [@finnbear](https://www.gitlab.com/finnbear) as the initial founder of this project.
