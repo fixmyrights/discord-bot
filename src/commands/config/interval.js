@@ -5,7 +5,7 @@ exports.handle = async function(args, message, client) {
     message.reply(`Current interval is ${database.getConfig('interval')}`);
   } else {
     const interval = parseInt(args[0]);
-    if (interval) {
+    if (interval && interval > 0) {
       database.setConfig('interval', interval);
       await database.save();
       message.reply(`Updated interval to ${interval}.`);
