@@ -28,6 +28,9 @@ exports.getBill = async function(id) {
       url: bill.url,
       history: bill.history.map(historyItem => {
         return { action: historyItem.action, timestamp: new Date(historyItem.date).valueOf() };
+      }),
+      calendar: bill.calendar.map(calendarItem => {
+        return { type: calendarItem.type, description: calendarItem.description, location: calendarItem.location, timestamp: new Date(calendarItem.date).valueOf() };
       })
     };
     return returnBill;
