@@ -2,7 +2,7 @@ const database = require('../../database');
 const legiscan = require('../../services/legiscan');
 
 exports.handle = async function(args, message, client) {
-  const billId = args[0];
+  const billId = args.join(' ');
 
   if (billId) {
     const bill = await legiscan.getBill(billId);
