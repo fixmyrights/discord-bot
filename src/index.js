@@ -20,6 +20,12 @@ client.on('ready', async () => {
 client.on('message', async message => {
   const { channel } = message;
 
+  const mentioned = message.content.includes(`<@!${client.user.id}>`);
+
+  if (mentioned) {
+    message.react('😇');
+  }
+
   if (channel.name && channel.name === database.getConfig('channel') && message.cleanContent.startsWith(database.getConfig('prefix'))) {
     commandHandler.handle(message, client);
   }
