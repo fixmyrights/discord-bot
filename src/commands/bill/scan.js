@@ -1,11 +1,11 @@
-const database = require('./../database');
-const formatter = require('./../formatter');
-const parser = require('./../parser');
-const credentials = require('./../../data/credentials.json');
+const database = require('../../database');
+const formatter = require('../../formatter');
+const parser = require('../../parser');
+const credentials = require('../../../data/credentials.json');
 const legiScanApiKey = process.env.LEGISCAN_API_KEY || credentials.key || null;
 
 // Legiscan API
-const legiscan = require('./../services/legiscan');
+const legiscan = require('../../services/legiscan');
 
 exports.handle = async function(args, message, client) {
   const { channel } = message;

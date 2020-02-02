@@ -1,5 +1,5 @@
-const database = require('../database.js');
-const formatter = require('../formatter.js');
+const database = require('../../database.js');
+const formatter = require('../../formatter.js');
 
 exports.handle = async function(args, message, client) {
   const { channel } = message;
