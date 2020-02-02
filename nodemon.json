@@ -1,3 +1,4 @@
 {
+  "watch": false,
   "exec": "node src/index.js"
 }
