@@ -1,6 +1,9 @@
 const mockDiscordApiKey = 'DISCORD_API_KEY';
 const mockDiscordApiKeyOther = 'DISCORD_API_KEY_OTHER';
-const mockDiscordClientUser = { tag: 'DISCORD_CLIENT_USER_TAG' };
+const mockDiscordClientUser = {
+  id: 'DISCORD_CLIENT_USER_ID',
+  tag: 'DISCORD_CLIENT_USER_TAG'
+};
 const mockConfigChannel = '#CONFIG-CHANNEL';
 const mockConfigPrefix = 'CONFIG-PREFIX';
 
@@ -9,6 +12,8 @@ jest.mock('discord.js/src/client/Client', () => {
   Client.prototype.login = jest.fn();
   return Client;
 });
+jest.mock('discord.js/src/structures/Message');
+
 jest.mock('./database', () => {
   const database = jest.genMockFromModule('./database');
   database.getConfig = jest.fn(config => {
@@ -27,6 +32,7 @@ jest.mock('./commands/handler');
 jest.mock('./logger');
 jest.mock('../data/credentials.json', () => ({}), { virtual: true });
 
+const Discord = require('discord.js');
 const database = require('./database');
 const background = require('./background');
 
@@ -51,9 +57,34 @@ describe('client', () => {
   });
 
   describe("'message' event", () => {
+    const client = require('./index');
+    let message;
+    client.user = mockDiscordClientUser;
+
+    beforeEach(() => {
+      message = new Discord.Message();
+    });
+
     describe('reactions', () => {
-      xit('reacts when mentioned', () => {});
-      xit('does not react when not mentioned', () => {});
+      beforeEach(() => {
+        message.channel = { name: 'ANY' };
+      });
+
+      it('reacts when mentioned', () => {
+        message.content = `SOME <@!${mockDiscordClientUser.id}> STRING`;
+        // seems a bit more complicated to mock this -- message.mentions = new Discord.MessageMentions();
+        client.emit('message', message);
+
+        expect(message.react).toBeCalledTimes(1);
+        expect(message.react).toBeCalledWith('😇');
+      });
+
+      it('does not react when not mentioned', () => {
+        message.content = 'SOME STRING';
+        client.emit('message', message);
+
+        expect(message.react).not.toBeCalled();
+      });
     });
 
     describe('command handling', () => {
