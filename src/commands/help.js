@@ -1,4 +1,4 @@
-exports.handle = async function(args, message, client) {
+exports.handle = async function(_args, message, _client) {
   let help = 'Here is a list of commands:\n';
   help += 'Type `!ping`.\n';
   help += 'Type `!help` for general help.\n';

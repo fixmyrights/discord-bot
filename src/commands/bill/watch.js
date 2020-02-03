@@ -1,7 +1,7 @@
 const database = require('../../database');
 const parser = require('../../parser');
 
-exports.handle = async function(args, message, client) {
+exports.handle = async function(args, message, _client) {
   const state = parser.state(args[0]);
   const billNumber = args[1];
 
