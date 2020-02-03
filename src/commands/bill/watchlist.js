@@ -9,7 +9,7 @@ exports.handle = async function(args, message, client) {
 
   for (const billId in watchlist) {
     const bill = watchlist[billId];
-    bills.push(bill);
+    bills.push({ ...bill, id: billId });
   }
 
   await formatter.bills(bills, channel, client);
