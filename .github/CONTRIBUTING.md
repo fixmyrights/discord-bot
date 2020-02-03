@@ -20,3 +20,7 @@ Hi! We're really excited that you are interested in contributing to the Fix My R
   - If you are resolving a special issue, add `(fix #xxxx[,#xxxx])` (#xxxx is the issue id) in your PR title for a better release log, e.g. `update entities encoding/decoding (fix #3899)`.
   - Provide a detailed description of the bug in the PR.
   - Add appropriate test coverage if applicable.
+  
+- Only Issue a Pull Request once you feel like your work on that branch is done. It will be deleted after the merge.
+
+- Try keeping a particular feature encased withing a single Branch, that way it makes it easier to track if needed. 
