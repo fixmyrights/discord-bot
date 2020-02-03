@@ -17,7 +17,7 @@ client.on('ready', async () => {
   background.schedule(client);
 });
 
-client.on('message', async message => {
+client.on('message', message => {
   const { channel } = message;
 
   const mentioned = message.content.includes(`<@!${client.user.id}>`);
