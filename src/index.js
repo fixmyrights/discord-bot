@@ -26,7 +26,10 @@ client.on('message', async message => {
     message.react('😇');
   }
 
-  if (channel.name && channel.name === database.getConfig('channel') && message.cleanContent.startsWith(database.getConfig('prefix'))) {
+  // Check that we are not in private messages
+  if (!channel) return;
+
+  if (channel.name === database.getConfig('channel') && message.cleanContent.startsWith(database.getConfig('prefix'))) {
     commandHandler.handle(message, client);
   }
 });
