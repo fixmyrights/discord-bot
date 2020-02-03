@@ -18,7 +18,7 @@
 
 ## Preview
 
-![Preview](.github/preview.png)
+![Preview](.github/preview-v2.png)
 
 ## Available Commands
 
