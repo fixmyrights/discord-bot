@@ -23,4 +23,4 @@ Hi! We're really excited that you are interested in contributing to the Fix My R
   
 - Only Issue a Pull Request once you feel like your work on that branch is done. It will be deleted after the merge.
 
-- Try keeping a particular feature encased withing a single Branch, that way it makes it easier to track if needed. 
+- Try keeping a particular feature encased within a single Branch, that way it makes it easier to track if needed.
