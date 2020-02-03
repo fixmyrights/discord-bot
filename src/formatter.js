@@ -12,7 +12,7 @@ exports.updateBill = async function(bill, updateReport, channel) {
   if (database.getConfig('embeds')) {
     if (updateReport.new || updateReport.progress || updateReport.hearing) {
       const embed = new Discord.RichEmbed()
-        .setTitle(`${parser.state(bill.state)} ${bill.number} Update`)
+        .setTitle(`${parser.state(bill.state)} ${bill.number} ${updateReport.new ? 'Introduced' : 'Update'}`)
         .setURL(bill.url)
         .setDescription(this.abbreviate(bill.title, 500));
 
