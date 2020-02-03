@@ -7,11 +7,6 @@ const timeoutForPageSwaps = 30 * 1000;
 const paginationAmount = 5;
 const richContextCache = {};
 
-exports.bill = function(bill) {
-  const recentHistoryItem = parser.recentHistory(bill);
-  return `**${parser.state(bill.state)} ${bill.number}**: *${parser.title(bill)}* ${recentHistoryItem.action} as of \`${this.date(recentHistoryItem.timestamp)}\` (<${bill.url}>)\n`;
-};
-
 async function getDateOfHearing(timestamp) {
   if (timestamp) {
     return new Date(timestamp);
@@ -53,14 +48,14 @@ async function generateEmbed(bills, startLocation = 0) {
   return embed;
 }
 
-async function generateFieldEmbeds(bills, embedId, showMore, message, currentLocation = 0) {
+async function generateFieldEmbeds(bills, embedId, showMore, channel, authUsers, currentLocation = 0) {
   const embed = await generateEmbed(bills, currentLocation);
   richContextCache[embedId] = currentLocation;
 
   const fieldEmbeds = new Pagination.Embeds()
     .setArray([embed])
-    .setAuthorizedUsers([message.author.id])
-    .setChannel(message.channel)
+    .setAuthorizedUsers(authUsers)
+    .setChannel(channel)
     .setTimeout(timeoutForPageSwaps)
     .setPageIndicator(true)
     .setDisabledNavigationEmojis(['ALL']);
@@ -69,10 +64,10 @@ async function generateFieldEmbeds(bills, embedId, showMore, message, currentLoc
     fieldEmbeds.addFunctionEmoji('▶', async (user, instance) => {
       const startLocation = richContextCache[embedId] + paginationAmount;
       if (bills.slice(startLocation, startLocation + paginationAmount).length < paginationAmount) {
-        const FieldsEmbed = await generateFieldEmbeds(bills, embedId, false, message, startLocation);
+        const FieldsEmbed = await generateFieldEmbeds(bills, embedId, false, channel, authUsers, startLocation);
         await FieldsEmbed.build();
       } else {
-        const FieldsEmbed = await generateFieldEmbeds(bills, embedId, true, message, startLocation);
+        const FieldsEmbed = await generateFieldEmbeds(bills, embedId, true, channel, authUsers, startLocation);
         await FieldsEmbed.build();
       }
     });
@@ -83,12 +78,16 @@ async function generateFieldEmbeds(bills, embedId, showMore, message, currentLoc
 
 exports.billsRichEmbed = async function(bills, message) {
   const embedId = uuid();
-  let showMore = true;
-  if (bills.length < 5) {
-    showMore = false;
-  }
+  const showMore = bills.length < 5;
 
-  const FieldsEmbed = await generateFieldEmbeds(bills, embedId, showMore, message);
+  const FieldsEmbed = await generateFieldEmbeds(bills, embedId, showMore, message.channel, [message.author.id]);
+  await FieldsEmbed.build();
+};
+
+exports.backgroundBills = async function(bills, channel) {
+  const embedId = uuid();
+  const showMore = bills.length < 5;
+  const FieldsEmbed = await generateFieldEmbeds(bills, embedId, showMore, channel, []);
   await FieldsEmbed.build();
 };
 

@@ -44,6 +44,8 @@ exports.schedule = function(client) {
           logger.debug('Will get bill details this time.');
         }
 
+        const billsToShow = [];
+
         for (const billSummary of bills) {
           const savedBill = savedBills[billSummary.id];
 
@@ -53,13 +55,17 @@ exports.schedule = function(client) {
             const updateReport = database.updateBill(bill);
 
             if (updateReport.new) {
-              await channel.send(`Found new bill ${formatter.bill(bill)}`);
+              billsToShow.push(bill);
             } else if (updateReport.progress) {
               await channel.send(`Bill **${parser.state(bill.state)} ${bill.number}** changed to ${updateReport.progress.action} as of \`${formatter.date(updateReport.progress.timestamp)}\``);
             }
           } else {
             logger.debug(`Will ignore bill ${billSummary.id}.`);
           }
+        }
+
+        if (billsToShow.length > 0) {
+          await formatter.backgroundBills(billsToShow);
         }
 
         await channel.send(`Updated ${bills.length} bills automatically.`);
