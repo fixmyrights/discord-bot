@@ -62,14 +62,18 @@ exports.bills = async function(bills, channel, client) {
         let billText = `**Title:** ${this.abbreviate(bill.title, 500)}\n`;
         billText += `**Url**: [${bill.id}](${bill.url})\n`;
 
-        const recentHistoryItem = parser.recentHistory(bill);
-        if (recentHistoryItem) {
-          billText += `**Status as of ${this.date(recentHistoryItem.timestamp)}:** ${recentHistoryItem.action}\n`;
-        }
-        if (bill.calendar) {
-          for (const calendarItem of bill.calendar.slice(bill.calendar.length - 2)) {
-            billText += `**${calendarItem.type} ${calendarItem.localTime ? 'at ' + calendarItem.localTime + ' ' : ''} on ${calendarItem.localDate}**: ${calendarItem.description}\n`;
+        if (bill.watching) {
+          const recentHistoryItem = parser.recentHistory(bill);
+          if (recentHistoryItem) {
+            billText += `**Status as of ${this.date(recentHistoryItem.timestamp)}:** ${recentHistoryItem.action}\n`;
           }
+          if (bill.calendar) {
+            for (const calendarItem of bill.calendar.slice(bill.calendar.length - 2)) {
+              billText += `**${calendarItem.type} ${calendarItem.localTime ? 'at ' + calendarItem.localTime + ' ' : ''} on ${calendarItem.localDate}**: ${calendarItem.description}\n`;
+            }
+          }
+        } else {
+          billText += '**Status:** Ignored';
         }
         embed.addField(`${parser.state(bill.state)} ${bill.number}`, billText);
         index += 1;
