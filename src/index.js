@@ -33,4 +33,4 @@ client.on('message', async message => {
 
 client.login(discordClientKey);
 
-exports.default = client;
+module.exports = client;
