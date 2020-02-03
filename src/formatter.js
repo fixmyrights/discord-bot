@@ -82,7 +82,11 @@ exports.bills = async function(bills, channel, client) {
 
       if (index < bills.length) {
         await sentMessage.react('⬇️');
-        await sentMessage.awaitReactions((reaction, user) => reaction.emoji.name === '⬇️' && user.id !== client.user.id, { max: 1, time: 60000, errors: ['time'] });
+        try {
+          await sentMessage.awaitReactions((reaction, user) => reaction.emoji.name === '⬇️' && user.id !== client.user.id, { max: 1, time: 60000, errors: ['time'] });
+        } catch (err) {
+          return;
+        }
       }
       fields = 0;
       page += 1;
