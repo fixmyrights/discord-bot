@@ -1,5 +1,5 @@
 {
-  "channel": "legisacn",
+  "channel": "legi-bot",
   "cron": "*/30 * * * *",
   "embeds": false,
   "interval": 60,
