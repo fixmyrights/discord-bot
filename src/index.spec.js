@@ -30,8 +30,8 @@ jest.mock('../data/credentials.json', () => ({}), { virtual: true });
 const database = require('./database');
 const background = require('./background');
 
-describe('Index', () => {
-  describe("client 'ready' event", () => {
+describe('client', () => {
+  describe("'ready' event", () => {
     const client = require('./index');
     client.user = mockDiscordClientUser;
 
@@ -40,23 +40,30 @@ describe('Index', () => {
     });
 
     it('loads the database', () => {
+      expect(database.load).toBeCalledTimes(1);
       expect(database.load).toBeCalledWith();
     });
 
     it('schedules the background cron job', () => {
+      expect(background.schedule).toBeCalledTimes(1);
       expect(background.schedule).toBeCalledWith(client);
     });
   });
 
-  describe("client 'message' event", () => {
-    xit('reacts to a mention', () => {});
-    xit('does not react when not mentioned', () => {});
-    xit('passes messages in the configured channel and with the configured prefix', () => {});
-    xit('does not pass messages outside of the configured channel', () => {});
-    xit('does not pass messages without the configured prefix', () => {});
+  describe("'message' event", () => {
+    describe('reactions', () => {
+      xit('reacts when mentioned', () => {});
+      xit('does not react when not mentioned', () => {});
+    });
+
+    describe('command handling', () => {
+      xit('passes to handler in the configured channel and with the configured prefix', () => {});
+      xit('does not pass to handler outside of the configured channel', () => {});
+      xit('does not pass to handler without the configured prefix', () => {});
+    });
   });
 
-  describe('client login', () => {
+  describe('login', () => {
     it('uses environment variable when available', () => {
       process.env.DISCORD_CLIENT_KEY = mockDiscordApiKey;
       jest.mock('../data/credentials.json', () => ({ client: mockDiscordApiKeyOther }), { virtual: true });
@@ -65,6 +72,7 @@ describe('Index', () => {
       expect(mockDiscordApiKey).not.toBe(mockDiscordApiKeyOther);
       expect(process.env.DISCORD_CLIENT_KEY).toBe(mockDiscordApiKey);
       expect(require('../data/credentials.json').client).toBe(mockDiscordApiKeyOther);
+      expect(client.login).toBeCalledTimes(1);
       expect(client.login).toBeCalledWith(mockDiscordApiKey);
     });
 
@@ -75,6 +83,7 @@ describe('Index', () => {
 
       expect(process.env.DISCORD_CLIENT_KEY).toBeFalsy();
       expect(require('../data/credentials.json').client).toBe(mockDiscordApiKey);
+      expect(client.login).toBeCalledTimes(1);
       expect(client.login).toBeCalledWith(mockDiscordApiKey);
     });
 
@@ -85,6 +94,7 @@ describe('Index', () => {
 
       expect(process.env.DISCORD_CLIENT_KEY).toBeFalsy();
       expect(require('../data/credentials.json').client).toBeFalsy();
+      expect(client.login).toBeCalledTimes(1);
       expect(client.login).toBeCalledWith(null);
     });
   });
