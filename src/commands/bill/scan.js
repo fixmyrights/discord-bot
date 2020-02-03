@@ -20,26 +20,18 @@ exports.handle = async function(args, message, client) {
     channel.send(`Scanning for right-to-repair legislation in ${state}...`);
 
     const bills = await legiscan.search(state, database.getConfig('query'));
-    let searchResult = '';
 
     if (bills) {
       if (bills.length > 0) {
         await database.load();
         for (const bill of bills) {
           database.updateBill(bill);
-          if (searchResult.length > 500) {
-            // Discord only supports 2000 max, so split into multiple messages
-            await channel.send(searchResult);
-            searchResult = '';
-          }
-          searchResult += formatter.bill(bill);
         }
-
+        await formatter.bills(bills, channel);
         await database.save();
       } else {
-        searchResult += 'No current legislation found.';
+        await channel.send('No current legislation found.');
       }
-      await channel.send(searchResult);
     } else {
       message.reply('LegiScan API error.');
     }

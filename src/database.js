@@ -95,7 +95,7 @@ exports.updateBill = function(bill) {
         bill.calendar = [];
       }
       for (const existingCalenderItem of existingBill.calendar) {
-        if (!bill.calendar.find(historyItem => historyItem.description === existingCalenderItem.description)) {
+        if (!bill.calendar.find(calendarItem => calendarItem.description === existingCalenderItem.description && calendarItem.timestamp === existingCalenderItem.timestamp)) {
           bill.calendar.push(existingCalenderItem);
         }
       }

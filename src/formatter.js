@@ -1,8 +1,99 @@
+const database = require('./database');
+const Discord = require('discord.js');
 const parser = require('./parser.js');
 
-exports.bill = function(bill) {
+exports.abbreviate = function(text, length) {
+  return text.length > length ? `${text.substring(0, length - 3)}...` : text;
+};
+
+exports.updateBill = async function(bill, updateReport, channel) {
   const recentHistoryItem = parser.recentHistory(bill);
-  return `**${parser.state(bill.state)} ${bill.number}**: *${parser.title(bill)}* ${recentHistoryItem.action} as of \`${this.date(recentHistoryItem.timestamp)}\` (<${bill.url}>)\n`;
+
+  if (database.getConfig('embeds')) {
+    if (updateReport.new || updateReport.progress || updateReport.hearing) {
+      const embed = new Discord.RichEmbed()
+        .setTitle(`${parser.state(bill.state)} ${bill.number} Update`)
+        .setURL(bill.url)
+        .setDescription(this.abbreviate(bill.title, 500));
+
+      if (updateReport.progress) {
+        embed.addField(`New ${this.date(updateReport.progress.timestamp)} Action`, updateReport.progress.action);
+      }
+
+      if (updateReport.hearing) {
+        embed.addField(`New ${updateReport.hearing.localDate} ${updateReport.hearing.localTime || ''} ${updateReport.hearing.type}`, updateReport.hearing.description);
+      }
+
+      embed.setTimestamp().setFooter(bill.id);
+
+      await channel.send(embed);
+    }
+  } else {
+    if (updateReport.new) {
+      await channel.send(`Found new bill **${parser.state(bill.state)} ${bill.number}**: *${parser.title(bill)}* ${recentHistoryItem.action} as of \`${this.date(recentHistoryItem.timestamp)}\` (<${bill.url}>)\n`);
+    } else {
+      if (updateReport.progress) {
+        await channel.send(`Bill **${parser.state(bill.state)} ${bill.number}** changed to ${updateReport.progress.action} as of \`${this.date(updateReport.progress.timestamp)}\``);
+      }
+
+      if (updateReport.hearing) {
+        await channel.send(
+          `${updateReport.hearing.type || 'Hearing'} for bill **${parser.state(bill.state)} ${bill.number}** scheduled for ${updateReport.hearing.localDate} at ${updateReport.hearing.localTime}, which is ${this.duration(updateReport.hearing.timestamp)}. The hearing is described as ${
+            updateReport.hearing.description
+          }. For more information, visit <${bill.url}>`
+        );
+      }
+    }
+  }
+};
+
+exports.bills = async function(bills, channel) {
+  if (database.getConfig('embeds')) {
+    let fields = 0;
+    let text = 0;
+    let index = 0;
+
+    while (index < bills.length) {
+      const embed = new Discord.RichEmbed().setTitle(`Legislation`).setDescription(`${bills.length} ${bills.length === 1 ? 'bill' : 'bills'}`);
+
+      while (index < bills.length && fields < 10 && text < 4000) {
+        const bill = bills[index];
+        let billText = `**Title:** ${this.abbreviate(bill.title, 500)}\n`;
+        billText += `**Url**: [Click here](${bill.url})\n`;
+
+        const recentHistoryItem = parser.recentHistory(bill);
+        if (recentHistoryItem) {
+          billText += `**Status as of ${this.date(recentHistoryItem.timestamp)}:** ${recentHistoryItem.action}\n`;
+        }
+        if (bill.calendar) {
+          for (const calendarItem of bill.calendar.slice(bill.calendar.length - 2)) {
+            billText += `**${calendarItem.type} ${calendarItem.localTime ? 'at ' + calendarItem.localTime + ' ' : ''} on ${calendarItem.localDate}**: ${calendarItem.description}\n`;
+          }
+        }
+        embed.addField(`${parser.state(bill.state)} ${bill.number}`, billText);
+        index += 1;
+        text += billText.length;
+        fields += 1;
+      }
+
+      embed.setTimestamp().setFooter(`${fields} ${fields === 1 ? 'field' : 'fields'}`);
+      await channel.send(embed);
+      fields = 0;
+      text = 0;
+    }
+  } else {
+    let block = '';
+    for (const bill of bills) {
+      if (block.length > 500) {
+        // Discord only supports 2000 max, so split into multiple messages
+        await channel.send(block);
+        block = '';
+      }
+      const recentHistoryItem = parser.recentHistory(bill);
+      block += `**${parser.state(bill.state)} ${bill.number}**: *${parser.title(bill)}* ${recentHistoryItem.action} as of \`${this.date(recentHistoryItem.timestamp)}\` (<${bill.url}>)\n`;
+    }
+    await channel.send(block);
+  }
 };
 
 exports.date = function(timestamp) {
