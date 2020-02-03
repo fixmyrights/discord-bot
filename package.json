@@ -44,6 +44,9 @@
     "type": "git",
     "url": "git+https://github.com/fixmyrights/discord-bot.git"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "keywords": [],
   "author": "",
   "license": "BSD-2-Clause",
