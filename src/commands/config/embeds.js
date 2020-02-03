@@ -1,23 +1,20 @@
 const database = require('../../database');
+const formatter = require('../../formatter');
+const parser = require('../../parser');
 
 exports.handle = async function(args, message, client) {
   const value = args[0];
 
   if (!value) {
-    message.reply(`Currently embeds are ${database.getConfig('embeds') ? 'on' : 'off'}.`);
+    message.reply(`Currently embeds are ${formatter.toggle(database.getConfig('embeds'))}.`);
   } else {
-    let setting = null;
-    if (value === 'on') {
-      setting = true;
+    const setting = parser.toggle(value);
+    if (setting === null) {
+      message.reply('Please enter on or off to enable or disable embeds.');
     } else {
-      setting = false;
-    }
-    if (setting !== null) {
       database.setConfig('embeds', setting);
       await database.save();
-      message.reply(`Updated embeds to be ${setting ? 'on' : 'off'}.`);
-    } else {
-      message.reply('Please enter on or off to enable or disable embeds.');
+      message.reply(`Updated embeds to be ${formatter.toggle(setting)}.`);
     }
   }
 };

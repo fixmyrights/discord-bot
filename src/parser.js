@@ -45,3 +45,13 @@ exports.title = function(bill) {
 
   return title.length > 497 ? `${title.substring(0, 497)}...` : title;
 };
+
+exports.toggle = function(value) {
+  let bool = null;
+  if (['on', 'enable', 'enabled', 'true'].includes(value)) {
+    bool = true;
+  } else if (['off', 'disable', 'disabled', 'false'].includes(value)) {
+    bool = false;
+  }
+  return bool;
+};

@@ -57,3 +57,7 @@ exports.duration = function(timestamp) {
 
   return `${durationValue} ${totalMillis < 0 ? 'ago' : 'from now'}`;
 };
+
+exports.toggle = function(bool) {
+  return bool ? 'on' : 'off';
+};
