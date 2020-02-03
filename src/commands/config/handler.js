@@ -6,8 +6,7 @@ const interval = require('./interval');
 const state = require('./state');
 
 exports.handle = function(args, message, client) {
-  const handler = args[0];
-  args = args.splice(1);
+  const handler = args.shift().toLowerCase();
 
   switch (handler) {
     case 'help':

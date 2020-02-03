@@ -6,8 +6,7 @@ const watch = require('./watch');
 const watchlist = require('./watchlist');
 
 exports.handle = function(args, message, client) {
-  const handler = args[0];
-  args = args.splice(1);
+  const handler = args.shift().toLowerCase();
 
   switch (handler) {
     case 'add':
