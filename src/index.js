@@ -30,4 +30,4 @@ client.on('message', async message => {
   }
 });
 
-client.login(process.env.DISCORD_CLIENT_KEY);
+client.login(process.env.DISCORD_TOKEN);
