@@ -41,3 +41,4 @@ junit.xml
 # Ignore some application files.
 watchlist.json
 database.json
+credentials.json
