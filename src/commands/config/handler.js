@@ -1,6 +1,7 @@
 const help = require('./help');
 const channel = require('./channel');
 const cron = require('./cron');
+const embeds = require('./embeds');
 const interval = require('./interval');
 const state = require('./state');
 
@@ -19,6 +20,11 @@ exports.handle = function(args, message, client) {
 
     case 'cron':
       cron.handle(args, message, client);
+      break;
+
+    case 'embed':
+    case 'embeds':
+      embeds.handle(args, message, client);
       break;
 
     case 'interval':
