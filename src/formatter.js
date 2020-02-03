@@ -57,7 +57,7 @@ exports.bills = async function(bills, channel, client) {
     while (index < bills.length) {
       const embed = new Discord.RichEmbed().setTitle(`Legislation`).setDescription(`Page ${page}`);
 
-      while (index < bills.length && fields < 10 && text < 4000) {
+      while (index < bills.length && fields < 5 && text < 4000) {
         const bill = bills[index];
         let billText = `**Title:** ${this.abbreviate(bill.title, 500)}\n`;
         billText += `**Url**: [${bill.id}](${bill.url})\n`;
@@ -79,8 +79,11 @@ exports.bills = async function(bills, channel, client) {
 
       embed.setTimestamp().setFooter(`${fields} ${fields === 1 ? 'bill' : 'bills'}`);
       const sentMessage = await channel.send(embed);
-      await sentMessage.react('⬇️');
-      await sentMessage.awaitReactions((reaction, user) => reaction.emoji.name === '⬇️' && user.id !== client.user.id, { max: 1, time: 60000, errors: ['time'] });
+
+      if (index < bills.length) {
+        await sentMessage.react('⬇️');
+        await sentMessage.awaitReactions((reaction, user) => reaction.emoji.name === '⬇️' && user.id !== client.user.id, { max: 1, time: 60000, errors: ['time'] });
+      }
       fields = 0;
       page += 1;
       text = 0;
