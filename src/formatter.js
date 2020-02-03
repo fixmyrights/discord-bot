@@ -47,7 +47,7 @@ exports.updateBill = async function(bill, updateReport, channel) {
   }
 };
 
-exports.bills = async function(bills, channel) {
+exports.bills = async function(bills, channel, client) {
   if (database.getConfig('embeds')) {
     let fields = 0;
     let index = 0;
@@ -60,7 +60,7 @@ exports.bills = async function(bills, channel) {
       while (index < bills.length && fields < 10 && text < 4000) {
         const bill = bills[index];
         let billText = `**Title:** ${this.abbreviate(bill.title, 500)}\n`;
-        billText += `**Url**: [Click here](${bill.url})\n`;
+        billText += `**Url**: [${bill.id}](${bill.url})\n`;
 
         const recentHistoryItem = parser.recentHistory(bill);
         if (recentHistoryItem) {
@@ -78,7 +78,9 @@ exports.bills = async function(bills, channel) {
       }
 
       embed.setTimestamp().setFooter(`${fields} ${fields === 1 ? 'bill' : 'bills'}`);
-      await channel.send(embed);
+      const sentMessage = await channel.send(embed);
+      await sentMessage.react('⬇️');
+      await sentMessage.awaitReactions((reaction, user) => reaction.emoji.name === '⬇️' && user.id !== client.user.id, { max: 1, time: 60000, errors: ['time'] });
       fields = 0;
       page += 1;
       text = 0;

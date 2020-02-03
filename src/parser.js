@@ -1,5 +1,11 @@
 const states = require('../data/states.json');
 
+exports.recentHearing = function(bill) {
+  const calendar = bill.calendar.concat();
+  calendar.sort((a, b) => b.timestamp - a.timestamp);
+  return calendar[0] || {};
+};
+
 exports.recentHistory = function(bill) {
   const history = bill.history.concat();
   history.sort((a, b) => b.timestamp - a.timestamp);

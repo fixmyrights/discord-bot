@@ -12,5 +12,5 @@ exports.handle = async function(args, message, client) {
     bills.push(bill);
   }
 
-  await formatter.bills(bills, channel);
+  await formatter.bills(bills, channel, client);
 };

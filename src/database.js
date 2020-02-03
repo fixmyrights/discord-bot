@@ -1,5 +1,6 @@
 const { promises: fs } = require('fs');
 const { logger } = require('./logger');
+const parser = require('./parser');
 const config = require('../data/default-config.json');
 
 const databaseDirectory = './database/';
@@ -74,7 +75,7 @@ exports.updateBill = function(bill) {
     bill.watching = existingBill.watching;
 
     if (existingBill.history) {
-      const lastestHistoryItem = bill.history[bill.history.length - 1];
+      const lastestHistoryItem = parser.recentHistory(bill);
       if (!existingBill.history.find(progressItem => progressItem.action === lastestHistoryItem.action)) {
         updateReport.progress = lastestHistoryItem;
       }
@@ -87,7 +88,7 @@ exports.updateBill = function(bill) {
 
     if (existingBill.calendar) {
       if (bill.calendar && bill.calendar.length > 0) {
-        const latestCalendarItem = bill.calendar[bill.calendar.length - 1];
+        const latestCalendarItem = parser.recentHearing(bill);
         if (!existingBill.calendar.find(calendarItem => calendarItem.description === latestCalendarItem.description && calendarItem.timestamp === latestCalendarItem.timestamp)) {
           updateReport.hearing = latestCalendarItem;
         }

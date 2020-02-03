@@ -27,7 +27,7 @@ exports.handle = async function(args, message, client) {
         for (const bill of bills) {
           database.updateBill(bill);
         }
-        await formatter.bills(bills, channel);
+        await formatter.bills(bills, channel, client);
         await database.save();
       } else {
         await channel.send('No current legislation found.');
