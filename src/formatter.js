@@ -50,11 +50,12 @@ exports.updateBill = async function(bill, updateReport, channel) {
 exports.bills = async function(bills, channel) {
   if (database.getConfig('embeds')) {
     let fields = 0;
-    let text = 0;
     let index = 0;
+    let page = 1;
+    let text = 0;
 
     while (index < bills.length) {
-      const embed = new Discord.RichEmbed().setTitle(`Legislation`).setDescription(`${bills.length} ${bills.length === 1 ? 'bill' : 'bills'}`);
+      const embed = new Discord.RichEmbed().setTitle(`Legislation`).setDescription(`Page ${page}`);
 
       while (index < bills.length && fields < 10 && text < 4000) {
         const bill = bills[index];
@@ -76,9 +77,10 @@ exports.bills = async function(bills, channel) {
         fields += 1;
       }
 
-      embed.setTimestamp().setFooter(`${fields} ${fields === 1 ? 'field' : 'fields'}`);
+      embed.setTimestamp().setFooter(`${fields} ${fields === 1 ? 'bill' : 'bills'}`);
       await channel.send(embed);
       fields = 0;
+      page += 1;
       text = 0;
     }
   } else {
