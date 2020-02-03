@@ -6,12 +6,11 @@ const bill = require('./bill/handler');
 const config = require('./config/handler');
 
 exports.handle = function(message, client) {
-  const command = message.cleanContent
-    .substring(1)
-    .toLowerCase()
-    .split(' ');
-  const handler = command[0];
-  const args = command.splice(1);
+  const args = message.cleanContent
+    .slice(1)
+    .trim()
+    .split(/ +/g);
+  const handler = args.shift().toLowerCase();
 
   switch (handler) {
     case 'ping':
