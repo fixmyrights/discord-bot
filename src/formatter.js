@@ -1,42 +1,94 @@
 const { RichEmbed } = require('discord.js');
 const parser = require('./parser.js');
 const Pagination = require('discord-paginationembed');
+const { uuid } = require('uuidv4');
+const oneDay = 1000 * 60 * 60 * 24;
+const timeoutForPageSwaps = 30 * 1000;
+const paginationAmount = 5;
+const richContextCache = {};
 
 exports.bill = function(bill) {
   const recentHistoryItem = parser.recentHistory(bill);
   return `**${parser.state(bill.state)} ${bill.number}**: *${parser.title(bill)}* ${recentHistoryItem.action} as of \`${this.date(recentHistoryItem.timestamp)}\` (<${bill.url}>)\n`;
 };
 
-exports.billsRichEmbed = async function(bills, message) {
-  const embeds = [];
+async function getDateOfHearing(timestamp) {
+  if (timestamp) {
+    return new Date(timestamp);
+  }
+  return undefined;
+}
 
-  let embed = new RichEmbed().setTitle('List of Matching Bills').setTimestamp(new Date());
-  for (const billIndex in bills) {
-    const recentHistoryItem = parser.recentHistory(bills[billIndex]);
-    const bill = bills[billIndex];
+async function getTimeTilHearing(dateOfHearing) {
+  if (dateOfHearing instanceof Date) {
+    const todaysDate = new Date();
+    const numberDaysAway = Math.round((dateOfHearing - todaysDate) / oneDay);
+    return Math.sign(numberDaysAway) >= 0 ? numberDaysAway : 'Already passed';
+  }
 
-    embed.addField('Bill', `[**${parser.state(bill.state)} ${bill.number}**](${bill.url}): *${parser.title(bill)}* ${recentHistoryItem.action} as of \`${this.date(recentHistoryItem.timestamp)}\``);
+  return undefined;
+}
 
-    if (billIndex % 10 === 0) {
-      console.log(embed.fields.length);
-      embeds.push(embed);
-      embed = new RichEmbed().setTitle('List of Matching Bills').setTimestamp(new Date());
+async function generateEmbed(bills, startLocation = 0) {
+  const embed = new RichEmbed()
+    .setTitle('List of Matching Bills')
+    .setDescription(`Page: ${startLocation / paginationAmount + 1}`)
+    .setTimestamp(new Date());
+  for (const bill of bills.slice(startLocation, startLocation + paginationAmount)) {
+    const recentCalendarItem = parser.recentCalendar(bill);
+    let fieldText = `**Title:** ${parser.title(bill)}\n`;
+    fieldText += `**Url:** ${bill.url}\n`;
+
+    if (recentCalendarItem) {
+      const dateOfHearing = await getDateOfHearing(recentCalendarItem.timestamp);
+      const numberDaysAway = await getTimeTilHearing(dateOfHearing);
+      fieldText += `**${recentCalendarItem.type}:**\n`;
+      fieldText += `**Scheduled Date:** ${dateOfHearing.toLocaleString('en-US')}\n`;
+      fieldText += `**Days Til:** ${numberDaysAway}`;
     }
+
+    embed.addField(`${parser.state(bill.state)} ${bill.number}`, fieldText);
   }
 
-  // cleanup for the last page
-  if (embed.fields.length > 0) {
-    embeds.push(embed);
-  }
+  return embed;
+}
 
-  const FieldsEmbed = new Pagination.Embeds()
-    .setArray(embeds)
+async function generateFieldEmbeds(bills, embedId, showMore, message, currentLocation = 0) {
+  const embed = await generateEmbed(bills, currentLocation);
+  richContextCache[embedId] = currentLocation;
+
+  const fieldEmbeds = new Pagination.Embeds()
+    .setArray([embed])
     .setAuthorizedUsers([message.author.id])
     .setChannel(message.channel)
+    .setTimeout(timeoutForPageSwaps)
     .setPageIndicator(true)
-    // Do we keep the delete?
-    .setDisabledNavigationEmojis(['DELETE']);
+    .setDisabledNavigationEmojis(['ALL']);
 
+  if (showMore) {
+    fieldEmbeds.addFunctionEmoji('▶', async (user, instance) => {
+      const startLocation = richContextCache[embedId] + paginationAmount;
+      if (bills.slice(startLocation, startLocation + paginationAmount).length < paginationAmount) {
+        const FieldsEmbed = await generateFieldEmbeds(bills, embedId, false, message, startLocation);
+        await FieldsEmbed.build();
+      } else {
+        const FieldsEmbed = await generateFieldEmbeds(bills, embedId, true, message, startLocation);
+        await FieldsEmbed.build();
+      }
+    });
+  }
+
+  return fieldEmbeds;
+}
+
+exports.billsRichEmbed = async function(bills, message) {
+  const embedId = uuid();
+  let showMore = true;
+  if (bills.length < 5) {
+    showMore = false;
+  }
+
+  const FieldsEmbed = await generateFieldEmbeds(bills, embedId, showMore, message);
   await FieldsEmbed.build();
 };
 

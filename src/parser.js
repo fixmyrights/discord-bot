@@ -6,6 +6,12 @@ exports.recentHistory = function(bill) {
   return history[0] || {};
 };
 
+exports.recentCalendar = function(bill) {
+  const calendar = bill.calendar.concat();
+  calendar.sort((a, b) => b.timestamp - a.timestamp);
+  return calendar[0] || undefined;
+};
+
 exports.state = function(input) {
   if (!input) {
     return null;

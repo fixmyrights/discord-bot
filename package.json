@@ -9,7 +9,8 @@
     "discord-paginationembed": "^1.0.3",
     "discord.js": "^11.5.1",
     "husky": "^4.2.1",
-    "node-cron": "^2.0.3"
+    "node-cron": "^2.0.3",
+    "uuidv4": "^6.0.2"
   },
   "devDependencies": {
     "consola": "^2.11.3",
