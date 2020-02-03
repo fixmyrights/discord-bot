@@ -28,6 +28,9 @@ yarn.lock
 /results
 /coverage
 
+# Ignore dotenv file.
+.env
+
 # Ignore cache and temporary folders.
 .cache
 .temp
@@ -35,7 +38,6 @@ yarn.lock
 # Ignore Junit reporters results.
 junit.xml
 
-# Ignore some application files (such as credentials).
-credentials.json
+# Ignore some application files.
 watchlist.json
 database.json
