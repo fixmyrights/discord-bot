@@ -40,8 +40,8 @@
 ### Developing
 
 1. `npm install` or `npm i`
-2. `cp credential.json.template credentials.json`
-3. Then setup your Discord bot token to the `credentials.json` file
+2. `cp .env.template .env`
+3. Then edit your `.env` file with the right informations.
 4. `npm start`
 5. Happy coding 🎉🙌
 

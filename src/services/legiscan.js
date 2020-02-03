@@ -1,6 +1,5 @@
 const axios = require('axios');
 const { logger } = require('./../logger');
-const credentials = require('./../../data/credentials.json');
 const parser = require('./../parser');
 
 const endpoint = 'https://api.legiscan.com';
@@ -10,7 +9,7 @@ const sortBills = bills => bills.sort((a, b) => b.history[0].timestamp - a.histo
 exports.getBill = async function(id) {
   const result = await axios.get(endpoint, {
     params: {
-      key: credentials.key,
+      key: process.env.LEGISCAN_API_KEY,
       op: 'getBill',
       id
     }
@@ -44,7 +43,7 @@ exports.getBill = async function(id) {
 exports.search = async function(state, query) {
   const result = await axios.get(endpoint, {
     params: {
-      key: credentials.key || credentials.keys[state],
+      key: process.env.LEGISCAN_API_KEY,
       op: 'search',
       state,
       query,
