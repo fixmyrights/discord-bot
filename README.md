@@ -10,7 +10,7 @@
 ![License](https://img.shields.io/github/license/fixmyrights/discord-bot)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/fixmyrights/discord-bot)
 [![CircleCI](https://img.shields.io/circleci/build/github/fixmyrights/discord-bot)](https://circleci.com/gh/fixmyrights/discord-bot)
-[![Coverage Status](https://coveralls.io/repos/github/fixmyrights/discord-bot/badge.svg?branch=master)](https://coveralls.io/github/fixmyrights/discord-bot?branch=master)
+![Coveralls github branch](https://img.shields.io/coveralls/github/fixmyrights/discord-bot/master)
 
 ## Features
 
