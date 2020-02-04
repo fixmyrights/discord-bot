@@ -50,12 +50,10 @@ exports.handle = function(args, message, client) {
       break;
 
     case 'scan':
-    case 'query':
       scan.handle(args, message, client);
       break;
 
     case 'list':
-    case 'watchlist':
       watchlist.handle(args, message, client);
       break;
 

@@ -46,7 +46,6 @@ exports.handle = function(args, message, client) {
       channel.handle(args, message, client);
       break;
 
-    case 'permission':
     case 'permissions':
       permissions.handle(args, message, client);
       break;
@@ -55,7 +54,6 @@ exports.handle = function(args, message, client) {
       cron.handle(args, message, client);
       break;
 
-    case 'embed':
     case 'embeds':
       embeds.handle(args, message, client);
       break;
