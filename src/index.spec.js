@@ -47,8 +47,6 @@ jest.mock('./background');
 jest.mock('./commands/handler');
 jest.mock('./logger'); // silence!
 
-jest.mock('../data/credentials.json', () => ({}), { virtual: true });
-
 const Discord = require('discord.js');
 const database = require('./database');
 const background = require('./background');
