@@ -12,7 +12,7 @@ exports.updateBill = async function(bill, updateReport, channel) {
   if (database.getConfig('embeds')) {
     if (updateReport.new || updateReport.progress || updateReport.hearing) {
       const embed = new Discord.RichEmbed()
-        .setTitle(`${parser.state(bill.state)} ${bill.number} Update`)
+        .setTitle(`${parser.state(bill.state)} ${bill.number} ${updateReport.new ? 'Introduced' : 'Update'}`)
         .setURL(bill.url)
         .setDescription(this.abbreviate(bill.title, 500));
 
@@ -68,7 +68,7 @@ exports.bills = async function(bills, channel, client) {
             billText += `**Status as of ${this.date(recentHistoryItem.timestamp)}:** ${recentHistoryItem.action}\n`;
           }
           if (bill.calendar) {
-            for (const calendarItem of bill.calendar.slice(bill.calendar.length - 2)) {
+            for (const calendarItem of bill.calendar.slice(-2)) {
               billText += `**${calendarItem.type} ${calendarItem.localTime ? 'at ' + calendarItem.localTime + ' ' : ''} on ${calendarItem.localDate}**: ${calendarItem.description}\n`;
             }
           }

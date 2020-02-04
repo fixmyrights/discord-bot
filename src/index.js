@@ -1,10 +1,9 @@
+require('dotenv').config();
+
 const background = require('./background');
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const credentials = require('../data/credentials.json');
 const database = require('./database');
-
-const discordClientKey = process.env.DISCORD_CLIENT_KEY || credentials.client || null;
 
 const commandHandler = require('./commands/handler');
 
@@ -34,4 +33,6 @@ client.on('message', message => {
   }
 });
 
-client.login(discordClientKey);
+client.login(process.env.DISCORD_TOKEN);
+
+module.exports = client;

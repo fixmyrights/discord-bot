@@ -1,8 +1,6 @@
 const database = require('../../database');
 const formatter = require('../../formatter');
 const parser = require('../../parser');
-const credentials = require('../../../data/credentials.json');
-const legiScanApiKey = process.env.LEGISCAN_API_KEY || credentials.key || null;
 
 // Legiscan API
 const legiscan = require('../../services/legiscan');
@@ -14,8 +12,6 @@ exports.handle = async function(args, message, client) {
 
   if (!state) {
     message.reply('Please enter a state by its name or two-letter code.');
-  } else if (!legiScanApiKey && !(state in credentials.keys)) {
-    message.reply(`No LegiScan API key for state code ${state}.`);
   } else {
     channel.send(`Scanning for right-to-repair legislation in ${state}...`);
 

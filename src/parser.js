@@ -1,15 +1,20 @@
 const states = require('../data/states.json');
 
 exports.recentHearing = function(bill) {
-  const calendar = bill.calendar.concat();
-  calendar.sort((a, b) => b.timestamp - a.timestamp);
+  let calendar = bill.calendar;
+  calendar = calendar.sort((a, b) => b.timestamp - a.timestamp);
+
   return calendar[0] || {};
 };
 
 exports.recentHistory = function(bill) {
-  const history = bill.history.concat();
-  history.sort((a, b) => b.timestamp - a.timestamp);
+  let history = bill.history;
+  history = history.sort((a, b) => b.timestamp - a.timestamp);
   return history[0] || {};
+};
+
+exports.role = function(role, message) {
+  return message.member.roles.find(r => r.name.toLowerCase() === role.toLowerCase());
 };
 
 exports.state = function(input) {
@@ -35,6 +40,7 @@ exports.timestamp = function(date, time, stateInput) {
 
 exports.titleRelevance = function(title) {
   let relevant = false;
+  title = title.toLowerCase();
 
   if (title.includes('right to repair')) {
     relevant = true;
