@@ -41,8 +41,6 @@ exports.handle = async function(args, message, client) {
           }
         }
 
-        console.log(`${group} ${command} => ${role}`);
-
         if (group) {
           if (['string', 'boolean'].includes(typeof permissions[group])) {
             const existingRole = permissions[group];
