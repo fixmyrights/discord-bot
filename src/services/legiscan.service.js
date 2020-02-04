@@ -2,7 +2,8 @@ const { stringify: querystring } = require('querystring');
 const axios = require('axios');
 const createError = require('axios/lib/core/createError');
 
-const { logger } = require('./../logger');
+const { logger } = require('../logger');
+const { title: parseTitle, titleRelevance } = require('../parser');
 
 const baseURL = process.env.LEGISCAN_ENDPOINT || 'https://api.legiscan.com';
 const timeout = process.env.LEGISCAN_TIMEOUT || 10 * 1000;
@@ -48,5 +49,47 @@ exports.Legiscan = class Legiscan {
     );
 
     return client;
+  }
+
+  static async search(state, query) {
+    try {
+      const { data } = await Legiscan.client.get('/', {
+        params: {
+          op: 'search',
+          state,
+          query,
+          year: 1
+        }
+      });
+
+      const { searchresult: bills } = data;
+
+      if (!bills.length) {
+        return [];
+      }
+
+      return bills
+        .reduce((acc, bill) => {
+          if (!bill.text_url || !titleRelevance(parseTitle(bill))) {
+            return acc;
+          }
+
+          const { bill_id: billId, state, bill_number: number, title, url, last_action: action, last_action_date: timestamp } = bill;
+
+          acc.push({
+            state,
+            number,
+            url,
+            title,
+            id: `${billId}`,
+            history: [{ action, timestamp: new Date(timestamp).valueOf() }]
+          });
+          return acc;
+        }, [])
+        .sort((a, b) => b.history[0].timestamp - a.history[0].timestamp);
+    } catch (err) {
+      logger.error(err);
+      return [];
+    }
   }
 };
