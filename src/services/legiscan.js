@@ -7,6 +7,29 @@ const endpoint = 'https://api.legiscan.com';
 const sortBills = bills => bills.sort((a, b) => b.history[0].timestamp - a.history[0].timestamp);
 
 exports.getBill = async function(id) {
+  // A bill number was passed in instead of an id
+  if (id.includes(' ')) {
+    const result = await axios.get(endpoint, {
+      params: {
+        key: credentials.key,
+        op: 'search',
+        query: id.split(' ')[1],
+        state: parser.state(id.split(' ')[0]),
+        year: 1
+      }
+    });
+
+    const response = result.data;
+
+    if (result.status === 'OK') {
+      console.log(response);
+    } else {
+      logger.error('API error:');
+      logger.error(response.searchresult);
+      return null;
+    }
+  }
+
   const result = await axios.get(endpoint, {
     params: {
       key: process.env.LEGISCAN_API_KEY,
@@ -33,11 +56,11 @@ exports.getBill = async function(id) {
       })
     };
     return returnBill;
+  } else {
+    logger.error('API error:');
+    logger.error(response);
+    return null;
   }
-
-  logger.error('API error:');
-  logger.error(response);
-  return null;
 };
 
 exports.search = async function(state, query) {
