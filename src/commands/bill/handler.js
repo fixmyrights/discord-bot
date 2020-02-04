@@ -7,15 +7,14 @@ const scan = require('./scan');
 const watch = require('./watch');
 const watchlist = require('./watchlist');
 
-const permissions = require('./permissions.json');
 const topHandler = require('./../handler');
 
 exports.handle = function(args, message, client) {
   const handler = args[0];
   args = args.splice(1);
 
-  if (!topHandler.canDoCommand(message, permissions[handler])) {
-    const notAllowedMsg = `You are not allowed to the command \`${handler}.\``;
+  if (!topHandler.canDoCommand(message, `bill:${handler}`)) {
+    const notAllowedMsg = `You are not allowed to use the command \`${handler}.\``;
     message.reply(notAllowedMsg);
     logger.debug(notAllowedMsg);
     return;
