@@ -7,7 +7,8 @@ exports.handle = async function(args, message, client) {
   switch (args.length) {
     case 0:
       help = `Current permissions are: ${JSON.stringify(permissions, null, 2)}.\n`;
-      help += 'True means any user can access.'.message.reply(help);
+      help += 'True means any user can access.';
+      message.reply(help);
       break;
 
     case 3:

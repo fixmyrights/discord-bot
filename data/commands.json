@@ -7,7 +7,7 @@
     "embeds": true,
     "help": true,
     "interval": true,
-    "permission": true,
+    "permissions": true,
     "state": true
   },
   "bill": {
