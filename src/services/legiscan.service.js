@@ -40,7 +40,14 @@ exports.Legiscan = class Legiscan {
         logger.trace(`<< ${JSON.stringify(data)}`);
 
         if (data.status === 'ERROR') {
-          throw createError(`Legiscan: ${data.alert.message}`, config, data.status, request, response);
+          // prettier-ignore
+          throw createError(
+            `Legiscan: ${data.alert.message}`,
+            config,
+            data.status,
+            request,
+            response
+          );
         }
 
         return response;
@@ -74,7 +81,15 @@ exports.Legiscan = class Legiscan {
             return acc;
           }
 
-          const { bill_id: billId, state, bill_number: number, title, url, last_action: action, last_action_date: timestamp } = bill;
+          // prettier-ignore
+          const {
+            bill_id: billId,
+            state,
+            bill_number: number,
+            title, url,
+            last_action: action,
+            last_action_date: timestamp
+          } = bill;
 
           acc.push({
             state,
