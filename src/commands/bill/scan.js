@@ -3,7 +3,7 @@ const formatter = require('../../formatter');
 const parser = require('../../parser');
 
 // Legiscan API
-const legiscan = require('../../services/legiscan');
+const { Legiscan } = require('../../services/legiscan.service');
 
 exports.handle = async function(args, message, client) {
   const { channel } = message;
@@ -15,7 +15,7 @@ exports.handle = async function(args, message, client) {
   } else {
     channel.send(`Scanning for right-to-repair legislation in ${state}...`);
 
-    const bills = await legiscan.search(state, database.getConfig('query'));
+    const bills = await Legiscan.search(state, database.getConfig('query'));
 
     if (bills) {
       if (bills.length > 0) {

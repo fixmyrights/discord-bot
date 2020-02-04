@@ -54,15 +54,18 @@ exports.Legiscan = class Legiscan {
   static async getBill(id) {
     try {
       const { data } = await Legiscan.client.get('/', {
-        op: 'getBill',
-        id
+        params: {
+          op: 'getBill',
+          id
+        }
       });
-      const { bill_id: billId, state, bill_number: number, title, history, calendar } = data.bill;
+      const { bill_id: billId, state, bill_number: number, title, history, calendar, url } = data.bill;
 
       return {
         state,
         number,
         title,
+        url,
         id: billId,
         history: (history || []).map(item => ({ action: item.action, timestamp: new Date(item.date).valueOf() })),
         calendar: (calendar || []).map(item => {
@@ -95,13 +98,11 @@ exports.Legiscan = class Legiscan {
         }
       });
 
-      const { searchresult: bills } = data;
-
-      if (!bills.length) {
+      if (!data) {
         return [];
       }
 
-      return bills
+      return Object.values(data.searchresult || {})
         .reduce((acc, bill) => {
           if (!bill.text_url || !titleRelevance(parseTitle(bill))) {
             return acc;

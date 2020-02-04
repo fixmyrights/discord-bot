@@ -1,11 +1,11 @@
 const database = require('../../database');
-const legiscan = require('../../services/legiscan');
+const { Legiscan } = require('../../services/legiscan.service');
 
 exports.handle = async function(args, message, _client) {
   const billId = args[0];
 
   if (billId) {
-    const bill = await legiscan.getBill(billId);
+    const bill = await Legiscan.getBill(billId);
 
     if (bill) {
       database.updateBill(bill);

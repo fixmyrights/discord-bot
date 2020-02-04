@@ -1,7 +1,7 @@
 const database = require('./database');
 const cron = require('node-cron');
 const formatter = require('./formatter');
-const legiscan = require('./services/legiscan');
+const { Legiscan } = require('./services/legiscan.service');
 const { logger } = require('./logger');
 
 let task = null;
@@ -21,7 +21,7 @@ exports.schedule = function(client) {
       logger.debug('Skipped background task because channel is not set.');
     }
 
-    const bills = await legiscan.search(database.getConfig('state'), database.getConfig('query'));
+    const bills = await Legiscan.search(database.getConfig('state'), database.getConfig('query'));
 
     if (bills) {
       logger.debug(`Found ${bills.length} bills in background.`);
@@ -51,7 +51,7 @@ exports.schedule = function(client) {
           const savedBill = savedBills[billSummary.id];
 
           if (!savedBill || savedBill.watching) {
-            const bill = detail ? await legiscan.getBill(billSummary.id) : billSummary;
+            const bill = detail ? await Legiscan.getBill(billSummary.id) : billSummary;
 
             const updateReport = database.updateBill(bill);
 
