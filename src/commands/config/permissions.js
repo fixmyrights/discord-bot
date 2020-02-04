@@ -1,67 +1,82 @@
+const commands = require('../../../data/commands.json');
 const database = require('../../database');
-const { logger } = require('./../../logger');
-
-const checkValidCommand = (commandArr, validCommands) => {
-  const topCmd = commandArr[0];
-
-  if (validCommands[topCmd] === true && commandArr.length === 1) {
-    return true;
-  } else if (typeof validCommands[topCmd] === 'object') {
-    if (commandArr.length === 1) {
-      return true;
-    } else {
-      return checkValidCommand(commandArr.slice(1), validCommands[topCmd]);
-    }
-  } else {
-    return false;
-  }
-};
 
 exports.handle = async function(args, message, client) {
-  if (args.length === 0) {
-    const permissions = database.getPermission(null);
-    let help = 'Current Permissions List:\n';
+  let command, help, group, role, roleArg;
+  let permissions = database.getConfig('permissions');
+  switch (args.length) {
+    case 0:
+      help = `Current permissions are: ${JSON.stringify(permissions, null, 2)}.\n`;
+      help += 'True means any user can access.'.message.reply(help);
+      break;
 
-    for (const p of Object.keys(permissions)) {
-      help += `Command: \`${p}\` Requires role: \`${permissions[p]}\`\n`;
-    }
+    case 3:
+      group = args[0];
 
-    help += 'If a command is not listed above, it is allowed by everyone.';
-    message.reply(help);
-  } else if (args.length === 1) {
-    // const value = args[0];
-    let help = 'Permission Config Examples:\n';
-    help += 'Type `!config permissions config channel role-example` To require the role-example to access a particular command.\n';
-    help += 'Type `!config permissions config role-example` To require the role-example to access all `config` commands.\n';
-    help += 'Type `!config permissions config channel remove` to remove the role requirement from the command.\n';
-    message.reply(help);
-  } else {
-    const roleReq = args.pop();
-
-    const commands = database.getConfig('command-list');
-
-    try {
-      if (!checkValidCommand(args, commands)) {
-        message.reply(`\`${args.join(' ➜ ')}\` is not a valid command`);
-        return;
+      if (!commands[group]) {
+        message.reply(`${group} is not a valid command group.`);
+        break;
       }
-      if (roleReq === 'remove') {
-        message.reply(`Removed role requirement for command \`${args.join(' ➜ ')}\``);
-        database.setPermission(args.join(':'), undefined);
-        await database.save();
-      } else {
-        const role = message.guild.roles.find(x => x.name.toLowerCase() === roleReq.toLowerCase());
-        if (role) {
-          message.reply(`Added \`${roleReq}\` as a role requirement for the command \`${args.join(' ➜ ')}\``);
-          database.setPermission(args.join(':'), roleReq);
-          await database.save();
-        } else {
-          message.reply(`The role: \`${roleReq}\` does not exist on this server!`);
+    // Fallthrough
+    case 2:
+      roleArg = args.pop();
+
+      // Command may also be a group, in which case it will set an entire group of commands to the role
+      command = args.pop();
+
+      if (group ? !commands[group][command] : !commands[command]) {
+        message.reply(`\`${command}\` is not a valid command.`);
+        break;
+      }
+
+      role = roleArg === 'remove' ? true : message.guild.roles.find(x => x.name.toLowerCase() === roleArg.toLowerCase()) ? roleArg : null;
+
+      if (role) {
+        if (['string', 'boolean'].includes(typeof permissions)) {
+          const existingRole = permissions;
+          permissions = {};
+          for (const command in commands) {
+            permissions[command] = existingRole;
+          }
         }
+
+        console.log(`${group} ${command} => ${role}`);
+
+        if (group) {
+          if (['string', 'boolean'].includes(typeof permissions[group])) {
+            const existingRole = permissions[group];
+            permissions[group] = {};
+            for (const groupCommand in commands[group]) {
+              permissions[group][groupCommand] = existingRole;
+            }
+          }
+          permissions[group][command] = role;
+        } else {
+          permissions[command] = role;
+        }
+        database.setConfig('permissions', permissions);
+        database.save();
+        message.reply('Updated permissions.');
+      } else {
+        message.reply(`The role: \`${roleArg}\` does not exist on this server.`);
       }
-    } catch (e) {
-      message.reply(`An error happened while updating permissions`);
-      logger.error(`Error While updating permissions`, e);
-    }
+      break;
+
+    case 1:
+      if (args[0] === 'remove') {
+        permissions = true;
+        database.setConfig('permissions', permissions);
+        database.save();
+        message.reply('Removed all permissions.');
+        break;
+      }
+    // Fallthrough
+    default:
+      help = 'Permission Config Examples:\n';
+      help += 'Type `!config permissions config channel role-example` To require the role-example to access a particular command.\n';
+      help += 'Type `!config permissions config role-example` To require the role-example to access all `config` commands.\n';
+      help += 'Type `!config permissions config channel remove` to remove the role requirement from the command.\n';
+      message.reply(help);
+      break;
   }
 };

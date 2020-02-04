@@ -1,0 +1,21 @@
+{
+  "help": true,
+  "ping": true,
+  "config": {
+    "channel": true,
+    "cron": true,
+    "embeds": true,
+    "help": true,
+    "interval": true,
+    "permission": true,
+    "state": true
+  },
+  "bill": {
+    "add": true,
+    "help": true,
+    "ignore": true,
+    "scan": true,
+    "watch": true,
+    "watchlist": true
+  }
+}
