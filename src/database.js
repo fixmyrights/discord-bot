@@ -130,6 +130,8 @@ exports.updateBill = function(bill) {
     bill.watching = true;
   }
 
+  Array.isArray(bill.history) && bill.history.sort((a, b) => b.timestamp - a.timestamp);
+  Array.isArray(bill.calendar) && bill.calendar.sort((a, b) => b.timestamp - a.timestamp);
   database.bill[bill.id] = { ...bill, id: undefined };
 
   return updateReport;
