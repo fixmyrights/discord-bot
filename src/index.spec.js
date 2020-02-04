@@ -1,5 +1,4 @@
 const mockDiscordApiKey = 'DISCORD_API_KEY';
-const mockDiscordApiKeyOther = 'DISCORD_API_KEY_OTHER';
 const mockDiscordClientUser = {
   id: 'DISCORD_CLIENT_USER_ID',
   tag: 'DISCORD_CLIENT_USER_TAG'
@@ -22,6 +21,14 @@ jest.mock('discord.js/src/client/Client', () => {
   return Client;
 });
 jest.mock('discord.js/src/structures/Message');
+
+jest.mock('dotenv', () => {
+  return {
+    config: () => {
+      process.env.DISCORD_TOKEN = mockDiscordApiKey;
+    }
+  };
+});
 
 jest.mock('./database', () => {
   const database = jest.genMockFromModule('./database');
@@ -47,15 +54,11 @@ const database = require('./database');
 const background = require('./background');
 const commandHandler = require('./commands/handler');
 
+const client = require('./index');
+client.user = mockDiscordClientUser;
+
 describe('client', () => {
   describe('events', () => {
-    let client;
-
-    beforeAll(() => {
-      client = require('./index');
-      client.user = mockDiscordClientUser;
-    });
-
     describe('ready', () => {
       beforeAll(() => {
         client.emit('ready');
@@ -137,38 +140,9 @@ describe('client', () => {
   });
 
   describe('login', () => {
-    it('uses environment variable when available', () => {
-      process.env.DISCORD_CLIENT_KEY = mockDiscordApiKey;
-      jest.mock('../data/credentials.json', () => ({ client: mockDiscordApiKeyOther }), { virtual: true });
-      const client = require('./index');
-
-      expect(mockDiscordApiKey).not.toBe(mockDiscordApiKeyOther);
-      expect(process.env.DISCORD_CLIENT_KEY).toBe(mockDiscordApiKey);
-      expect(require('../data/credentials.json').client).toBe(mockDiscordApiKeyOther);
+    it('uses environment variable', () => {
       expect(client.login).toBeCalledTimes(1);
       expect(client.login).toBeCalledWith(mockDiscordApiKey);
-    });
-
-    it('uses data/credentials.json client key when available and no environment variable', () => {
-      delete process.env.DISCORD_CLIENT_KEY;
-      jest.mock('../data/credentials.json', () => ({ client: mockDiscordApiKey }), { virtual: true });
-      const client = require('./index');
-
-      expect(process.env.DISCORD_CLIENT_KEY).toBeFalsy();
-      expect(require('../data/credentials.json').client).toBe(mockDiscordApiKey);
-      expect(client.login).toBeCalledTimes(1);
-      expect(client.login).toBeCalledWith(mockDiscordApiKey);
-    });
-
-    it('uses null key when no other option available', () => {
-      delete process.env.DISCORD_CLIENT_KEY;
-      jest.mock('../data/credentials.json', () => ({}), { virtual: true });
-      const client = require('./index');
-
-      expect(process.env.DISCORD_CLIENT_KEY).toBeFalsy();
-      expect(require('../data/credentials.json').client).toBeFalsy();
-      expect(client.login).toBeCalledTimes(1);
-      expect(client.login).toBeCalledWith(null);
     });
   });
 });
