@@ -6,7 +6,7 @@ const { logger } = require('../logger');
 const { title: parseTitle, titleRelevance } = require('../parser');
 
 const baseURL = process.env.LEGISCAN_ENDPOINT || 'https://api.legiscan.com';
-const timeout = process.env.LEGISCAN_TIMEOUT || 10 * 1000;
+const timeout = process.env.LEGISCAN_TIMEOUT || 60 * 1000;
 
 exports.Legiscan = class Legiscan {
   static get client() {
