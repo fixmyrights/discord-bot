@@ -39,7 +39,7 @@ exports.Legiscan = class Legiscan {
         logger.trace(`<< ${JSON.stringify(data)}`);
 
         if (data.status === 'ERROR') {
-          throw createError(`Legiscan: ${data.alert.message}`, config, response.statusText, request, response);
+          throw createError(`Legiscan: ${data.alert.message}`, config, data.status, request, response);
         }
 
         return response;
