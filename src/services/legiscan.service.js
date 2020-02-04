@@ -53,7 +53,7 @@ exports.Legiscan = class Legiscan {
 
   static async getBill(id) {
     try {
-      const { data } = Legiscan.client.get('/', {
+      const { data } = await Legiscan.client.get('/', {
         op: 'getBill',
         id
       });
