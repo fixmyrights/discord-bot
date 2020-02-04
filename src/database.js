@@ -14,6 +14,16 @@ exports.load = async function() {
   } catch (err) {}
 };
 
+exports.getPermission = function(key) {
+  if (key) {
+    // If permission is not set return null
+    return database.permission && database.permission[key] ? database.permission[key] : null;
+  } else {
+    // Return all permissions if none is choosen.
+    return database.permission || {};
+  }
+};
+
 exports.getConfig = function(key) {
   return database.config && database.config[key] ? database.config[key] : config[key];
 };
@@ -42,6 +52,20 @@ exports.setConfig = function(key, value) {
   }
 
   database.config[key] = value;
+};
+
+exports.setPermission = function(key, value) {
+  global.dirty = true;
+
+  if (!database.permission) {
+    database.permission = {};
+  }
+
+  if (value === undefined) {
+    delete database.permission[key];
+  } else {
+    database.permission[key] = value;
+  }
 };
 
 exports.setBill = function(bill) {
