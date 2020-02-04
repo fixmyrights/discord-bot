@@ -6,6 +6,7 @@ const bill = require('./bill/handler');
 const config = require('./config/handler');
 
 const database = require('./../database');
+const parser = require('./../parser');
 
 /**
  * Checks if the message object's user has the Role necessary to perform the command
@@ -14,26 +15,25 @@ const database = require('./../database');
  * The user must have at least one of the string in the `requiredRole` as his role in order to get true
  * if the requiredRole is undefined or contains 0 itens it will allow the command.
  *
+ * @param {string} command
  * @param {object} message
- * @param {string} desiredCommand
  * @returns {boolean}
  */
-const canDoCommand = (message, desiredCommand) => {
-  const requiredRole = database.getPermission(desiredCommand);
+const canDoCommand = (command, message) => {
+  const roles = database.getConfig('permissions');
+  const role = typeof roles === 'object' ? roles[command] : null;
 
-  if (requiredRole) {
-    const f = message.member.roles.find(r => r.name.toLowerCase() === requiredRole.toLowerCase());
-    if (f) {
-      return true;
-    } else {
-      return false;
-    }
+  if (typeof roles === 'string') {
+    // The entire category has a single role
+    return parser.role(roles, message);
+  } else if (typeof role === 'string') {
+    // This particular command has a particular role
+    return parser.role(role, message);
   } else {
+    // Either the role does not exist or it is specific to the next handler
     return true;
   }
 };
-
-exports.canDoCommand = canDoCommand;
 
 exports.handle = function(message, client) {
   const command = message.cleanContent
@@ -43,7 +43,7 @@ exports.handle = function(message, client) {
   const handler = command[0];
   const args = command.splice(1);
 
-  if (!canDoCommand(message, handler)) {
+  if (!canDoCommand(handler, message)) {
     const notAllowedMsg = `You are not allowed to use the command \`${handler}.\``;
     message.reply(notAllowedMsg);
     logger.debug(notAllowedMsg);
