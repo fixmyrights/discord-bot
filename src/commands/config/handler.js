@@ -11,7 +11,7 @@ const permissions = require('./permissions');
 const state = require('./state');
 
 const canDoCommand = (command, message) => {
-  const roles = database.getConfig('permissions').bill;
+  const roles = database.getConfig('permissions').config;
   const role = typeof roles === 'object' ? roles[command] : null;
 
   if (typeof roles === 'string') {
@@ -30,8 +30,8 @@ exports.handle = function(args, message, client) {
   const handler = args[0];
   args = args.splice(1);
 
-  if (!canDoCommand(message, `config:${handler}`)) {
-    const notAllowedMsg = `You are not allowed to use the command \`${handler}.\``;
+  if (!canDoCommand(handler, message)) {
+    const notAllowedMsg = `You are not allowed to use the command \`${handler}\`.`;
     message.reply(notAllowedMsg);
     logger.debug(notAllowedMsg);
     return;

@@ -44,7 +44,7 @@ exports.handle = function(message, client) {
   const args = command.splice(1);
 
   if (!canDoCommand(handler, message)) {
-    const notAllowedMsg = `You are not allowed to use the command \`${handler}.\``;
+    const notAllowedMsg = `You are not allowed to use the command \`${handler}\`.`;
     message.reply(notAllowedMsg);
     logger.debug(notAllowedMsg);
     return;

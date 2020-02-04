@@ -29,8 +29,8 @@ exports.handle = function(args, message, client) {
   const handler = args[0];
   args = args.splice(1);
 
-  if (!canDoCommand(message, `bill:${handler}`)) {
-    const notAllowedMsg = `You are not allowed to use the command \`${handler}.\``;
+  if (!canDoCommand(handler, message)) {
+    const notAllowedMsg = `You are not allowed to use the command \`${handler}\`.`;
     message.reply(notAllowedMsg);
     logger.debug(notAllowedMsg);
     return;
