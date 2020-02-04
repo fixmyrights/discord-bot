@@ -1,7 +1,7 @@
 const database = require('../../database');
 const parser = require('../../parser');
 
-exports.handle = async function(args, message, client) {
+exports.handle = async function(args, message, _client) {
   if (args.length === 0) {
     message.reply(`Current state is ${database.getConfig('state')}`);
   } else {

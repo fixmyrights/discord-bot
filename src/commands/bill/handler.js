@@ -26,8 +26,7 @@ const canDoCommand = (command, message) => {
 };
 
 exports.handle = function(args, message, client) {
-  const handler = args[0];
-  args = args.splice(1);
+  const handler = args.shift().toLowerCase();
 
   if (!canDoCommand(handler, message)) {
     const notAllowedMsg = `You are not allowed to use the command \`${handler}\`.`;

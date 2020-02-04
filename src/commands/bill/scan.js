@@ -8,7 +8,7 @@ const legiscan = require('../../services/legiscan');
 exports.handle = async function(args, message, client) {
   const { channel } = message;
 
-  const state = await parser.state(args.join(' '));
+  const state = parser.state(args.join(' '));
 
   if (!state) {
     message.reply('Please enter a state by its name or two-letter code.');
@@ -26,7 +26,7 @@ exports.handle = async function(args, message, client) {
         await formatter.bills(bills, channel, client);
         await database.save();
       } else {
-        await channel.send('No current legislation found.');
+        channel.send('No current legislation found.');
       }
     } else {
       message.reply('LegiScan API error.');
