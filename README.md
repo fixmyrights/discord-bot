@@ -10,7 +10,7 @@
 ![License](https://img.shields.io/github/license/fixmyrights/discord-bot)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/fixmyrights/discord-bot)
 [![CircleCI](https://img.shields.io/circleci/build/github/fixmyrights/discord-bot)](https://circleci.com/gh/fixmyrights/discord-bot)
-[![Coverage Status](https://coveralls.io/repos/github/fixmyrights/discord-bot/badge.svg?branch=master)](https://coveralls.io/github/fixmyrights/discord-bot?branch=master)
+![Coveralls github branch](https://img.shields.io/coveralls/github/fixmyrights/discord-bot/master)
 
 ## Features
 
@@ -18,7 +18,7 @@
 
 ## Preview
 
-![Preview](.github/preview.png)
+![Preview](.github/preview-v2.png)
 
 ## Available Commands
 
@@ -40,8 +40,8 @@
 ### Developing
 
 1. `npm install` or `npm i`
-2. `cp credential.json.template credentials.json`
-3. Then setup your Discord bot token to the `credentials.json` file
+2. `cp .env.template .env`
+3. Then edit your `.env` file with the right informations.
 4. `npm start`
 5. Happy coding 🎉🙌
 
