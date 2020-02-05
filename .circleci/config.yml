@@ -89,7 +89,8 @@ build: &build
     - run:
         name: Build Docker Image
         command: |
-            docker build -t docker.pkg.github.com/fixmyrights/discord-bot/bot:$CIRCLE_SHA1 -f build/node/Dockerfile .
+            docker build -t docker.pkg.github.com/fixmyrights/discord-bot/bot -f build/node/Dockerfile .
+            docker image tag docker.pkg.github.com/fixmyrights/discord-bot/bot docker.pkg.github.com/fixmyrights/discord-bot/bot:$CIRCLE_SHA1
     - run:
         name: Push build
         command: |
