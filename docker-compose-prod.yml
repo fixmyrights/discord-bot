@@ -1,0 +1,22 @@
+version: '3'
+services:
+  node:
+    container_name: discord-bot
+    image: asheliahut/fixmyrightsbot
+    restart: always
+    volumes:
+      - /home/fixmyrights/discord-bot/database:/home/node/app/database
+      - /home/fixmyrights/discord-bot/data:/home/node/app/data
+    environment:
+      DISCORD_TOKEN: ${DISCORD_TOKEN}
+      LEGISCAN_API_KEY: ${LEGISCAN_API_KEY}
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 100000
+  watchtower:
+    image: containrrr/watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30

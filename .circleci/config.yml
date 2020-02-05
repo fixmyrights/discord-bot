@@ -76,6 +76,24 @@ e2e_defaults: &e2e_defaults
         path: test-results
     - store_artifacts:
         path: test-results
+build: &build
+  <<: *defaults
+  steps:
+    - attach_workspace:
+        at: ~/
+    - run:
+        name: Docker Login
+        command: echo "$DOCKER_HUB_PASS" | docker login --username $DOCKER_HUB_USER --password-stdin
+    - run:
+        name: Build Docker Image
+        command: |
+            docker build -t asheliahut/fixmyrightsbot -f build/node/Dockerfile .
+            docker image tag asheliahut/fixmyrightsbot asheliahut/fixmyrightsbot:$CIRCLE_SHA1
+    - run:
+        name: Push build
+        command: |
+            docker push asheliahut/fixmyrightsbot:$CIRCLE_SHA1
+            docker push asheliahut/fixmyrightsbot:latest
 
 jobs:
   install:
@@ -86,6 +104,8 @@ jobs:
     <<: *unit_defaults
   e2e:
     <<: *e2e_defaults
+  build:
+    <<: *build
 
 workflows:
   version: 2
@@ -101,3 +121,11 @@ workflows:
       - e2e:
           requires:
             - install
+      - build:
+          filters:
+            branches:
+              only: master
+          requires:
+            - lint
+            - unit
+            - e2e

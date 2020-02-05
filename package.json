@@ -6,17 +6,17 @@
   "dependencies": {
     "@discordjs/uws": "^10.149.0",
     "axios": "^0.19.2",
+    "consola": "^2.11.3",
     "discord.js": "^11.5.1",
     "dotenv": "^8.2.0",
     "husky": "^4.2.1",
     "node-cron": "^2.0.3"
   },
   "devDependencies": {
-    "consola": "^2.11.3",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-jest": "^23.6.0",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-prettier": "^3.1.2",
