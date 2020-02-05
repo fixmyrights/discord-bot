@@ -4,10 +4,10 @@ const database = require('../../database');
 exports.handle = async function(args, message, client) {
   let command, help, group, role, roleArg;
   let permissions = database.getConfig('permissions');
+
   switch (args.length) {
     case 0:
-      help = `Current permissions are: ${JSON.stringify(permissions, null, 2)}.\n`;
-      help += 'True means any user can access.';
+      help = `Current permissions are ${JSON.stringify(permissions, null, 2)}.`;
       message.reply(help);
       break;
 
@@ -30,10 +30,12 @@ exports.handle = async function(args, message, client) {
         break;
       }
 
-      role = roleArg === 'remove' ? true : message.guild.roles.find(x => x.name.toLowerCase() === roleArg.toLowerCase()) ? roleArg : null;
+      role = roleArg === 'remove' ? undefined : message.guild.roles.find(x => [x.id, x.name.toLowerCase()].includes(roleArg.toLowerCase())) ? roleArg : null;
 
-      if (role) {
-        if (['string', 'boolean'].includes(typeof permissions)) {
+      if (role === null) {
+        message.reply(`The role: \`${roleArg}\` does not exist on this server.`);
+      } else {
+        if (typeof permissions !== 'object') {
           const existingRole = permissions;
           permissions = {};
           for (const command in commands) {
@@ -42,7 +44,7 @@ exports.handle = async function(args, message, client) {
         }
 
         if (group) {
-          if (['string', 'boolean'].includes(typeof permissions[group])) {
+          if (typeof permissions[group] !== 'object') {
             const existingRole = permissions[group];
             permissions[group] = {};
             for (const groupCommand in commands[group]) {
@@ -50,20 +52,24 @@ exports.handle = async function(args, message, client) {
             }
           }
           permissions[group][command] = role;
+          if (Object.keys(permissions[group]).length === 1 && role === undefined) {
+            permissions[group] = undefined;
+          }
         } else {
           permissions[command] = role;
+          if (Object.keys(permissions).length === 1 && role === undefined) {
+            permissions = undefined;
+          }
         }
         database.setConfig('permissions', permissions);
         database.save();
         message.reply('Updated permissions.');
-      } else {
-        message.reply(`The role: \`${roleArg}\` does not exist on this server.`);
       }
       break;
 
     case 1:
       if (args[0] === 'remove') {
-        permissions = true;
+        permissions = undefined;
         database.setConfig('permissions', permissions);
         database.save();
         message.reply('Removed all permissions.');

@@ -11,7 +11,7 @@ const permissions = require('./permissions');
 const state = require('./state');
 
 const canDoCommand = (command, message) => {
-  const roles = database.getConfig('permissions').config;
+  const roles = (database.getConfig('permissions') || {}).config;
   const role = typeof roles === 'object' ? roles[command] : null;
 
   if (typeof roles === 'string') {

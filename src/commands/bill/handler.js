@@ -10,7 +10,7 @@ const watch = require('./watch');
 const watchlist = require('./watchlist');
 
 const canDoCommand = (command, message) => {
-  const roles = database.getConfig('permissions').bill;
+  const roles = (database.getConfig('permissions') || {}).bill;
   const role = typeof roles === 'object' ? roles[command] : null;
 
   if (typeof roles === 'string') {

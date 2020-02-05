@@ -20,7 +20,7 @@ const parser = require('./../parser');
  * @returns {boolean}
  */
 const canDoCommand = (command, message) => {
-  const roles = database.getConfig('permissions');
+  const roles = database.getConfig('permissions') || {};
   const role = typeof roles === 'object' ? roles[command] : null;
 
   if (typeof roles === 'string') {
