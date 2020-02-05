@@ -2,7 +2,7 @@ version: '3'
 services:
   node:
     container_name: discord-bot
-    image: docker.pkg.github.com/fixmyrights/discord-bot/bot
+    image: docker.pkg.github.com/fixmyrights/discord-bot/bot:latest
     restart: always
     volumes:
       - /home/fixmyrights/discord-bot/database:/home/node/app/database
