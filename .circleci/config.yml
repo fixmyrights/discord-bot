@@ -5,7 +5,7 @@ defaults: &defaults
   docker:
     - image: circleci/node:latest
 
-install_defaults: &install_defaults
+install: &install
   <<: *defaults
   steps:
     - checkout
@@ -27,7 +27,7 @@ install_defaults: &install_defaults
           - discord-bot
           - .cache
 
-lint_defaults: &lint_defaults
+lint: &lint
   <<: *defaults
   steps:
     - attach_workspace:
@@ -45,7 +45,7 @@ lint_defaults: &lint_defaults
     - store_artifacts:
         path: test-results
 
-unit_defaults: &unit_defaults
+unit: &unit
   <<: *defaults
   steps:
     - attach_workspace:
@@ -61,7 +61,7 @@ unit_defaults: &unit_defaults
     - store_artifacts:
         path: test-results
 
-e2e_defaults: &e2e_defaults
+e2e: &e2e
   <<: *defaults
   steps:
     - attach_workspace:
@@ -76,34 +76,35 @@ e2e_defaults: &e2e_defaults
         path: test-results
     - store_artifacts:
         path: test-results
+
 build: &build
   <<: *defaults
   steps:
     - attach_workspace:
         at: ~/
+    - setup_remote_docker
     - run:
         name: Docker Login
-        command: echo "$DOCKER_HUB_PASS" | docker login --username $DOCKER_HUB_USER --password-stdin
+        command: echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin docker.pkg.github.com
     - run:
         name: Build Docker Image
         command: |
-            docker build -t asheliahut/fixmyrightsbot -f build/node/Dockerfile .
-            docker image tag asheliahut/fixmyrightsbot asheliahut/fixmyrightsbot:$CIRCLE_SHA1
+            docker build -t docker.pkg.github.com/fixmyrights/discord-bot/bot:$CIRCLE_SHA1 -f build/node/Dockerfile .
     - run:
         name: Push build
         command: |
-            docker push asheliahut/fixmyrightsbot:$CIRCLE_SHA1
-            docker push asheliahut/fixmyrightsbot:latest
+            docker push docker.pkg.github.com/fixmyrights/discord-bot/bot:$CIRCLE_SHA1
+            docker push docker.pkg.github.com/fixmyrights/discord-bot/bot:latest
 
 jobs:
   install:
-    <<: *install_defaults
+    <<: *install
   lint:
-    <<: *lint_defaults
+    <<: *lint
   unit:
-    <<: *unit_defaults
+    <<: *unit
   e2e:
-    <<: *e2e_defaults
+    <<: *e2e
   build:
     <<: *build
 
