@@ -76,7 +76,7 @@ exports.updateBill = function(bill) {
 
     if (existingBill.history) {
       const lastestHistoryItem = parser.recentHistory(bill);
-      if (!existingBill.history.find(progressItem => progressItem.action === lastestHistoryItem.action)) {
+      if (!existingBill.history.find(historyItem => historyItem.action === lastestHistoryItem.action && historyItem.timestamp === lastestHistoryItem.timestamp)) {
         updateReport.progress = lastestHistoryItem;
       }
       for (const existingHistoryItem of existingBill.history) {
