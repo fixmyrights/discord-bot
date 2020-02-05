@@ -38,10 +38,6 @@ exports.handle = function(args, message, client) {
   }
 
   switch (handler) {
-    case 'help':
-      help.handle(args, message, client);
-      break;
-
     case 'channel':
       channel.handle(args, message, client);
       break;
