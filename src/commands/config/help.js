@@ -5,7 +5,7 @@ exports.handle = function(_args, message, _client) {
   help += 'Type `!config state [state name|state code]` to limit automatic queries to a single state.\n';
   help += 'Type `!config interval [minutes]` to configure time between detailed queries.\n';
   help += 'Type `!config embeds [on|off]` to choose whether to show rich embeds.\n';
-  help += 'Type `!config permission [command] [(optional) subcommand] [rolename]` to add role requirement to a command.\n';
-  help += 'Type `!config permission [command] [(optional) subcommand] remove` to remove the role requirement to a command.';
+  help += 'Type `!config permissions [command] [(optional) subcommand] [rolename]` to add role requirement to a command.\n';
+  help += 'Type `!config permissions [command] [(optional) subcommand] remove` to remove the role requirement to a command.';
   message.reply(help);
 };
