@@ -4,7 +4,7 @@
   "description": "LegiScan integration for Discord",
   "main": "src/index.js",
   "dependencies": {
-    "@discordjs/uws": "^11.149.1",
+    "@discordjs/uws": "^10.149.0",
     "axios": "^0.19.2",
     "consola": "^2.11.3",
     "discord.js": "^11.5.1",
