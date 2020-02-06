@@ -19,6 +19,7 @@ exports.schedule = function(client) {
   task = cron.schedule(cronExpression, async () => {
     if (!database.getConfig('channel')) {
       logger.debug('Skipped background task because channel is not set.');
+      return;
     }
 
     const bills = await legiscan.search(database.getConfig('state'), database.getConfig('query'));
