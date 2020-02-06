@@ -4,7 +4,7 @@
 
 <hr>
 
-# Discord Bot
+# 🤖 Discord Bot
 
 ![GitHub top language](https://img.shields.io/github/languages/top/fixmyrights/discord-bot)
 ![License](https://img.shields.io/github/license/fixmyrights/discord-bot)

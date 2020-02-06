@@ -61,7 +61,7 @@ exports.schedule = function(client) {
           }
         }
 
-        await channel.send(`Updated ${bills.length} bills automatically.`);
+        await channel.send(`Monitored ${bills.length} bills automatically.`);
 
         await database.save();
       }

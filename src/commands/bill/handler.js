@@ -40,10 +40,6 @@ exports.handle = function(args, message, client) {
       add.handle(args, message, client);
       break;
 
-    case 'help':
-      help.handle(args, message, client);
-      break;
-
     case 'ignore':
       ignore.handle(args, message, client);
       break;

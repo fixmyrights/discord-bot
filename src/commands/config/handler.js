@@ -8,6 +8,7 @@ const cron = require('./cron');
 const embeds = require('./embeds');
 const interval = require('./interval');
 const permissions = require('./permissions');
+const prefix = require('./prefix');
 const state = require('./state');
 
 const canDoCommand = (command, message) => {
@@ -37,16 +38,16 @@ exports.handle = function(args, message, client) {
   }
 
   switch (handler) {
-    case 'help':
-      help.handle(args, message, client);
-      break;
-
     case 'channel':
       channel.handle(args, message, client);
       break;
 
     case 'permissions':
       permissions.handle(args, message, client);
+      break;
+
+    case 'prefix':
+      prefix.handle(args, message, client);
       break;
 
     case 'cron':
