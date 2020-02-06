@@ -7,7 +7,7 @@ const help = require('./help');
 const ignore = require('./ignore');
 const scan = require('./scan');
 const watch = require('./watch');
-const watchlist = require('./watchlist');
+const list = require('./list');
 
 const canDoCommand = (command, message) => {
   const roles = (database.getConfig('permissions') || {}).bill;
@@ -49,7 +49,7 @@ exports.handle = function(args, message, client) {
       break;
 
     case 'list':
-      watchlist.handle(args, message, client);
+      list.handle(args, message, client);
       break;
 
     case 'watch':

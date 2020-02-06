@@ -8,14 +8,16 @@
     "help": true,
     "interval": true,
     "permissions": true,
+    "prefix": true,
+    "reminder": true,
     "state": true
   },
   "bill": {
     "add": true,
     "help": true,
     "ignore": true,
+    "list": true,
     "scan": true,
-    "watch": true,
-    "watchlist": true
+    "watch": true
   }
 }

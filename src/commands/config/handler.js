@@ -9,6 +9,7 @@ const embeds = require('./embeds');
 const interval = require('./interval');
 const permissions = require('./permissions');
 const prefix = require('./prefix');
+const reminder = require('./reminder');
 const state = require('./state');
 
 const canDoCommand = (command, message) => {
@@ -60,6 +61,10 @@ exports.handle = function(args, message, client) {
 
     case 'interval':
       interval.handle(args, message, client);
+      break;
+
+    case 'reminder':
+      reminder.handle(args, message, client);
       break;
 
     case 'state':

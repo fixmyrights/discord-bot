@@ -47,6 +47,8 @@ exports.schedule = function(client) {
           logger.debug('Will get bill details this time.');
         }
 
+        const billHearingsReminders = [];
+
         for (const billSummary of bills) {
           const savedBill = savedBills[billSummary.id];
 
@@ -55,13 +57,21 @@ exports.schedule = function(client) {
 
             const updateReport = database.updateBill(bill);
 
+            if (updateReport.hearingReminders) {
+              billHearingsReminders.push({ bill, hearingReminders: updateReport.hearingReminders });
+            }
+
             await formatter.updateBill(bill, updateReport, channel);
           } else {
             logger.debug(`Will ignore bill ${billSummary.id}.`);
           }
         }
 
-        await channel.send(`Monitored ${bills.length} bills automatically.`);
+        if (billHearingsReminders.length > 0) {
+          await formatter.reminders(billHearingsReminders, channel);
+        }
+
+        await channel.send(detail ? `Automatic scan returned detailed results for ${bills.length} bills.` : `Automatic scan returned ${bills.length} bills.`);
 
         await database.save();
       }

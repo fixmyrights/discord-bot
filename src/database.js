@@ -69,11 +69,15 @@ exports.updateBill = function(bill) {
     database.bill = {};
   }
 
+  const now = Date.now();
+  const reminderMillis = this.getConfig('reminder') * 24 * 60 * 60 * 1000;
+
   if (bill.id in database.bill) {
     updateReport.new = false;
     const existingBill = database.bill[bill.id];
     bill.watching = existingBill.watching;
 
+    // The subtle difference between history and calendar is that history is either retrieved one item at a time or all items at a time, while calendar is either retrieved all items at a time or none at all
     if (existingBill.history) {
       const lastestHistoryItem = parser.recentHistory(bill);
       if (!existingBill.history.find(historyItem => historyItem.action === lastestHistoryItem.action && historyItem.timestamp === lastestHistoryItem.timestamp)) {
@@ -95,9 +99,15 @@ exports.updateBill = function(bill) {
       } else {
         bill.calendar = [];
       }
-      for (const existingCalenderItem of existingBill.calendar) {
-        if (!bill.calendar.find(calendarItem => calendarItem.description === existingCalenderItem.description && calendarItem.timestamp === existingCalenderItem.timestamp)) {
-          bill.calendar.push(existingCalenderItem);
+      for (const existingCalendarItem of existingBill.calendar) {
+        if (existingCalendarItem.timestamp > now && existingCalendarItem.timestamp - now < reminderMillis) {
+          if (!updateReport.hearingReminders) {
+            updateReport.hearingReminders = [];
+          }
+          updateReport.hearingReminders.push(existingCalendarItem);
+        }
+        if (!bill.calendar.find(calendarItem => calendarItem.description === existingCalendarItem.description && calendarItem.timestamp === existingCalendarItem.timestamp)) {
+          bill.calendar.push(existingCalendarItem);
         }
       }
     }
