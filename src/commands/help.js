@@ -1,10 +1,10 @@
 const billhelp = require('./bill/help');
 const confighelp = require('./config/help');
 
-exports.handle = function(_args, message, _client) {
-  if (_args === 'bill') {
+exports.handle = function(args, message, _client) {
+  if (args[0] === 'bill') {
     billhelp.handle(null, message, _client);
-  } else if (_args === 'config') {
+  } else if (args[0] === 'config') {
     confighelp.handle(null, message, _client);
   } else {
     let help = 'Here is a list of commands:\n';
