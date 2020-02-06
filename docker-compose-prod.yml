@@ -19,4 +19,7 @@ services:
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      REPO_USER: ${DOCKER_USERNAME}
+      REPO_PASS: ${DOCKER_PASSWORD}
     command: --interval 30
