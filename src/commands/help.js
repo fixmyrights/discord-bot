@@ -2,13 +2,11 @@ const billhelp = require('./bill/help');
 const confighelp = require('./config/help');
 
 exports.handle = function(_args, message, _client) {
-  if (_args == 'bill') {
+  if (_args === 'bill') {
     billhelp.handle(null, message, _client);
-  }
-  else if (_args == 'config') {
+  } else if (_args === 'config') {
     confighelp.handle(null, message, _client);
-  }
-  else {
+  } else {
     let help = 'Here is a list of commands:\n';
     help += 'Type `!ping`.\n';
     help += 'Type `!help` for general help.\n';
