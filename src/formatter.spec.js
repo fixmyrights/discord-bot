@@ -135,7 +135,7 @@ describe('Formatter Tests', () => {
     });
 
     it('Test Durations Day', () => {
-      const timestamp = '1580657790000';
+      const timestamp = '1580986918130';
       const totalMillis = timestamp - Date.now();
       const durationValue = '1 day';
       const output = `${durationValue} ${totalMillis < 0 ? 'ago' : 'from now'}`;
@@ -145,13 +145,13 @@ describe('Formatter Tests', () => {
     it('Test Durations Days', () => {
       const timestamp = '1580342400000';
       const totalMillis = timestamp - Date.now();
-      const durationValue = '3 days';
+      const durationValue = '6 days';
       const output = `${durationValue} ${totalMillis < 0 ? 'ago' : 'from now'}`;
       expect(formatter.duration(timestamp)).toBe(output);
     });
 
     it('Test Durations Year', () => {
-      const timestamp = '1644055318000';
+      const timestamp = '1618743718130';
       const totalMillis = timestamp - Date.now();
       const durationValue = '1 year';
       const output = `${durationValue} ${totalMillis < 0 ? 'ago' : 'from now'}`;
@@ -159,7 +159,7 @@ describe('Formatter Tests', () => {
     });
 
     it('Test Durations Years', () => {
-      const timestamp = '1707127318000';
+      const timestamp = '1640818918130';
       const totalMillis = timestamp - Date.now();
       const durationValue = '2 years';
       const output = `${durationValue} ${totalMillis < 0 ? 'ago' : 'from now'}`;
