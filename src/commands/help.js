@@ -1,11 +1,12 @@
 const billhelp = require('./bill/help');
 const confighelp = require('./config/help');
 
-exports.handle = function(args, message, _client) {
-  if (args[0] === 'bill') {
-    billhelp.handle(null, message, _client);
-  } else if (args[0] === 'config') {
-    confighelp.handle(null, message, _client);
+exports.handle = function(args, message, client) {
+  const arg = args.shift();
+  if (arg === 'bill') {
+    billhelp.handle(args, message, client);
+  } else if (arg === 'config') {
+    confighelp.handle(args, message, client);
   } else {
     let help = 'Here is a list of commands:\n';
     help += 'Type `!ping`.\n';
