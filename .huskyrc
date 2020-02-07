@@ -1,7 +1,0 @@
-{
-  "hooks": {
-    "pre-commit": [
-      "npm run fmt:check && npm run lint"
-    ]
-  }
-}
