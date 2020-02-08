@@ -39,7 +39,7 @@
 
 1. `npm install` or `npm i`
 2. `cp .env.template .env`
-3. Then edit your `.env` file with the right informations.
+3. Then edit your `.env` file with the right informations
 4. `npm start`
 5. Happy coding 🎉🙌
 
