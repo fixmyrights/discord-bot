@@ -26,9 +26,9 @@ client.on('message', message => {
   }
 
   // Check that we are not in private messages
-  if (!channel) return;
+  if (channel.type !== 'text') return;
 
-  if (!database.getConfig('channel') || (channel.name === database.getConfig('channel') && message.cleanContent.startsWith(database.getConfig('prefix')))) {
+  if ((!database.getConfig('channel') || channel.name === database.getConfig('channel')) && message.cleanContent.startsWith(database.getConfig('prefix'))) {
     commandHandler.handle(message, client);
   }
 });
