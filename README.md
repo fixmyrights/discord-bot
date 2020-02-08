@@ -4,7 +4,7 @@
 
 <hr>
 
-# Discord Bot
+# 🤖 Discord Bot
 
 ![GitHub top language](https://img.shields.io/github/languages/top/fixmyrights/discord-bot)
 ![License](https://img.shields.io/github/license/fixmyrights/discord-bot)
@@ -14,7 +14,7 @@
 
 ## Features
 
-- Right to Repair bill tracking and notifications (via the Legiscan API).
+- Right to Repair bill tracking and notifications (via the Legiscan API)
 
 ## Preview
 
@@ -25,11 +25,9 @@
 | Command                      |                    Description                     |
 | ---------------------------- | :------------------------------------------------: |
 | !ping                        |         Do you really need an explanation?         |
-| !help                        | Provides a list of available commands to the user. |
-| !bill scan [state]           |   Queries the API for all bills from that state.   |
-| !bill list                   |        Show bills being watched for updates        |
-| !bill ignore [state][bill #] |             Remove bill from watchlist             |
-| !config [key][value]         |                  Change settings                   |
+| !help                        |              Shows this list of commands.          |
+| !bill help                   |           Shows available bill commands.           |
+| !config help                 |        Shows available configuration commands.     |
 
 ## Development
 
@@ -41,7 +39,7 @@
 
 1. `npm install` or `npm i`
 2. `cp .env.template .env`
-3. Then edit your `.env` file with the right informations.
+3. Then edit your `.env` file with the right informations
 4. `npm start`
 5. Happy coding 🎉🙌
 

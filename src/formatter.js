@@ -6,6 +6,38 @@ exports.abbreviate = function(text, length) {
   return text.length > length ? `${text.substring(0, length - 3)}...` : text;
 };
 
+exports.reminders = async function(billHearingsReminders, channel) {
+  if (database.getConfig('embeds')) {
+    const embed = new Discord.RichEmbed().setTitle(`Important Reminders`).setDescription(`The following hearings are scheduled for the next ${database.getConfig('reminder')} days.`);
+
+    let count = 0;
+    for (const billHearingsReminder of billHearingsReminders) {
+      if (count < 10) {
+        let block = '';
+        for (const billHearingReminder of billHearingsReminder.hearingReminders) {
+          block += `${billHearingReminder.type || 'Hearing'} is ${this.duration(billHearingReminder.timestamp)}, or on ${billHearingReminder.localDate} at ${billHearingReminder.localTime}\n`;
+        }
+        embed.addField(`${parser.state(billHearingsReminder.bill.state)} ${billHearingsReminder.bill.number}`, block);
+        count += 1;
+      } else {
+        embed.addField('Warning', 'Reached limit of 10 reminders. Consider limiting your reminder interval.');
+      }
+    }
+
+    embed.setTimestamp().setFooter(`${count} of ${billHearingsReminders.length} bills`);
+
+    await channel.send(embed);
+  } else {
+    for (const billHearingsReminder of billHearingsReminders) {
+      for (const billHearingReminder of billHearingsReminder.hearingReminders) {
+        await channel.send(
+          `As a reminder, a ${billHearingReminder.type || 'Hearing'} on **${parser.state(billHearingsReminder.bill.state)} ${billHearingsReminder.bill.number}** is ${this.duration(billHearingReminder.timestamp)}, or on ${billHearingReminder.localDate} at ${billHearingReminder.localTime}`
+        );
+      }
+    }
+  }
+};
+
 exports.updateBill = async function(bill, updateReport, channel) {
   const recentHistoryItem = parser.recentHistory(bill);
 
@@ -68,7 +100,7 @@ exports.bills = async function(bills, channel, client) {
             billText += `**Status as of ${this.date(recentHistoryItem.timestamp)}:** ${recentHistoryItem.action}\n`;
           }
           if (bill.calendar) {
-            for (const calendarItem of bill.calendar.slice(bill.calendar.length - 2)) {
+            for (const calendarItem of bill.calendar.slice(-2)) {
               billText += `**${calendarItem.type} ${calendarItem.localTime ? 'at ' + calendarItem.localTime + ' ' : ''} on ${calendarItem.localDate}**: ${calendarItem.description}\n`;
             }
           }
@@ -120,7 +152,7 @@ exports.duration = function(timestamp) {
   const totalSeconds = Math.abs(totalMillis / 1000);
   const totalMinutes = totalSeconds / 60;
   const totalHours = totalMinutes / 60;
-  const totalDays = totalHours / 60;
+  const totalDays = totalHours / 24;
   const totalYears = totalDays / 365;
 
   const seconds = Math.round(totalSeconds);

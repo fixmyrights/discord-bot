@@ -16,7 +16,7 @@ client.on('ready', async () => {
   background.schedule(client);
 });
 
-client.on('message', async message => {
+client.on('message', message => {
   const { channel } = message;
 
   const mentioned = message.content.includes(`<@!${client.user.id}>`);
@@ -25,7 +25,10 @@ client.on('message', async message => {
     message.react('😇');
   }
 
-  if (channel.name && channel.name === database.getConfig('channel') && message.cleanContent.startsWith(database.getConfig('prefix'))) {
+  // Check that we are not in private messages
+  if (!channel) return;
+
+  if (!database.getConfig('channel') || (channel.name === database.getConfig('channel') && message.cleanContent.startsWith(database.getConfig('prefix')))) {
     commandHandler.handle(message, client);
   }
 });

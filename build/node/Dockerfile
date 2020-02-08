@@ -11,10 +11,7 @@ COPY package*.json /home/node/app/
 
 WORKDIR /home/node/app
 
-# Set To non root user
-USER node
-
-RUN npm install
+RUN npm install --production
 
 COPY --chown=node:node . /home/node/app
 

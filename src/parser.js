@@ -13,6 +13,10 @@ exports.recentHistory = function(bill) {
   return history[0] || {};
 };
 
+exports.role = function(role, message) {
+  return message.member.roles.find(r => r.name.toLowerCase() === role.toLowerCase());
+};
+
 exports.state = function(input) {
   if (!input) {
     return null;

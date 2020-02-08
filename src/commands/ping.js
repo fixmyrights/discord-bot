@@ -1,3 +1,3 @@
-exports.handle = function(args, message, client) {
+exports.handle = function(_args, message, _client) {
   message.reply('pong');
 };

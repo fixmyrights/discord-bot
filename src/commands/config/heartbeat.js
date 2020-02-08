@@ -6,15 +6,15 @@ exports.handle = async function(args, message, _client) {
   const value = args[0];
 
   if (!value) {
-    message.reply(`Currently embeds are ${formatter.toggle(database.getConfig('embeds'))}.`);
+    message.reply(`Currently heartbeat is ${formatter.toggle(database.getConfig('heartbeat'))}.`);
   } else {
     const setting = parser.toggle(value);
     if (setting === null) {
-      message.reply('Please enter on or off to enable or disable embeds.');
+      message.reply('Please enter on or off to enable or disable heartbeat.');
     } else {
-      database.setConfig('embeds', setting);
+      database.setConfig('heartbeat', setting);
       await database.save();
-      message.reply(`Updated embeds to be ${formatter.toggle(setting)}.`);
+      message.reply(`Updated heartbeat to be ${formatter.toggle(setting)}.`);
     }
   }
 };
