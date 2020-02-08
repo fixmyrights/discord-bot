@@ -25,11 +25,9 @@
 | Command                      |                    Description                     |
 | ---------------------------- | :------------------------------------------------: |
 | !ping                        |         Do you really need an explanation?         |
-| !help                        | Provides a list of available commands to the user. |
-| !bill scan [state]           |   Queries the API for all bills from that state.   |
-| !bill list                   |        Show bills being watched for updates        |
-| !bill ignore [state][bill #] |             Remove bill from watchlist             |
-| !config [key][value]         |                  Change settings                   |
+| !help                        |              Shows this list of commands           |
+| !bill help                   |           Shows available bill commands.           |
+| !config help                 |        Shows available configuration commands      |
 
 ## Development
 
