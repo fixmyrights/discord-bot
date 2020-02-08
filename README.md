@@ -14,7 +14,7 @@
 
 ## Features
 
-- Right to Repair bill tracking and notifications (via the Legiscan API).
+- Right to Repair bill tracking and notifications (via the Legiscan API)
 
 ## Preview
 
