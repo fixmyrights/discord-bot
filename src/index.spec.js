@@ -10,10 +10,10 @@ const mockMessageContentNotMention = 'SOME STRING';
 const mockMessageContentMatchingConfig = `${mockConfigPrefix} AND SOME TEXT`;
 const mockMessageContentNotMatchingConfig = `NOT-${mockConfigPrefix}`;
 const mockMessageChannelAny = { name: '#ANY' };
-const mockMessageChannelMatchingConfig = { name: mockConfigChannel };
-const mockMessageChannelNotMatchingConfig = { name: `#NOT-${mockConfigChannel}` };
+const mockMessageTextChannelMatchingConfig = { name: mockConfigChannel, type: 'text' };
+const mockMessageTextChannelNotMatchingConfig = { name: `#NOT-${mockConfigChannel}`, type: 'text' };
 
-const mentionRepliesWithReaction = '😇';
+const mentionReaction = '😇';
 
 jest.mock('discord.js/src/client/Client', () => {
   const Client = jest.requireActual('discord.js/src/client/Client'); // we want our EventEmitter
@@ -72,6 +72,7 @@ describe('client', () => {
         expect(background.schedule).toBeCalledWith(client);
       });
     });
+
     describe('message', () => {
       let message;
 
@@ -90,7 +91,7 @@ describe('client', () => {
           client.emit('message', message);
 
           expect(message.react).toBeCalledTimes(1);
-          expect(message.react).toBeCalledWith(mentionRepliesWithReaction);
+          expect(message.react).toBeCalledWith(mentionReaction);
         });
 
         it('does not react when not mentioned', () => {
@@ -109,17 +110,55 @@ describe('client', () => {
         it('passes to handler in the configured channel and with the configured prefix', () => {
           message.content = mockMessageContentMatchingConfig;
           message.cleanContent = message.content;
-          message.channel = mockMessageChannelMatchingConfig;
+          message.channel = mockMessageTextChannelMatchingConfig;
           client.emit('message', message);
 
           expect(commandHandler.handle).toBeCalledTimes(1);
           expect(commandHandler.handle).toBeCalledWith(message, client);
         });
 
+        it('passes to handler without a configured channel and with the configured prefix', () => {
+          // one-time mock
+          jest.mock('./database', () => {
+            const database = jest.genMockFromModule('./database');
+            database.getConfig = jest.fn(config => {
+              if (config === 'channel') {
+                return undefined;
+              } else if (config === 'prefix') {
+                return mockConfigPrefix;
+              } else {
+                return 'no mock';
+              }
+            });
+            return database;
+          });
+
+          const client = require('./index');
+          const commandHandler = require('./commands/handler'); // require must be in same scope as mocks, (./database mock changed)
+          client.user = mockDiscordClientUser;
+          message.content = mockMessageContentMatchingConfig;
+          message.cleanContent = message.content;
+          message.channel = mockMessageTextChannelMatchingConfig;
+          client.emit('message', message);
+
+          expect(commandHandler.handle).toBeCalledTimes(1);
+          expect(commandHandler.handle).toBeCalledWith(message, client);
+        });
+
+        it('does not pass to handler outside of a guild text channel', () => {
+          message.content = mockMessageContentMatchingConfig;
+          message.cleanContent = message.content;
+          message.channel = mockMessageTextChannelMatchingConfig;
+          message.channel.type = undefined;
+          client.emit('message', message);
+
+          expect(commandHandler.handle).not.toBeCalled();
+        });
+
         it('does not pass to handler outside of the configured channel', () => {
           message.content = mockMessageContentMatchingConfig;
           message.cleanContent = message.content;
-          message.channel = mockMessageChannelNotMatchingConfig;
+          message.channel = mockMessageTextChannelNotMatchingConfig;
           client.emit('message', message);
 
           expect(commandHandler.handle).not.toBeCalled();
@@ -128,7 +167,7 @@ describe('client', () => {
         it('does not pass to handler without the configured prefix', () => {
           message.content = mockMessageContentNotMatchingConfig;
           message.cleanContent = message.content;
-          message.channel = mockMessageChannelMatchingConfig;
+          message.channel = mockMessageTextChannelMatchingConfig;
           client.emit('message', message);
 
           expect(commandHandler.handle).not.toBeCalled();
