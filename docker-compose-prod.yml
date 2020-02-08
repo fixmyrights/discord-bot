@@ -6,7 +6,6 @@ services:
     restart: always
     volumes:
       - /home/fixmyrights/discord-bot/database:/home/node/app/database
-      - /home/fixmyrights/discord-bot/data:/home/node/app/data
     environment:
       DISCORD_TOKEN: ${DISCORD_TOKEN}
       LEGISCAN_API_KEY: ${LEGISCAN_API_KEY}
