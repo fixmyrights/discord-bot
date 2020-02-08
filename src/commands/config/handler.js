@@ -2,10 +2,11 @@ const database = require('../../database');
 const { logger } = require('../../logger');
 const parser = require('../../parser');
 
-const help = require('./help');
 const channel = require('./channel');
 const cron = require('./cron');
 const embeds = require('./embeds');
+const heartbeat = require('./heartbeat');
+const help = require('./help');
 const interval = require('./interval');
 const permissions = require('./permissions');
 const prefix = require('./prefix');
@@ -57,6 +58,10 @@ exports.handle = function(args, message, client) {
 
     case 'embeds':
       embeds.handle(args, message, client);
+      break;
+
+    case 'heartbeat':
+      heartbeat.handle(args, message, client);
       break;
 
     case 'interval':

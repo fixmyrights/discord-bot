@@ -6,6 +6,7 @@
     "cron": true,
     "embeds": true,
     "help": true,
+    "heartbeat": true,
     "interval": true,
     "permissions": true,
     "prefix": true,

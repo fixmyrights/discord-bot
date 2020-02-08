@@ -72,7 +72,9 @@ exports.schedule = function(client) {
           await formatter.reminders(billHearingsReminders, channel);
         }
 
-        await channel.send(detail ? `Automatic scan returned detailed results for ${bills.length} bills.` : `Automatic scan returned ${bills.length} bills.`);
+        if (database.getConfig('heartbeat')) {
+          await channel.send(detail ? `Automatic scan returned detailed results for ${bills.length} bills.` : `Automatic scan returned ${bills.length} bills.`);
+        }
 
         await database.save();
       }

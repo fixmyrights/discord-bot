@@ -1,6 +1,7 @@
 {
   "cron": "*/30 * * * *",
   "embeds": true,
+  "heartbeat": true,
   "interval": 60,
   "prefix": "!",
   "query": "\"right to repair\" OR \"right-to-repair\" OR ((servicing OR repair) AND electronics) OR (fair AND electronic AND repair OR independent)",

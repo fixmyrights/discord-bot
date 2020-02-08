@@ -15,7 +15,7 @@ exports.load = async function() {
 };
 
 exports.getConfig = function(key) {
-  return database.config && database.config[key] ? database.config[key] : config[key];
+  return database.config && key in database.config ? database.config[key] : config[key];
 };
 
 exports.getBills = function() {
