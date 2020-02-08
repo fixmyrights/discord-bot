@@ -134,7 +134,7 @@ describe('client', () => {
           });
 
           const client = require('./index');
-          const commandHandler = require('./commands/handler'); // require must be in same scope as mocks, (./database mock changed)
+          const commandHandler = require('./commands/handler'); // require must be in same scope as mocks (./database mock changed)
           client.user = mockDiscordClientUser;
           message.content = mockMessageContentMatchingConfig;
           message.cleanContent = message.content;
