@@ -25,9 +25,9 @@
 | Command                      |                    Description                     |
 | ---------------------------- | :------------------------------------------------: |
 | !ping                        |         Do you really need an explanation?         |
-| !help                        |              Shows this list of commands           |
+| !help                        |              Shows this list of commands.          |
 | !bill help                   |           Shows available bill commands.           |
-| !config help                 |        Shows available configuration commands      |
+| !config help                 |        Shows available configuration commands.     |
 
 ## Development
 
