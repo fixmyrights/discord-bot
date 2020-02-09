@@ -1,0 +1,40 @@
+const errors = [
+  'Conversation insufficiently robust.',
+  'Server is a MacBook.',
+  'Too many lobbyists, try again later.',
+  'Action failed because it failed in all other states so far.',
+  'Too much flux.',
+  'Mac converted into PC.',
+  'Not enough in-state support.',
+  'Too much money in politics.',
+  'An update disabled this feature.',
+  'Server caught on fire due to independent repair.',
+  'Time for a new contractor.',
+  'Insufficient voltage.',
+  '52 volt transient detected in CPU.',
+  'Server motherboard flexed too much.',
+  'Task failed successfully.',
+  'Be careful what you wish for.',
+  'Error occurred while displaying error.',
+  'Restart your computer and try again.',
+  "That's impossible!",
+  'Unkown issue.',
+  'Authentication required.',
+  'Operation not supported.',
+  "It's not that easy.",
+  'Try again later.',
+  "If the bot could do that, you couldn't afford it.",
+  'Just give up.',
+  'Who said it would be easy?',
+  'Required parts not in stock.',
+  'Counterfeit item detected!',
+  'Insufficient authorization.',
+  'Umm umm uh?',
+  'Bot script stuck in MacBook.',
+  'Bribe required.',
+  'Action postponed indefinitely.'
+];
+
+exports.handle = async function(_args, message, _client) {
+  message.reply(`${Math.random() > 0.5 ? 'Error' : 'Warning'}: ${errors[Math.floor(Math.random() * errors.length)]}`);
+};

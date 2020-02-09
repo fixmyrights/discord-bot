@@ -3,6 +3,7 @@ const { logger } = require('./../../logger');
 const parser = require('./../../parser');
 
 const add = require('./add');
+const error = require('./error');
 const help = require('./help');
 const ignore = require('./ignore');
 const scan = require('./scan');
@@ -54,6 +55,14 @@ exports.handle = function(args, message, client) {
 
     case 'watch':
       watch.handle(args, message, client);
+      break;
+
+    case 'pass':
+    case 'take':
+    case 'speed':
+    case 'make':
+    case 'lobby':
+      error.handle(args, message, client);
       break;
 
     default:
