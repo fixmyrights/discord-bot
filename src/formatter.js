@@ -81,15 +81,16 @@ exports.updateBill = async function(bill, updateReport, channel) {
 
 exports.bills = async function(bills, channel, client) {
   if (database.getConfig('embeds')) {
+    const billsPrePage = 5; // embed max 6000 chars, currently using <1000 chars per bill, maybe could push to 6
     let fields = 0;
     let index = 0;
     let page = 1;
-    let text = 0;
+    const pagesAmount = Math.ceil(bills.length / billsPrePage);
 
     while (index < bills.length) {
-      const embed = new Discord.RichEmbed().setTitle(`Legislation`).setDescription(`Page ${page}`);
+      const embed = new Discord.RichEmbed().setTitle(`Legislation`).setDescription(`Page ${page}/${pagesAmount} - ${bills.length} bills in total.`);
 
-      while (index < bills.length && fields < 5 && text < 4000) {
+      while (index < bills.length && fields < billsPrePage) {
         const bill = bills[index];
         let billText = `**Title:** ${this.abbreviate(bill.title, 500)}\n`;
         billText += `**Url**: [${bill.id}](${bill.url})\n`;
@@ -97,11 +98,11 @@ exports.bills = async function(bills, channel, client) {
         if (bill.watching) {
           const recentHistoryItem = parser.recentHistory(bill);
           if (recentHistoryItem) {
-            billText += `**Status as of ${this.date(recentHistoryItem.timestamp)}:** ${recentHistoryItem.action}\n`;
+            billText += `**Status as of ${this.date(recentHistoryItem.timestamp)}:** ${this.abbreviate(recentHistoryItem.action, 200)}\n`;
           }
           if (bill.calendar) {
             for (const calendarItem of bill.calendar.slice(-2)) {
-              billText += `**${calendarItem.type} ${calendarItem.localTime ? 'at ' + calendarItem.localTime + ' ' : ''} on ${calendarItem.localDate}**: ${calendarItem.description}\n`;
+              billText += `**${calendarItem.type} ${calendarItem.localTime ? 'at ' + calendarItem.localTime + ' ' : ''} on ${calendarItem.localDate}**: ${this.abbreviate(calendarItem.description, 200)}\n`;
             }
           }
         } else {
@@ -109,7 +110,6 @@ exports.bills = async function(bills, channel, client) {
         }
         embed.addField(`${parser.state(bill.state)} ${bill.number}`, billText);
         index += 1;
-        text += billText.length;
         fields += 1;
       }
 
@@ -119,14 +119,17 @@ exports.bills = async function(bills, channel, client) {
       if (index < bills.length) {
         await sentMessage.react('⬇️');
         try {
-          await sentMessage.awaitReactions((reaction, user) => reaction.emoji.name === '⬇️' && user.id !== client.user.id, { max: 1, time: 60000, errors: ['time'] });
+          await sentMessage.awaitReactions((reaction, user) => reaction.emoji.name === '⬇️' && user.id !== client.user.id, {
+            max: 1,
+            time: 60000,
+            errors: ['time']
+          });
         } catch (err) {
           return;
         }
       }
       fields = 0;
       page += 1;
-      text = 0;
     }
   } else {
     let block = '';
