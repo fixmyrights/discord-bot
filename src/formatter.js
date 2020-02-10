@@ -81,16 +81,15 @@ exports.updateBill = async function(bill, updateReport, channel) {
 
 exports.bills = async function(bills, channel, client) {
   if (database.getConfig('embeds')) {
-    const billsPrePage = 5; // embed max 6000 chars, currently using <1000 chars per bill, maybe could push to 6
     let fields = 0;
     let index = 0;
     let page = 1;
-    const pagesAmount = Math.ceil(bills.length / billsPrePage);
+    const pagesAmount = Math.ceil(bills.length / database.getConfig('page'));
 
     while (index < bills.length) {
       const embed = new Discord.RichEmbed().setTitle(`Legislation`).setDescription(`Page ${page}/${pagesAmount} - ${bills.length} bills in total.`);
 
-      while (index < bills.length && fields < billsPrePage) {
+      while (index < bills.length && fields < database.getConfig('page')) {
         const bill = bills[index];
         let billText = `**Title:** ${this.abbreviate(bill.title, 500)}\n`;
         billText += `**Url**: [${bill.id}](${bill.url})\n`;

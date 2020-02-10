@@ -32,7 +32,8 @@ const errors = [
   'Umm umm uh?',
   'Bot script stuck in MacBook.',
   'Bribe required.',
-  'Action postponed indefinitely.'
+  'Action postponed indefinitely.',
+  'Water damage detected.'
 ];
 
 exports.handle = async function(_args, message, _client) {
