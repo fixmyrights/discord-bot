@@ -62,6 +62,7 @@ exports.handle = function(args, message, client) {
     case 'speed':
     case 'make':
     case 'lobby':
+    case 'bribe':
       error.handle(args, message, client);
       break;
 
