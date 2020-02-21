@@ -74,7 +74,7 @@ Yes. The only additional step is setting a different query string by initializin
 ```json
 {
   "config": {
-    "query": "ebike OR (electric bike)"
+    "query": "ebike OR \"electric bike\""
   }
 }
 ```
