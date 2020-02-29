@@ -91,7 +91,7 @@ exports.updateBill = function(bill) {
     }
 
     if (existingBill.calendar) {
-      const newBillCalendar = bill.calendar && bill.calendar.length > 0;
+      const newBillCalendar = Array.isArray(bill.calendar);
       if (newBillCalendar && bill.calendar.length > 0) {
         const latestCalendarItem = parser.recentHearing(bill);
         if (!existingBill.calendar.find(calendarItem => calendarItem.description === latestCalendarItem.description && calendarItem.timestamp === latestCalendarItem.timestamp)) {
@@ -100,6 +100,7 @@ exports.updateBill = function(bill) {
       } else {
         bill.calendar = [];
       }
+
       for (const existingCalendarItem of existingBill.calendar) {
         if (existingCalendarItem.timestamp > now && existingCalendarItem.timestamp - now < reminderMillis) {
           if (!updateReport.hearingReminders) {
