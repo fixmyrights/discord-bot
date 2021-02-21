@@ -33,11 +33,11 @@
 
 ### Requirements
 
-- Node.js 'Erbium' (LTS)
+- Node.js 'Erbium' (LTS) a.k.a version 12
 
-### Developing
+### Installing / Developing
 
-0. Install Node JS (version 12 or higher)
+0. Install Node.js (version 12 or higher)
 1. `npm install` or `npm i`
 2. `cp .env.template .env`
 3. Then edit your `.env` file with the right informations (note to maintainers: see GitHub repository secrets)
