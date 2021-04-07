@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "dependencies": {
     "@discordjs/uws": "^10.149.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "consola": "^2.11.3",
     "discord.js": "^11.5.1",
     "dotenv": "^8.2.0",
