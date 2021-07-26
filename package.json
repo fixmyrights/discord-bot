@@ -1,6 +1,6 @@
 {
   "name": "discord-bot",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "LegiScan integration for Discord",
   "main": "src/index.js",
   "dependencies": {
@@ -8,7 +8,6 @@
     "consola": "^2.15.3",
     "discord.js": "^12.5.3",
     "dotenv": "^10.0.0",
-    "husky": "^7.0.1",
     "node-cron": "^3.0.0"
   },
   "devDependencies": {
