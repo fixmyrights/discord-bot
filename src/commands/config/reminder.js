@@ -1,6 +1,6 @@
 const database = require('../../database');
 
-exports.handle = async function(args, message, _client) {
+exports.handle = async function (args, message, _client) {
   if (args.length === 0) {
     message.reply(`Current reminder interval is ${database.getConfig('reminder')} days.`);
   } else {

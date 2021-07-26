@@ -1,23 +1,23 @@
 const states = require('../data/states.json');
 
-exports.recentHearing = function(bill) {
+exports.recentHearing = function (bill) {
   let calendar = bill.calendar;
   calendar = calendar.sort((a, b) => b.timestamp - a.timestamp);
 
   return calendar[0] || {};
 };
 
-exports.recentHistory = function(bill) {
+exports.recentHistory = function (bill) {
   let history = bill.history;
   history = history.sort((a, b) => b.timestamp - a.timestamp);
   return history[0] || {};
 };
 
-exports.role = function(role, message) {
+exports.role = function (role, message) {
   return message.member.roles.find(r => r.name.toLowerCase() === role.toLowerCase());
 };
 
-exports.state = function(input) {
+exports.state = function (input) {
   if (!input) {
     return null;
   }
@@ -33,12 +33,12 @@ exports.state = function(input) {
   return state ? state.code : null;
 };
 
-exports.timestamp = function(date, time, stateInput) {
+exports.timestamp = function (date, time, stateInput) {
   const state = states.find(state => [state.name, state.code].includes(stateInput.toUpperCase())) || {};
   return Date.parse(`${date}T${time || '12:00'}:00.000${state.timezone || '+00:00'}`);
 };
 
-exports.titleRelevance = function(title) {
+exports.titleRelevance = function (title) {
   let relevant = false;
   title = title.toLowerCase();
 
@@ -51,14 +51,14 @@ exports.titleRelevance = function(title) {
   return relevant;
 };
 
-exports.title = function(bill) {
+exports.title = function (bill) {
   let title = bill.title.toLowerCase();
   title = title.replace(/-/g, ' ');
 
   return title.length > 497 ? `${title.substring(0, 497)}...` : title;
 };
 
-exports.toggle = function(value) {
+exports.toggle = function (value) {
   let bool = null;
   if (['on', 'enable', 'enabled', 'true'].includes(value)) {
     bool = true;

@@ -6,7 +6,7 @@ const endpoint = 'https://api.legiscan.com';
 
 const sortBills = bills => bills.sort((a, b) => b.history[0].timestamp - a.history[0].timestamp);
 
-exports.getBill = async function(id) {
+exports.getBill = async function (id) {
   const result = await axios.get(endpoint, {
     params: {
       key: process.env.LEGISCAN_API_KEY,
@@ -40,7 +40,7 @@ exports.getBill = async function(id) {
   return null;
 };
 
-exports.search = async function(state, query) {
+exports.search = async function (state, query) {
   const result = await axios.get(endpoint, {
     params: {
       key: process.env.LEGISCAN_API_KEY,

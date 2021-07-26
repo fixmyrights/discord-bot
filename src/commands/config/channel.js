@@ -1,6 +1,6 @@
 const database = require('../../database');
 
-exports.handle = async function(args, message, client) {
+exports.handle = async function (args, message, client) {
   const value = args[0];
 
   if (args.length === 0) {

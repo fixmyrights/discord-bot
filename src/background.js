@@ -9,7 +9,7 @@ let task = null;
 // Can't query with detail too often
 let detailTimestamp = 0;
 
-exports.schedule = function(client) {
+exports.schedule = function (client) {
   if (task) {
     task.stop();
   }
