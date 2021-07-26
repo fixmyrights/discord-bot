@@ -7,22 +7,22 @@ const databaseDirectory = './database/';
 const databaseFile = 'database.json';
 let database = {};
 
-exports.load = async function() {
+exports.load = async function () {
   try {
     database = JSON.parse(await fs.readFile(`${databaseDirectory}${databaseFile}`, 'utf8'));
     global.dirty = false;
   } catch (err) {}
 };
 
-exports.getConfig = function(key) {
+exports.getConfig = function (key) {
   return database.config && key in database.config ? database.config[key] : config[key];
 };
 
-exports.getBills = function() {
+exports.getBills = function () {
   return database.bill || {};
 };
 
-exports.getBill = function(state, billNumber) {
+exports.getBill = function (state, billNumber) {
   for (const billId in database.bill || {}) {
     const bill = database.bill[billId];
 
@@ -34,7 +34,7 @@ exports.getBill = function(state, billNumber) {
   return null;
 };
 
-exports.setConfig = function(key, value) {
+exports.setConfig = function (key, value) {
   global.dirty = true;
 
   if (!database.config) {
@@ -44,7 +44,7 @@ exports.setConfig = function(key, value) {
   database.config[key] = value;
 };
 
-exports.setBill = function(bill) {
+exports.setBill = function (bill) {
   if (!bill.id) {
     logger.debug('Cannot set bill without id.');
     return;
@@ -60,7 +60,7 @@ exports.setBill = function(bill) {
   database.bill[bill.id] = { ...bill, id: undefined };
 };
 
-exports.updateBill = function(bill) {
+exports.updateBill = function (bill) {
   global.dirty = true;
 
   const updateReport = {};
@@ -125,13 +125,13 @@ exports.updateBill = function(bill) {
   return updateReport;
 };
 
-const undirty = function() {
+const undirty = function () {
   global.dirty = false;
 };
-const writeFile = function() {
+const writeFile = function () {
   return fs.writeFile(`${databaseDirectory}${databaseFile}`, JSON.stringify(database, null, '	')).then(undirty);
 };
-exports.save = async function() {
+exports.save = async function () {
   try {
     await writeFile();
   } catch (err) {

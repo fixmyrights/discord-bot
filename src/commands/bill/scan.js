@@ -5,7 +5,7 @@ const parser = require('../../parser');
 // Legiscan API
 const legiscan = require('../../services/legiscan');
 
-exports.handle = async function(args, message, client) {
+exports.handle = async function (args, message, client) {
   const { channel } = message;
 
   const state = parser.state(args.join(' '));

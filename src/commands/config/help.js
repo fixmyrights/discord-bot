@@ -1,6 +1,6 @@
 const database = require('../../database');
 
-exports.handle = function(_args, message, _client) {
+exports.handle = function (_args, message, _client) {
   let prefix = database.getConfig('prefix');
   if (!prefix.endsWith('!')) {
     prefix += ' ';

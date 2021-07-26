@@ -22,12 +22,12 @@
 
 ## Available Commands
 
-| Command                      |                    Description                     |
-| ---------------------------- | :------------------------------------------------: |
-| !ping                        |         Do you really need an explanation?         |
-| !help                        |              Shows this list of commands.          |
-| !bill help                   |           Shows available bill commands.           |
-| !config help                 |        Shows available configuration commands.     |
+| Command      |               Description               |
+| ------------ | :-------------------------------------: |
+| !ping        |   Do you really need an explanation?    |
+| !help        |      Shows this list of commands.       |
+| !bill help   |     Shows available bill commands.      |
+| !config help | Shows available configuration commands. |
 
 ## Development
 
@@ -72,6 +72,7 @@
 #### Can I use it to watch for other types of bills?
 
 Yes. The only additional step is setting a different query string by initializing `database/database.json` to this (using E-bikes as an example):
+
 ```json
 {
   "config": {
@@ -83,11 +84,6 @@ Yes. The only additional step is setting a different query string by initializin
 #### Why ECMAScript and not [my-favorite-language]?
 
 That's a good question! Initially, the proof of concept was written in [Rust](https://www.rust-lang.org/) by [Yugo](https://github.com/x47188) & [joaodforce](https://github.com/joaodforce), while Rust is an incredible c-speed and memory-safe language it was not a highly accessible one. To maximize the chance of getting contributions from the community, one of the many existing projects was promoted and ECMAScript was chosen.
-
-#### Can I skip the annoying pre-commit hook?
-
-We use [Husky](https://github.com/typicode/husky) to run a hook at commit.
-If you want to skip it add a `--no-verify` to your `git commit`.
 
 ## Contribution
 

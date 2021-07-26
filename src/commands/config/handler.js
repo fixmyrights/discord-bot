@@ -29,7 +29,7 @@ const canDoCommand = (command, message) => {
   }
 };
 
-exports.handle = function(args, message, client) {
+exports.handle = function (args, message, client) {
   const handler = (args.shift() || '').toLowerCase();
 
   if (!canDoCommand(handler, message)) {

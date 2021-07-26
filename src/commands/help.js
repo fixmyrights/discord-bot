@@ -2,7 +2,7 @@ const billhelp = require('./bill/help');
 const confighelp = require('./config/help');
 const database = require('../database');
 
-exports.handle = function(args, message, client) {
+exports.handle = function (args, message, client) {
   const arg = args.shift();
   if (arg === 'bill') {
     billhelp.handle(args, message, client);

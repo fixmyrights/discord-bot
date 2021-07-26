@@ -36,6 +36,6 @@ const errors = [
   'Water damage detected.'
 ];
 
-exports.handle = async function(_args, message, _client) {
+exports.handle = async function (_args, message, _client) {
   message.reply(`${Math.random() > 0.5 ? 'Error' : 'Warning'}: ${errors[Math.floor(Math.random() * errors.length)]}`);
 };

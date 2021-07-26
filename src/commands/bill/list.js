@@ -1,7 +1,7 @@
 const database = require('../../database.js');
 const formatter = require('../../formatter.js');
 
-exports.handle = async function(_args, message, client) {
+exports.handle = async function (_args, message, client) {
   const { channel } = message;
   const watchlist = database.getBills();
 

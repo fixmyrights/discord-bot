@@ -35,11 +35,8 @@ const canDoCommand = (command, message) => {
   }
 };
 
-exports.handle = function(message, client) {
-  const args = message.cleanContent
-    .slice(database.getConfig('prefix').length)
-    .trim()
-    .split(/ +/g);
+exports.handle = function (message, client) {
+  const args = message.cleanContent.slice(database.getConfig('prefix').length).trim().split(/ +/g);
   const handler = args.shift().toLowerCase();
 
   if (!canDoCommand(handler, message)) {

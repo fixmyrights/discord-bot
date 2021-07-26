@@ -2,11 +2,11 @@ const database = require('./database');
 const Discord = require('discord.js');
 const parser = require('./parser.js');
 
-exports.abbreviate = function(text, length) {
+exports.abbreviate = function (text, length) {
   return text.length > length ? `${text.substring(0, length - 3)}...` : text;
 };
 
-exports.reminders = async function(billHearingsReminders, channel) {
+exports.reminders = async function (billHearingsReminders, channel) {
   if (database.getConfig('embeds')) {
     const embed = new Discord.RichEmbed().setTitle(`Important Reminders`).setDescription(`The following hearings are scheduled for the next ${database.getConfig('reminder')} days.`);
 
@@ -38,7 +38,7 @@ exports.reminders = async function(billHearingsReminders, channel) {
   }
 };
 
-exports.updateBill = async function(bill, updateReport, channel) {
+exports.updateBill = async function (bill, updateReport, channel) {
   const recentHistoryItem = parser.recentHistory(bill);
 
   if (database.getConfig('embeds')) {
@@ -79,7 +79,7 @@ exports.updateBill = async function(bill, updateReport, channel) {
   }
 };
 
-exports.bills = async function(bills, channel, client) {
+exports.bills = async function (bills, channel, client) {
   if (database.getConfig('embeds')) {
     let fields = 0;
     let index = 0;
@@ -145,11 +145,11 @@ exports.bills = async function(bills, channel, client) {
   }
 };
 
-exports.date = function(timestamp) {
+exports.date = function (timestamp) {
   return new Date(timestamp).toLocaleDateString('en-US');
 };
 
-exports.duration = function(timestamp) {
+exports.duration = function (timestamp) {
   const totalMillis = timestamp - Date.now();
   const totalSeconds = Math.abs(totalMillis / 1000);
   const totalMinutes = totalSeconds / 60;
@@ -198,6 +198,6 @@ exports.duration = function(timestamp) {
   return `${durationValue} ${totalMillis < 0 ? 'ago' : 'from now'}`;
 };
 
-exports.toggle = function(bool) {
+exports.toggle = function (bool) {
   return bool ? 'on' : 'off';
 };

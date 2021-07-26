@@ -1,7 +1,7 @@
 const commands = require('../../../data/commands.json');
 const database = require('../../database');
 
-exports.handle = async function(args, message, client) {
+exports.handle = async function (args, message, client) {
   let command, help, group, role, roleArg;
   let permissions = database.getConfig('permissions');
 

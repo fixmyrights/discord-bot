@@ -2,7 +2,7 @@ const database = require('../../database');
 const formatter = require('../../formatter');
 const parser = require('../../parser');
 
-exports.handle = async function(args, message, _client) {
+exports.handle = async function (args, message, _client) {
   const value = args[0];
 
   if (!value) {
