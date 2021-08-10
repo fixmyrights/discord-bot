@@ -26,7 +26,7 @@
     "prettier": "^2.3.2"
   },
   "scripts": {
-    "debug": "npx ndb .",
+    "debug": "node --nolazy --inspect-brk",
     "start": "nodemon",
     "lint": "DEBUG=eslint:cli-engine eslint \"src/**/*.js\"",
     "lint:fix": "npm run lint --fix",

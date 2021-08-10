@@ -46,25 +46,29 @@ exports.handle = function (message, client) {
     return;
   }
 
-  switch (handler) {
-    case 'ping':
-      ping.handle(args, message, client);
-      break;
+  try {
+    switch (handler) {
+      case 'ping':
+        ping.handle(args, message, client);
+        break;
 
-    case 'bill':
-      bill.handle(args, message, client);
-      break;
+      case 'bill':
+        bill.handle(args, message, client);
+        break;
 
-    case 'config':
-      config.handle(args, message, client);
-      break;
+      case 'config':
+        config.handle(args, message, client);
+        break;
 
-    case 'help':
-      help.handle(args, message, client);
-      break;
+      case 'help':
+        help.handle(args, message, client);
+        break;
 
-    default:
-      logger.debug(`Unrecognized command ${handler}.`);
-      break;
+      default:
+        logger.debug(`Unrecognized command ${handler}.`);
+        break;
+    }
+  } catch (err) {
+    logger.error(`Command "${handler}" failed:`, err);
   }
 };
